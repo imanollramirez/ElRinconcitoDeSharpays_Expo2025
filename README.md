@@ -9,12 +9,13 @@ Bienvenido al repositorio oficial de **El Rinconcito de Sharpay**, una solución
 
 - **Nombre del Proyecto:** El Rinconcito de Sharpay
 - **Integrantes del equipo:**
-  - Nombre 1 – Frontend Developer
-  - Nombre 2 – Backend Developer
-  - Nombre 3 – Diseñador UX/UI
-  - Nombre 4 – Líder de Proyecto / QA
-- **Institución:** [Nombre del centro educativo]
-- **Carrera:** Desarrollo de Software / Ingeniería en Sistemas
+  - Gabriela Michelle Pérez Portillo – Frontend Developer
+  - Daniel Rolando Soriano Solis – Backend Developer
+  - German Antonio González Mejía - Backend Developer
+  - Alessandro Antonio Muñoz Quijada – Diseñador UX/UI
+  - Alessandro Imanol Ramírez Morán– Líder de Proyecto 
+- **Institución:** Instituto Técnico Ricaldone
+- **Especialidad:** Desarrollo de Software 
 
 ---
 
