@@ -86,15 +86,16 @@ export const AuthProvider = ({ children }) => {
       try {
         // Primero revisar si hay token en localStorage o cookies
         const token = localStorage.getItem("token") || Cookies.get("authToken");
+        const savedUserId = localStorage.getItem("userId") || Cookies.get("userId");
         
-        if (token) {
-          // Si hay token, decodificarlo para obtener info del usuario
+        if (token && savedUserId) {
+          // Si hay token y userId guardados, decodificar token para obtener info completa
           try {
             const tokenParts = token.split(".");
             if (tokenParts.length === 3) {
               const payload = JSON.parse(atob(tokenParts[1]));
               setUser({
-                id: payload.id,
+                id: payload.id || savedUserId, // usar savedUserId como fallback
                 userType: payload.userType,
                 name: payload.name,
                 image: payload.image,
@@ -104,8 +105,18 @@ export const AuthProvider = ({ children }) => {
             }
           } catch (e) {
             console.error("Error decoding token:", e);
-            clearSession();
+            // Si falla la decodificación pero tenemos userId, crear user básico
+            if (savedUserId) {
+              setUser({ id: savedUserId });
+              setIsLoggedIn(true);
+            } else {
+              clearSession();
+            }
           }
+        } else if (savedUserId) {
+          // Si solo tenemos userId guardado, crear user básico
+          setUser({ id: savedUserId });
+          setIsLoggedIn(true);
         }
         
         // También verificar con el servidor
