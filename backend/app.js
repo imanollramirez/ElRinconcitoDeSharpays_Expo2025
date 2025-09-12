@@ -6,6 +6,7 @@ import categoryRoutes from './src/routes/category.js';
 import registerEmployeeRoutes from "./src/routes/registerEmployee.js";
 import login from "./src/routes/login.js"
 import logOut from "./src/routes/logOut.js"
+import auth from "./src/routes/auth.js"
 import recoveryPassword from "./src/routes/recoveryPassword.js"
 
 import CostumersRoutes from "./src/routes/costumer.js"
@@ -50,6 +51,7 @@ app.use(cookieParser());
 
 app.use('/api/login',login);
 app.use('/api/logOut', logOut);
+app.use('/api/auth', auth);
 app.use('/api/recoveryPassword', recoveryPassword);
 
 app.use('/api/employees', employeeRoutes);
