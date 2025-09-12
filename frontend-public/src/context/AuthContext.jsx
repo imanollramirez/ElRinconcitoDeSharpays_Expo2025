@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
   const clearSession = () => {
     setUser(null);
     setIsLoggedIn(false);
-    // No cambiar loading aquí para evitar parpadeos
   };
 
   const logout = useCallback(async () => {
