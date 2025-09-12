@@ -9,12 +9,14 @@ export { AuthContext };
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const API_URL = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api";
   const navigate = useNavigate();
 
   const clearSession = () => {
     setUser(null);
     setIsLoggedIn(false);
+    // No cambiar loading aquí para evitar parpadeos
   };
 
   const logout = useCallback(async () => {
@@ -61,6 +63,7 @@ export const AuthProvider = ({ children }) => {
       });
       SuccessAlert("Sesión iniciada con éxito.")
       setIsLoggedIn(true);
+      setLoading(false); // ← AGREGAR ESTA LÍNEA
 
       return { success: true, message: data.message };
     } catch (error) {
@@ -88,6 +91,8 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error("Error verificando sesión:", error);
         clearSession();
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -95,10 +100,8 @@ export const AuthProvider = ({ children }) => {
   }, [API_URL]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, API: API_URL, clearSession }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, loading, API: API_URL, clearSession }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
