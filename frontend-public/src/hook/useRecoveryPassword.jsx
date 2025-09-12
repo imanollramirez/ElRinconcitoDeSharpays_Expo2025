@@ -92,7 +92,7 @@ const useRecoveryPassword = () => {
       const data = await res.json();
       if (res.ok) {
         SuccessAlert("Se restableció la contraseña");
-        navigate("/Login");
+        navigate("/login");
       } else {
         ErrorAlert(data.message || "Error");
       }

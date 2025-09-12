@@ -74,7 +74,7 @@ const RecoveryPassword = () => {
                 />
 
                 <div className="go-to-register text-center mt-5 pt-5 d-flex">
-                  <LinkText text="Iniciar Sesión" action="/Login" />
+                  <LinkText text="Iniciar Sesión" action="/login" />
                 </div>
               </>
             )}

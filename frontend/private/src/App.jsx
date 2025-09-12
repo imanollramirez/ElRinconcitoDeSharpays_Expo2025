@@ -32,7 +32,7 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 function App() {
   function SideBarSelector() {
     const { pathname } = useLocation();
-    const noNavbarPaths = ["/Login", "/Register", "/RecoveryPassword", "/NotFound"]
+    const noNavbarPaths = ["/login", "/Register", "/RecoveryPassword", "/NotFound"]
 
     if (noNavbarPaths.includes(pathname)) return null
     else
@@ -41,7 +41,7 @@ function App() {
 
   function FooterSelector() {
     const { pathname } = useLocation();
-    const footerPaths = ["/Login", "/Register", "/RecoveryPassword"];
+    const footerPaths = ["/login", "/Register", "/RecoveryPassword"];
 
     if (footerPaths.includes(pathname)) return <Footer />;
     return null;
@@ -52,8 +52,8 @@ function App() {
       <AuthProvider>
         <SideBarSelector />
         <Routes>
-          <Route path="/" element={<Navigate to="/Login" replace />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/RecoveryPassword" element={<RecoveryPassword />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
           <Route path="/NotFound" element={<NotFound/>}/>

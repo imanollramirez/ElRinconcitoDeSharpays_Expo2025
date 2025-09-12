@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         console.error("Error during logout:", error);
       } finally {
         clearSession();
-        navigate("/Login");
+        navigate("/login");
       }
     };
 

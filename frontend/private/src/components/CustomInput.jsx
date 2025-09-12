@@ -15,7 +15,7 @@ const CustomInput = ({
 
   const location = useLocation();
 
-  const whiteLabel = ["/Login","/Register","/RecoveryPassword"];
+  const whiteLabel = ["/login","/Register","/RecoveryPassword"];
 
   return (
     <div className="m-2">
