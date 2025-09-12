@@ -158,7 +158,7 @@ loginController.loginPublic = async (req, res) => {
     let userFound;
     let userType;
 
-    // 1. Admin
+    //  1. Primero revisamos si es el admin (con los datos guardados en config)
     if (
       email === config.ADMIN.emailAdmin &&
       password === config.ADMIN.password
@@ -166,59 +166,104 @@ loginController.loginPublic = async (req, res) => {
       userType = "admin";
       userFound = { _id: "admin", name: "Admin", image: "", email, password };
     } else {
-      // 2. Customer
+      //  2. Si no es admin, buscamos en la base de datos si existe un cliente con ese correo
       userFound = await customersModel.findOne({ email });
       userType = "customer";
     }
 
+    //  Si no existe, paramos aquí
     if (!userFound) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "Usuario no encontrado" });
     }
 
+    //  Si fuera un empleado (caso especial), se le niega el acceso
     if (userType === "employee") {
-      return res.status(403).json({ message: "Access denied" });
+      return res.status(403).json({ message: "Acceso denegado" });
     }
 
-    // Verificar si la cuenta está bloqueada (solo para customers)
-    if (userType !== "admin") {
-      if (userFound.timeOut > Date.now()) {
-        const remainingTime = Math.ceil((userFound.timeOut - Date.now()) / 60000);
-        return res.status(403).json({ message: "Cuenta bloqueada. Timepo restante: " + remainingTime + " minutos" });
-      }
+    //  Si el usuario está bloqueado por intentos fallidos, no lo dejamos pasar
+    if (userType !== "admin" && userFound.timeOut > Date.now()) {
+      const remainingTime = Math.ceil(
+        (userFound.timeOut - Date.now()) / 60000
+      );
+      return res.status(403).json({
+        message: `Cuenta bloqueada. Tiempo restante: ${remainingTime} minutos`,
+      });
     }
 
+    //  Si es cliente, comprobamos su contraseña
     if (userType !== "admin") {
       const isMatch = await bcryptjs.compare(password, userFound.password);
-      
+
       if (!isMatch) {
-        // Si se equivoca en la contraseña, sumamos el intento fallido.
+        //  Contraseña incorrecta → sumamos un intento fallido
         userFound.loginAttemps = (userFound.loginAttemps || 0) + 1;
-        
+
         if (userFound.loginAttemps >= 3) {
-          // Bloqueamos la cuenta por 20 minutos
+          //  Demasiados intentos → bloqueamos 20 minutos
           userFound.timeOut = Date.now() + 20 * 60 * 1000;
           await userFound.save();
-          // Enviar email de bloqueo
+
+          // Enviamos un correo avisando del bloqueo
           try {
-            await sendEmail(userFound.email, "Cuenta Bloqueada - Seguridad", "", HTMLBlockEmail());
+            await sendEmail(
+              userFound.email,
+              "Cuenta Bloqueada - Seguridad",
+              "",
+              HTMLBlockEmail()
+            );
           } catch (emailError) {
-            return res.status("Error enviando email:", emailError);
-            // Continúa aunque falle el email
+            console.error("Error enviando email de bloqueo:", emailError);
           }
-          
+
           return res.status(403).json({ message: "Cuenta bloqueada." });
         }
 
         await userFound.save();
-        return res.status(400).json({ message: "Invalid password" });
+        return res.status(400).json({ message: "Contraseña incorrecta" });
       }
 
-      // Si la contraseña es correcta, reiniciamos los intentos
+      //  Si la contraseña es correcta → reiniciamos el contador de intentos
       userFound.loginAttemps = 0;
       await userFound.save();
     }
+    // Si el usuario todavía no verificó su cuenta, en lugar de darle una sesión normal,
+    // le mandamos un código de verificación y guardamos un "verificationToken" en cookies.
+    if (userType !== "admin" && !userFound.isVerified) {
+      const verificationCode = crypto.randomBytes(3).toString("hex");
 
-    // Generar token
+      const verificationToken = jsonwebtoken.sign(
+        { email: userFound.email, verificationCode },
+        config.JWT.secret,
+        { expiresIn: "2h" }
+      );
+
+      // Creamos una cookie temporal SOLO para verificar la cuenta
+      res.cookie("verificationToken", verificationToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 2 * 60 * 60 * 1000,
+      });
+
+      // Le mandamos un correo con el código
+      await sendEmail(
+        userFound.email,
+        "Código de verificación de cuenta",
+        "Te saludamos de parte del equipo de El Rinconcito de Sharpays",
+        HTMLVerifyAccountEmail(verificationCode)
+      );
+
+      // Respondemos diciendo que necesita verificar su cuenta
+      return res.status(403).json({
+        message: "Cuenta no verificada. Revisa tu correo.",
+        requiresVerification: true,
+        userId: userFound._id,
+        email: userFound.email,
+      });
+    }
+
+    //  Si el usuario YA está verificado creamos la cookie de sesión normal - authToken
     jsonwebtoken.sign(
       {
         id: userFound._id,
@@ -232,9 +277,10 @@ loginController.loginPublic = async (req, res) => {
       (err, token) => {
         if (err) {
           console.error(err);
-          return res.status(500).json({ message: "Error generating token" });
+          return res.status(500).json({ message: "Error generando el token" });
         }
 
+        // Guardamos el token en una cookie httpOnly (para la sesión)
         res.cookie("authToken", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
@@ -242,15 +288,15 @@ loginController.loginPublic = async (req, res) => {
           maxAge: 24 * 60 * 60 * 1000,
         });
 
-
+        // Información del usuario
         res.status(200).json({
-          message: `${userType} login successful`,
+          message: `${userType} login exitoso`,
           userId: userFound._id,
           userType,
           name: userFound.name,
           image: userFound.image,
           email: userFound.email,
-          isVerified: userFound.isVerified
+          isVerified: userFound.isVerified,
         });
       }
     );
