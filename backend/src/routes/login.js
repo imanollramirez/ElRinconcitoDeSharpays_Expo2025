@@ -3,6 +3,7 @@ import loginController from "../controllers/loginController.js"
 const router = express.Router();
 
 router.route("/private").post(loginController.loginPrivate)
+router.route("/auth").post(loginController.authVerification)
 router.route("/public").post(loginController.loginPublic)
 
 export default router;

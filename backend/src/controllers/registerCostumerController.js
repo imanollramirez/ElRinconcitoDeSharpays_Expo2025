@@ -65,10 +65,11 @@ registerCostumerController.register = async (req, res) => {
     // Guardar el token en la cookie
     res.cookie("verificationToken", tokenCode, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 2 * 60 * 60 * 1000,
-      sameSite: "lax",
     });
+
 
     await sendEmail(
       email,
@@ -150,9 +151,11 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
       // Guardar el token en la cookie
     res.cookie("verificationToken", tokenCode, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 2 * 60 * 60 * 1000,
     });
+
 
     await sendEmail(
       email,

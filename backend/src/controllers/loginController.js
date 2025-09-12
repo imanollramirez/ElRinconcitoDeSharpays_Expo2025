@@ -127,10 +127,12 @@ loginController.loginPrivate = async (req, res) => {
 
         res.cookie("authToken", token, {
           httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
-          path: "/",
-          sameSite: "lax",
         });
+
+
 
         res.status(200).json({
           message: `${userType} login successful`,
@@ -235,14 +237,14 @@ loginController.loginPublic = async (req, res) => {
 
         res.cookie("authToken", token, {
           httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
-          path: "/",
-          sameSite: "lax",
         });
+
 
         res.status(200).json({
           message: `${userType} login successful`,
-          token,
           userId: userFound._id,
           userType,
           name: userFound.name,
@@ -257,5 +259,29 @@ loginController.loginPublic = async (req, res) => {
     res.status(500).json({ message: "Error", error: error.message });
   }
 };
+
+loginController.authVerification = async (req, res) => {
+  try {
+    const token = req.cookies.authToken;
+    if (!token) {
+      return res.status(401).json({ message: "No hay sesión activa" });
+    }
+
+    const decoded = jsonwebtoken.verify(token, config.JWT.secret);
+
+    res.status(200).json({
+      user: {
+        id: decoded.id,
+        name: decoded.name,
+        email: decoded.email,
+        userType: decoded.userType,
+        image: decoded.image,
+      },
+    });
+  } catch (error) {
+    return res.status(401).json({ message: "Token inválido o expirado" });
+  }
+};
+
 
 export default loginController;
