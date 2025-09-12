@@ -96,11 +96,19 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkSession();
-  }, [API_URL]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isLoggedIn, loading, API: API_URL, clearSession }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
