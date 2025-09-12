@@ -33,42 +33,44 @@ export const AuthProvider = ({ children }) => {
   }, [API_URL, navigate]);
 
   const login = async (email, password) => {
-    try {
-      const response = await fetch(`${API_URL}/login/public`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+  try {
+    const response = await fetch(`${API_URL}/login/public`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.isVerified === false) {
-        await resendVerificationCode(data.email, data.userId);
-        ErrorAlert("Debe verificar su cuenta. Revise su correo.");
-        navigate("/verifyAccount");
-        return { success: false, message: "Verificación requerida" };
-      }
-
-      if (!response.ok) {
-        return { success: false, message: data.message };
-      }
-
-      setUser({
-        id: data.userId,
-        name: data.name,
-        email: data.email,
-        userType: data.userType,
-        image: data.image,
-      });
-      setIsLoggedIn(true);
-
-      return { success: true, message: data.message };
-    } catch (error) {
-      console.error("Error durante login:", error);
-      return { success: false, message: "Error de conexión" };
+    // Caso: la cuenta existe pero no está verificada
+    if (response.status === 403 && data.requiresVerification) {
+      ErrorAlert("Debe verificar su cuenta. Revise su correo.");
+      navigate("/verifyAccount");
+      return { success: false, message: "Verificación requerida" };
     }
-  };
+
+    // Caso: cualquier otro error
+    if (!response.ok) {
+      return { success: false, message: data.message };
+    }
+
+    // Caso: login exitoso
+    setUser({
+      id: data.userId,
+      name: data.name,
+      email: data.email,
+      userType: data.userType,
+      image: data.image,
+    });
+    setIsLoggedIn(true);
+
+    return { success: true, message: data.message };
+  } catch (error) {
+    console.error("Error durante login:", error);
+    return { success: false, message: "Error de conexión" };
+  }
+};
 
   // Revisar sesión activa
   useEffect(() => {

@@ -57,7 +57,7 @@ loginController.loginPrivate = async (req, res) => {
     }
 
     if (!userFound) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Verificar si la cuenta está bloqueada (solo para empleados)
@@ -102,7 +102,7 @@ loginController.loginPrivate = async (req, res) => {
 
         console.log("Guardando intentos fallidos...");
         await userFound.save();
-        return res.status(400).json({ message: "Invalid password" });
+        return res.status(401).json({ message: "Invalid password" });
       }
 
       // Si la contraseña es correcta, reiniciamos los intentos
@@ -174,7 +174,7 @@ loginController.loginPublic = async (req, res) => {
 
     //  Si no existe, paramos aquí
     if (!userFound) {
-      return res.status(400).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     //  Si fuera un empleado (caso especial), se le niega el acceso
@@ -221,7 +221,7 @@ loginController.loginPublic = async (req, res) => {
         }
 
         await userFound.save();
-        return res.status(400).json({ message: "Contraseña incorrecta" });
+        return res.status(401).json({ message: "Contraseña incorrecta" });
       }
 
       //  Si la contraseña es correcta → reiniciamos el contador de intentos
