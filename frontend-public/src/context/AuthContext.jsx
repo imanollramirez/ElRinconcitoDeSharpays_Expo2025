@@ -70,11 +70,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Revisar sesión activa
+  // Revisar sesión activa
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch(`${API_URL}/auth`, {
+        const response = await fetch(`${API_URL}/auth/me`, {
           method: "GET",
           credentials: "include",
         });
