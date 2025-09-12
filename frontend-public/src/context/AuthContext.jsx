@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import ErrorAlert from "../components/ErrorAlert";
 import SuccessAlert from "../components/SuccessAlert"
 
@@ -14,6 +15,9 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const clearSession = () => {
+    // Limpiar tanto localStorage como cookies
+    localStorage.removeItem("token");
+    Cookies.remove("authToken", { path: "/" });
     setUser(null);
     setIsLoggedIn(false);
   };
@@ -52,7 +56,12 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: data.message };
       }
 
-      // Caso: login exitoso
+      // Caso: login exitoso - GUARDAR TOKEN Y USER ID
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        Cookies.set("authToken", data.token, { path: "/" });
+      }
+
       setUser({
         id: data.userId,
         name: data.name,
@@ -62,7 +71,7 @@ export const AuthProvider = ({ children }) => {
       });
       SuccessAlert("Sesión iniciada con éxito.")
       setIsLoggedIn(true);
-      setLoading(false); // ← AGREGAR ESTA LÍNEA
+      setLoading(false);
 
       return { success: true, message: data.message };
     } catch (error) {
@@ -75,6 +84,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
+        // Primero revisar si hay token en localStorage o cookies
+        const token = localStorage.getItem("token") || Cookies.get("authToken");
+        
+        if (token) {
+          // Si hay token, decodificarlo para obtener info del usuario
+          try {
+            const tokenParts = token.split(".");
+            if (tokenParts.length === 3) {
+              const payload = JSON.parse(atob(tokenParts[1]));
+              setUser({
+                id: payload.id,
+                userType: payload.userType,
+                name: payload.name,
+                image: payload.image,
+                email: payload.email,
+              });
+              setIsLoggedIn(true);
+            }
+          } catch (e) {
+            console.error("Error decoding token:", e);
+            clearSession();
+          }
+        }
+        
+        // También verificar con el servidor
         const response = await fetch(`${API_URL}/auth/me`, {
           method: "GET",
           credentials: "include",
@@ -84,12 +118,14 @@ export const AuthProvider = ({ children }) => {
           const data = await response.json();
           setUser(data.user);
           setIsLoggedIn(true);
-        } else {
+        } else if (!token) {
           clearSession();
         }
       } catch (error) {
         console.error("Error verificando sesión:", error);
-        clearSession();
+        if (!localStorage.getItem("token") && !Cookies.get("authToken")) {
+          clearSession();
+        }
       } finally {
         setLoading(false); 
       }
