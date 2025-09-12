@@ -256,12 +256,14 @@ loginController.loginPublic = async (req, res) => {
       );
 
       // Respondemos diciendo que necesita verificar su cuenta
-      return res.status(403).json({
+      return res.status(200).json({
         message: "Cuenta no verificada. Revisa tu correo.",
         requiresVerification: true,
         userId: userFound._id,
         email: userFound.email,
+        isVerified: false
       });
+
     }
 
     //  Si el usuario YA está verificado creamos la cookie de sesión normal - authToken
