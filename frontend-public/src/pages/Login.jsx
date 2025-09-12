@@ -81,13 +81,10 @@ const Login = () => {
 
         return;
       }
-
-      ErrorAlert("Credenciales incorrectas.");
       setPassword("");
       return;
     }
 
-    SuccessAlert("Sesión iniciada con éxito");
     setFailedAttempts(0);
     navigate("/inicio");
   };
