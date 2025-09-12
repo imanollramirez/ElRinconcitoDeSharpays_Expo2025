@@ -127,9 +127,14 @@ export const AuthProvider = ({ children }) => {
 
         if (response.ok) {
           const data = await response.json();
+          if (data.user && data.user.id) {
+            // Guardar también en storage cuando viene del servidor
+            localStorage.setItem("userId", data.user.id);
+            Cookies.set("userId", data.user.id, { path: "/" });
+          }
           setUser(data.user);
           setIsLoggedIn(true);
-        } else if (!token) {
+        } else if (!token && !savedUserId) {
           clearSession();
         }
       } catch (error) {
