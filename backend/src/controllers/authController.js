@@ -21,7 +21,16 @@ authController.authVerification = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    res.status(200).json({ user: { id: decoded.id, name: decoded.name, email: decoded.email, userType: decoded.userType, image: decoded.image, }, });
+    res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        userType: user.userType,
+        image: user.image,
+      },
+    });
+
   } catch (error) {
     res.status(401).json({ message: "Token inválido o expirado" });
   }
