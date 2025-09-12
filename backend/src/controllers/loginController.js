@@ -2,6 +2,7 @@ import customersModel from "../models/costumer.js";
 import employeesModel from "../models/employee.js";
 import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
+import crypto from "crypto";
 import { config } from "../config.js";
 import { sendEmail } from "../utils/mailPasswordRecovery.js"; // Ajusta la ruta según tu estructura
 
