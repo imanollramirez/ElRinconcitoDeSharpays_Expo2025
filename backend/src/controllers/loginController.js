@@ -256,7 +256,7 @@ loginController.loginPublic = async (req, res) => {
       );
 
       // Respondemos diciendo que necesita verificar su cuenta
-      return res.status(200).json({
+      return res.status(403).json({
         message: "Cuenta no verificada. Revisa tu correo.",
         requiresVerification: true,
         userId: userFound._id,
@@ -309,28 +309,6 @@ loginController.loginPublic = async (req, res) => {
   }
 };
 
-loginController.authVerification = async (req, res) => {
-  try {
-    const token = req.cookies.authToken;
-    if (!token) {
-      return res.status(401).json({ message: "No hay sesión activa" });
-    }
-
-    const decoded = jsonwebtoken.verify(token, config.JWT.secret);
-
-    res.status(200).json({
-      user: {
-        id: decoded.id,
-        name: decoded.name,
-        email: decoded.email,
-        userType: decoded.userType,
-        image: decoded.image,
-      },
-    });
-  } catch (error) {
-    return res.status(401).json({ message: "Token inválido o expirado" });
-  }
-};
 
 
 export default loginController;

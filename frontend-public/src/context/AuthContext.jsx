@@ -48,12 +48,10 @@ export const AuthProvider = ({ children }) => {
       ErrorAlert("Debe verificar su cuenta. Revise su correo.");
       navigate("/verifyAccount");
       return { success: false, message: "Verificación requerida" };
-    }
-
-    // Caso: cualquier otro error
-    if (!response.ok) {
+    } else if (!response.ok) {
       return { success: false, message: data.message };
     }
+
 
     // Caso: login exitoso
     setUser({
