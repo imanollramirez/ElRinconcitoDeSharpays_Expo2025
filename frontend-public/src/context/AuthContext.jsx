@@ -17,10 +17,13 @@ export const AuthProvider = ({ children }) => {
   const clearSession = () => {
     // Limpiar tanto localStorage como cookies
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     Cookies.remove("authToken", { path: "/" });
+    Cookies.remove("userId", { path: "/" });
     setUser(null);
     setIsLoggedIn(false);
   };
+
 
   const logout = useCallback(async () => {
     try {
