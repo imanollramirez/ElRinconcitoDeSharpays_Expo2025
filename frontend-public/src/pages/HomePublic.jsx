@@ -14,6 +14,7 @@ import im2 from "../assets/2.jpeg";
 import im3 from "../assets/3.jpeg";
 import im4 from "../assets/4.jpeg";
 import im5 from "../assets/5.jpeg";
+
 const HomePublic = () => {
   return (
     <>
