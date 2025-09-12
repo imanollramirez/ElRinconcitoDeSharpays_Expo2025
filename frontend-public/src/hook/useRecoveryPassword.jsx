@@ -11,7 +11,7 @@ const useRecoveryPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const API = "http://https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/recoveryPassword";
+  const API = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/recoveryPassword";
 
   const sendCode = async (e) => {
   e.preventDefault();
