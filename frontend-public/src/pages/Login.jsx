@@ -119,11 +119,11 @@ const Login = () => {
               >
                 <CustomTitle
                   style={"text-white fw-bold fs-2 mb-5"}
-                  text={"Iniciar Sesión"}
+                  text={"Iniciar sesión"}
                 />
 
                 <CustomInput
-                  label={"Correo Electrónico"}
+                  label={"Correo electrónico"}
                   placeholder={"Ejemplo@gmail.com"}
                   onChange={(e) => setEmail(e.target.value)}
                   type={"email"}
@@ -144,7 +144,7 @@ const Login = () => {
 
                 <div style={{ width: "300px", marginTop: "5px" }}>
                   <LinkText
-                    text={"Olvidé mi Contraseña"}
+                    text={"Olvidé mi contraseña"}
                     action={"/recoveryPassword"}
                   />
 
@@ -152,7 +152,7 @@ const Login = () => {
                     text={
                       isBlocked
                         ? `Bloqueada (${Math.ceil(blockTimeRemaining / 60)}min)`
-                        : "Iniciar Sesión"
+                        : "Iniciar sesión"
                     }
                     background={isBlocked ? "gray" : "black"}
                     color={"white"}
@@ -163,7 +163,7 @@ const Login = () => {
 
                   <div className="go-to-register text-center mt-5 d-flex">
                     <p className="m-0 ps-3 pe-1 text-white">
-                      ¿No Tienes Cuenta?
+                      No tengo cuenta. 
                     </p>
                     <LinkText text={"Registrarme"} action={"/register"} />
                   </div>
