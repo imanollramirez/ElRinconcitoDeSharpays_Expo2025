@@ -41,32 +41,29 @@ const ScrollFloat = ({
     const charElements = el.querySelectorAll('.char');
 
     gsap.fromTo(
-      charElements,
-      {
-        willChange: 'opacity, transform',
-        opacity: 0,
-        yPercent: 120,
-        scaleY: 2.3,
-        scaleX: 0.7,
-        transformOrigin: '50% 0%'
-      },
-      {
-        duration: animationDuration,
-        ease: ease,
-        opacity: 1,
-        yPercent: 0,
-        scaleY: 1,
-        scaleX: 1,
-        stagger: stagger,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: scrollStart,
-          end: scrollEnd,
-          scrub: true
-        }
-      }
-    );
+  charElements,
+  {
+    willChange: 'opacity, transform',
+    opacity: 0,
+    yPercent: 80,
+    transformOrigin: '50% 100%'
+  },
+  {
+    duration: animationDuration,
+    ease: "power2.out",
+    opacity: 1,
+    yPercent: 0,
+    stagger: stagger,
+    scrollTrigger: {
+      trigger: el,
+      scroller,
+      start: scrollStart,
+      end: scrollEnd,
+      scrub: 0.6  
+    }
+  }
+);
+
   }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
 
   return (

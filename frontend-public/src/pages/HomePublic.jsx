@@ -3,17 +3,7 @@ import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import GradientText from "../components/reactBits/GradientText.jsx";
 import TextType from "../components/reactBits/TextType.jsx";
 import ScrollFloat from "../components/reactBits/ScrollFloat.jsx";
-import ScrollStack, { ScrollStackItem } from "../components/reactBits/ScrollStack.jsx";
-import logo1 from "../assets/sharpaysLogo.png";
-import logo2 from "../assets/bougies.png";
-import logo3 from "../assets/frostyBitesWhite.png";
-import logo4 from "../assets/elParaisoDeDios.png";
-import logo5 from "../assets/noLosAtropelles.png";
-import im1 from "../assets/1.jpeg";
-import im2 from "../assets/2.jpeg";
-import im3 from "../assets/3.jpeg";
-import im4 from "../assets/4.jpeg";
-import im5 from "../assets/5.jpeg";
+import ScrollTrigger from "../components/ScrollTrigger.jsx";
 
 const HomePublic = () => {
   return (
@@ -60,190 +50,24 @@ const HomePublic = () => {
 
         <br />
 
-        <div className="text-center mt-5">
+        <div className="text-center mt-5 mb-5">
           <ScrollFloat
-            animationDuration={1}
-            ease="back.inOut(2)"
-            scrollStart="center bottom+=50%"
-            scrollEnd="bottom bottom-=40%"
-            stagger={0.03}
+            animationDuration={1.8}
+            ease="power3.out"
+            scrollStart="top bottom-=20%"
+            scrollEnd="bottom top+=20%"
+            stagger={0.015}
             color={"#FE3F8D"}
           >
             Conoce Nuestras Tiendas
           </ScrollFloat>
 
-  
+        </div>
+      </div>  
 
-  </div>
-</div>
-
-<ScrollStack>
-  {/* Card 1 */}
-  <ScrollStackItem itemClassName="card-variant-1">
-    <div className="floating-lights">
-      {Array.from({ length: 25 }).map((_, i) => (
-        <span
-          key={i}
-          className="floating-light"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${6 + Math.random() * 10}px`,
-            height: `${6 + Math.random() * 10}px`,
-            animationDelay: `${Math.random() * 10}s`,
-          }}
-        />
-      ))}
-    </div>
-
-    <div
-      className="stack-card-background"
-      style={{ backgroundImage: `url(${im3})` }}
-    />
-
-    <div className="stack-overlay-content">
-      <div className="stack-header">
-        <img src={logo1} alt="Logo" className="stack-logo" />
-        <h2>Sharpays Boutique</h2>
+      <div>
+      <ScrollTrigger/>
       </div>
-      <p>
-        Este es el primer card con un diseño más minimalista y limpio. Imágenes,
-        luces y contenido elegante.
-      </p>
-    </div>
-  </ScrollStackItem>
-
-  {/* Card 2 */}
-  <ScrollStackItem itemClassName="card-variant-2">
-    <div className="floating-lights">
-      {Array.from({ length: 25 }).map((_, i) => (
-        <span
-          key={i}
-          className="floating-light"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${6 + Math.random() * 10}px`,
-            height: `${6 + Math.random() * 10}px`,
-            animationDelay: `${Math.random() * 10}s`,
-          }}
-        />
-      ))}
-    </div>
-
-    <div
-      className="stack-card-background"
-      style={{ backgroundImage: `url(${im2})` }}
-    />
-
-    <div className="stack-overlay-content">
-      <div className="stack-header">
-        <img src={logo2} alt="Logo" className="stack-logo" />
-        <h2>Bougies</h2>
-      </div>
-      <p>Velas artesanales y ambientadores naturales que enamoran los sentidos.</p>
-    </div>
-  </ScrollStackItem>
-
-  {/* Card 3 */}
-  <ScrollStackItem itemClassName="card-variant-3">
-    <div className="floating-lights">
-      {Array.from({ length: 25 }).map((_, i) => (
-        <span
-          key={i}
-          className="floating-light"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${6 + Math.random() * 10}px`,
-            height: `${6 + Math.random() * 10}px`,
-            animationDelay: `${Math.random() * 10}s`,
-          }}
-        />
-      ))}
-    </div>
-
-    <div
-      className="stack-card-background"
-      style={{ backgroundImage: `url(${im1})` }}
-    />
-
-    <div className="stack-overlay-content">
-      <div className="stack-header">
-        <img src={logo3} alt="Logo" className="stack-logo" />
-        <h2>FrostyBites</h2>
-      </div>
-      <p>Paletas artesanales y postres fríos hechos con amor.</p>
-    </div>
-  </ScrollStackItem>
-
-  {/* Card 4 */}
-  <ScrollStackItem itemClassName="card-variant-4">
-    <div className="floating-lights">
-      {Array.from({ length: 25 }).map((_, i) => (
-        <span
-          key={i}
-          className="floating-light"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${6 + Math.random() * 10}px`,
-            height: `${6 + Math.random() * 10}px`,
-            animationDelay: `${Math.random() * 10}s`,
-          }}
-        />
-      ))}
-    </div>
-
-    <div
-      className="stack-card-background"
-      style={{ backgroundImage: `url(${im4})` }}
-    />
-
-    <div className="stack-overlay-content">
-      <div className="stack-header">
-        <img src={logo4} alt="Logo" className="stack-logo" />
-        <h2>El Paraíso de Dios</h2>
-      </div>
-      <p>Arreglos florales y detalles que honran el amor eterno.</p>
-    </div>
-  </ScrollStackItem>
-
-  {/* Card 5 */}
-  <ScrollStackItem itemClassName="card-variant-5">
-    <div className="floating-lights">
-      {Array.from({ length: 25 }).map((_, i) => (
-        <span
-          key={i}
-          className="floating-light"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            width: `${6 + Math.random() * 10}px`,
-            height: `${6 + Math.random() * 10}px`,
-            animationDelay: `${Math.random() * 10}s`,
-          }}
-        />
-      ))}
-    </div>
-
-    <div
-      className="stack-card-background"
-      style={{ backgroundImage: `url(${im5})` }}
-    />
-
-    <div className="stack-overlay-content">
-      <div className="stack-header">
-        <img src={logo5} alt="Logo" className="stack-logo" />
-        <h2>No los Atropelles</h2>
-      </div>
-      <p>Concientización, cuidado y protección para los animales callejeros.</p>
-    </div>
-  </ScrollStackItem>
-</ScrollStack>
-
-
-    
     </>
   );
 };
