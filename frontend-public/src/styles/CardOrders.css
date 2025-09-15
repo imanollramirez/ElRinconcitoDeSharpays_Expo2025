@@ -218,11 +218,33 @@
   background-color: transparent;
 }
 
-/* Responsive Design */
+/* Responsive Design Corregido */
 @media (max-width: 1600px) {
   .card-orders {
     left: auto;
     right: 50px;
+  }
+}
+
+/* NUEVO: Breakpoint adicional para pantallas medianas */
+@media (max-width: 1400px) {
+  .card-orders {
+    left: auto;
+    right: 30px;
+    width: 380px;
+  }
+}
+
+/* NUEVO: Otro breakpoint para asegurar que se apile en 1200px */
+@media (max-width: 1200px) {
+  .card-orders {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 90%;
+    height: auto;
+    margin: 20px auto;
   }
 }
 
@@ -231,6 +253,7 @@
     position: relative;
     top: auto;
     left: auto;
+    right: auto;
     width: 90%;
     height: auto;
     margin: 20px auto;
