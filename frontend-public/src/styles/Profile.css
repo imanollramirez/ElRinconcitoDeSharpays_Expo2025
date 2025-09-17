@@ -1,5 +1,3 @@
-/* =================== PERFIL RESPONSIVE =================== */
-
 /* Contenedor principal */
 .profile-container {
   display: flex;
@@ -18,65 +16,6 @@ main {
   gap: 20px;
   padding: 20px;
   position: relative; /* Importante para los absolute children */
-}
-
-/* =================== DESKTOP (por defecto) =================== */
-/* Solo se aplica posición absoluta en pantallas mayores a 1200px */
-@media (min-width: 1201px) {
-  /* Asegurar que CardOrders tenga espacio suficiente y posición fija */
-  .card-orders {
-    position: absolute;
-    top: 120px;
-    right: 50px;
-    left: auto;
-    width: 400px;
-    height: 550px;
-    margin: 0;
-    z-index: 5;
-    order: 0; /* No interferir en orden flex */
-  }
-
-  /* CardImage - Posición fija en desktop */
-  .upload-image-card {
-    text-align: center;
-    position: absolute;
-    top: 100px;
-    left: 20px;
-    z-index: 10;
-  }
-
-  /* CardPersonalInformation - Posición fija en desktop */
-  .personal-info-card {
-    background: inherit;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    position: absolute;
-    top: 100px;
-    left: 260px;
-    width: 520px;
-    margin: 0;
-    padding: 40px 30px;
-  }
-
-  /* CardUbication - Posición fija en desktop */
-  .card-ubication {
-    position: absolute;
-    top: 500px;
-    left: 30px;
-    width: 1000px;
-    max-width: calc(100vw - 60px);
-    height: auto;
-    min-height: 150px;
-    border: 1px solid #efefef;
-    border-radius: 35px;
-    padding: 20px 30px;
-    background: inherit;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 15px;
-  }
 }
 
 /* =================== TABLETS Y PANTALLAS MEDIANAS (max-width: 1200px) =================== */
@@ -139,6 +78,20 @@ main {
   /* CardOrders - Cambiar a relative y apilar abajo */
   .card-orders {
     order: 4; /* Cuarto elemento */
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 1600px) {
+  .card-orders {
+    order: 4;
     position: relative;
     top: auto;
     left: auto;
