@@ -1,5 +1,6 @@
 import Order from "../models/orders.js";
 import mongoose from "mongoose";
+import Product from "../models/products.js"; // Importa el modelo de productos
 
 const orderController = {};
 
