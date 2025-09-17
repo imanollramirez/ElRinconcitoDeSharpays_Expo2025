@@ -5,6 +5,9 @@ import Product from "../models/products.js"; // Importa el modelo de productos
 const orderController = {};
 
 // Crear una orden
+import Product from "../models/products.js"; // Asegúrate de importar el modelo de Product
+
+// Crear una orden
 orderController.createOrder = async (req, res) => {
   try {
     const { customerId, categoryId, orderDetails, total, status, shippingAddress } = req.body;
@@ -25,42 +28,46 @@ orderController.createOrder = async (req, res) => {
       return res.status(400).json({ message: "Dirección de envío incompleta" });
     }
 
-    // Crear la orden en la base de datos (sin modificar aún el stock)
+    // Crear la orden
     const order = new Order({
       customerId,
       categoryId,
       orderDetails,
       total,
-      status: status || "pendiente",
+      status: status || "pending",
       shippingAddress,
     });
 
+    // Guardar la orden
     await order.save();
 
-    // Actualizar el stock de los productos en la orden
-    for (const item of orderDetails) {
-      const product = await Product.findById(item.productId); // Encuentra el producto
+    // Actualizar el stock de los productos comprados
+    for (let i = 0; i < orderDetails.length; i++) {
+      const orderItem = orderDetails[i];
+      const product = await Product.findById(orderItem.productId);
 
-      if (!product) {
-        return res.status(404).json({ message: `Producto con ID ${item.productId} no encontrado` });
+      if (product) {
+        // Verificar que haya suficiente stock
+        if (product.stock >= orderItem.quantity) {
+          // Reducir el stock
+          product.stock -= orderItem.quantity;
+          await product.save(); // Guardar el producto actualizado
+        } else {
+          // Si no hay suficiente stock, lanzar error
+          return res.status(400).json({ message: `No hay suficiente stock para el producto ${product.name}` });
+        }
+      } else {
+        return res.status(404).json({ message: `Producto con ID ${orderItem.productId} no encontrado` });
       }
-
-      // Verificar si hay suficiente stock
-      if (product.stock < item.quantity) {
-        return res.status(400).json({ message: `No hay suficiente stock para el producto ${product.name}` });
-      }
-
-      // Reducir el stock
-      product.stock -= item.quantity;
-      await product.save();
     }
 
-    res.status(201).json(order); // Devolver la orden creada
+    res.status(201).json(order);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: error.message });
   }
 };
+
 
 // Obtener todas las órdenes con info del cliente y tienda
 orderController.getOrders = async (req, res) => {
