@@ -1,5 +1,6 @@
 import Order from "../models/orders.js";
 import mongoose from "mongoose";
+import Product from "../models/products.js"; // Importa el modelo de productos
 
 const orderController = {};
 
@@ -24,17 +25,37 @@ orderController.createOrder = async (req, res) => {
       return res.status(400).json({ message: "Dirección de envío incompleta" });
     }
 
+    // Crear la orden en la base de datos (sin modificar aún el stock)
     const order = new Order({
       customerId,
       categoryId,
       orderDetails,
       total,
-      status: status || "pending",
+      status: status || "pendiente",
       shippingAddress,
     });
 
     await order.save();
-    res.status(201).json(order);
+
+    // Actualizar el stock de los productos en la orden
+    for (const item of orderDetails) {
+      const product = await Product.findById(item.productId); // Encuentra el producto
+
+      if (!product) {
+        return res.status(404).json({ message: `Producto con ID ${item.productId} no encontrado` });
+      }
+
+      // Verificar si hay suficiente stock
+      if (product.stock < item.quantity) {
+        return res.status(400).json({ message: `No hay suficiente stock para el producto ${product.name}` });
+      }
+
+      // Reducir el stock
+      product.stock -= item.quantity;
+      await product.save();
+    }
+
+    res.status(201).json(order); // Devolver la orden creada
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: error.message });
