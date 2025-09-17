@@ -46,12 +46,20 @@ orderController.createOrder = async (req, res) => {
       const orderItem = orderDetails[i];
       const product = await Product.findById(orderItem.productId);
 
+      console.log(`Producto encontrado: ${product?.name}, Stock actual: ${product?.stock}`); // Log del producto encontrado
+
       if (product) {
         // Verificar que haya suficiente stock
         if (product.stock >= orderItem.quantity) {
           // Reducir el stock
           product.stock -= orderItem.quantity;
-          await product.save(); // Guardar el producto actualizado
+
+          console.log(`Nuevo stock para ${product.name}: ${product.stock}`); // Log del nuevo stock
+
+          // Guardar el producto actualizado
+          await product.save();
+
+          console.log(`Producto ${product.name} actualizado correctamente.`); // Log de éxito
         } else {
           // Si no hay suficiente stock, lanzar error
           return res.status(400).json({ message: `No hay suficiente stock para el producto ${product.name}` });
@@ -67,6 +75,7 @@ orderController.createOrder = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 
 // Obtener todas las órdenes con info del cliente y tienda
