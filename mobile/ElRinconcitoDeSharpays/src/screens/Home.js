@@ -9,9 +9,9 @@ import {
   Image,
   StatusBar,
   Alert,
-  Modal,
   Animated,
-  Easing
+  Easing,
+  Dimensions
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -19,7 +19,8 @@ import { AuthContext } from '../context/AuthContext';
 import { useEmployee } from '../hooks/profile/useEmployee';
 import useOrders from '../hooks/orders/useOrders';
 import { API_URL } from '../config';
-import purchaseOrderIMG from '../../assets/purchaseOrder.png'
+
+const { height } = Dimensions.get("window");
 
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
@@ -29,11 +30,10 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation();
 
-  // Modal state
+  // BottomSheet state
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const modalAnim = useRef(new Animated.Value(0)).current;
+  const sheetAnim = useRef(new Animated.Value(height)).current;
 
-  // Refresca datos cada vez que la pantalla recibe el foco
   useFocusEffect(
     React.useCallback(() => {
       getEmployee();
@@ -87,9 +87,8 @@ export default function Home() {
 
   const openOrderDetail = (order) => {
     setSelectedOrder(order);
-    modalAnim.setValue(0);
-    Animated.timing(modalAnim, {
-      toValue: 1,
+    Animated.timing(sheetAnim, {
+      toValue: 0,
       duration: 300,
       easing: Easing.out(Easing.cubic),
       useNativeDriver: true
@@ -97,23 +96,13 @@ export default function Home() {
   };
 
   const closeOrderDetail = () => {
-    Animated.timing(modalAnim, {
-      toValue: 0,
-      duration: 200,
+    Animated.timing(sheetAnim, {
+      toValue: height,
+      duration: 250,
       easing: Easing.in(Easing.cubic),
       useNativeDriver: true
     }).start(() => setSelectedOrder(null));
   };
-
-  const modalScale = modalAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.8, 1]
-  });
-
-  const modalOpacity = modalAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1]
-  });
 
   return (
     <View style={{ flex: 1 }}>
@@ -195,7 +184,6 @@ export default function Home() {
               </Text>
             </TouchableOpacity>
           ))}
-
         </ScrollView>
 
         <View style={styles.divider} />
@@ -237,154 +225,139 @@ export default function Home() {
         </View>
       </ScrollView>
 
+      {/* BottomSheet */}
+      {selectedOrder && (
+        <Animated.View
+          style={[
+            styles.bottomSheet,
+            { transform: [{ translateY: sheetAnim }] }
+          ]}
+        >
+          <ScrollView>
+            <View style={{ alignItems: "center", marginBottom: 20 }}>
+              <Image
+                source={
+                  selectedOrder?.categoryId?.image
+                    ? { uri: selectedOrder.categoryId.image }
+                    : require('../../assets/rinconcitoDeSharpays.png')
+                }
+                style={{ width: 100, height: 100, borderRadius: 50 }}
+              />
+              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10, textAlign: "center"}}>
+                {selectedOrder?.categoryId?.category || "Camisa personalizada o Dua"}
+              </Text>
+              <Text style={{ color: "#555" }}>
+                {selectedOrder?.customerId?.name || "Cliente desconocido"}
+              </Text>
+              <Text style={{ fontSize: 12, color: "#999" }}>
+                {new Date(selectedOrder?.createdAt).toLocaleString()}
+              </Text>
+            </View>
 
-      {/* Modal de detalle */}
-      <Modal transparent visible={!!selectedOrder} animationType="none">
-        <View style={styles.modalBackground}>
-          <Animated.View
-            style={[
-              styles.modalCard,
-              { transform: [{ scale: modalScale }], opacity: modalOpacity }
-            ]}
-          >
-            <ScrollView>
-              {/* Encabezado con logo y datos */}
-              <View style={{ alignItems: "center", marginBottom: 20 }}>
-                <Image
-                 source={
-                    selectedOrder?.categoryId?.image
-                      ? { uri: selectedOrder.categoryId.image }
-                      : require('../../assets/rinconcitoDeSharpays.png')
-                  }
-                  style={{ width: 100, height: 100, borderRadius: 50 }}
-                />
-                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10, textAlign: "center"}}>
-                  {selectedOrder?.categoryId?.category || "Camisa personalizada o Dua"}
-                </Text>
-                <Text style={{ color: "#555" }}>
-                  {selectedOrder?.customerId?.name || "Cliente desconocido"}
-                </Text>
-                <Text style={{ fontSize: 12, color: "#999" }}>
-                  {new Date(selectedOrder?.createdAt).toLocaleString()}
-                </Text>
-              </View>
-
-              {/* Lista de productos */}
-              <View style={{ marginBottom: 15 }}>
-                <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
-                  Orden de {selectedOrder?.customerName || "Cliente"}
-                </Text>
-                <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
-                  Estado: {selectedOrder?.status || "Pendiente"}
-                </Text>
-                {selectedOrder?.orderDetails.map((item, idx) => (
-                  <View
-                    key={idx}
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginVertical: 5
-                    }}
-                  >
-                    <Text style={{ flex: 1 }}>
-                      {item.quantity} x {item.productName}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-
-              {/* Total */}
-              <View
-                style={{
-                  borderTopWidth: 1,
-                  borderTopColor: "#ddd",
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>Total:</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                  ${(selectedOrder?.total ?? 0).toFixed(2)}
-                </Text>
-              </View>
-
-
-              {/* Botones */}
-              {selectedOrder?.status !== "completado" && (
+            <View style={{ marginBottom: 15 }}>
+              <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
+                Estado: {selectedOrder?.status || "Pendiente"}
+              </Text>
+              {selectedOrder?.orderDetails.map((item, idx) => (
                 <View
+                  key={idx}
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    marginTop: 20
+                    marginVertical: 5
                   }}
                 >
-                  <TouchableOpacity
-                    style={{
-                      flex: 1,
-                      marginRight: 10,
-                      backgroundColor: "#FF6961",
-                      padding: 12,
-                      borderRadius: 10,
-                      alignItems: "center"
-                    }}
-                    onPress={() => Alert.alert("Cancelar pedido")}
-                  >
-                    <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
-                      Cancelar Pedido
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={{
-                      flex: 1,
-                      marginLeft: 10,
-                      backgroundColor: "#4CAF50",
-                      padding: 12,
-                      borderRadius: 10,
-                    }}
-                    onPress={() =>
-                      Alert.alert(
-                        "Confirmación",
-                        "¿Deseas marcar la orden como entregada?",
-                        [
-                          { text: "Cancelar", style: "cancel" },
-                          {
-                            text: "Sí",
-                            onPress: () => {
-                              updateOrder(selectedOrder._id, { status: "completado" });
-                              closeOrderDetail();
-                            }
-                          }
-                        ]
-                      )
-                    }
-                  >
-                    <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
-                      Marcar como completado
-                    </Text>
-                  </TouchableOpacity>
+                  <Text style={{ flex: 1 }}>
+                    {item.quantity} x {item.productName}
+                  </Text>
                 </View>
-              )}
+              ))}
+            </View>
 
+            <View
+              style={{
+                borderTopWidth: 1,
+                borderTopColor: "#ddd",
+                paddingTop: 10,
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <Text style={{ fontWeight: "bold", fontSize: 16 }}>Total:</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                ${(selectedOrder?.total ?? 0).toFixed(2)}
+              </Text>
+            </View>
 
-
-              {/* Cerrar */}
-              <TouchableOpacity
+            {selectedOrder?.status !== "completado" && (
+              <View
                 style={{
-                  marginTop: 15,
-                  padding: 10,
-                  alignItems: "center"
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 20
                 }}
-                onPress={closeOrderDetail}
               >
-                <Text style={{ color: "#FE3F8D", fontWeight: "bold" }}>Cerrar</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </Animated.View>
-        </View>
-      </Modal>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    marginRight: 10,
+                    backgroundColor: "#FF6961",
+                    padding: 12,
+                    borderRadius: 10,
+                    alignItems: "center"
+                  }}
+                  onPress={() => Alert.alert("Cancelar pedido")}
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
+                    Cancelar Pedido
+                  </Text>
+                </TouchableOpacity>
 
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    marginLeft: 10,
+                    backgroundColor: "#4CAF50",
+                    padding: 12,
+                    borderRadius: 10,
+                  }}
+                  onPress={() =>
+                    Alert.alert(
+                      "Confirmación",
+                      "¿Deseas marcar la orden como entregada?",
+                      [
+                        { text: "Cancelar", style: "cancel" },
+                        {
+                          text: "Sí",
+                          onPress: () => {
+                            updateOrder(selectedOrder._id, { status: "completado" });
+                            closeOrderDetail();
+                          }
+                        }
+                      ]
+                    )
+                  }
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
+                    Marcar como completado
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <TouchableOpacity
+              style={{
+                marginTop: 15,
+                padding: 10,
+                alignItems: "center"
+              }}
+              onPress={closeOrderDetail}
+            >
+              <Text style={{ color: "#FE3F8D", fontWeight: "bold" }}>Cerrar</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </Animated.View>
+      )}
     </View>
   );
 }
@@ -404,7 +377,17 @@ const styles = StyleSheet.create({
   pending: { fontSize: 12, color: '#999', marginTop: 6 },
   greetingImage: { width: 60, height: 60, marginLeft: 10 },
   categoryContainer: { flexDirection: 'row', marginBottom: 20 },
-  categoryButton: { paddingVertical: 6, paddingHorizontal: 16, borderRadius: 20, borderColor: '#ccc', borderWidth: 1, marginRight: 8 },
+  categoryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginRight: 8,
+    backgroundColor: '#fff'
+  },
   selectedCategory: { borderColor: '#FE3F8D' },
   categoryText: { fontSize: 14, color: '#333' },
   selectedCategoryText: { color: '#FE3F8D' },
@@ -417,27 +400,21 @@ const styles = StyleSheet.create({
   orderInfo: { fontSize: 12, color: '#555', marginTop: 2 },
   orderSub: { fontSize: 11, color: '#aaa', marginTop: 2 },
   dot: { width: 10, height: 10, borderRadius: 50, marginLeft: 10 },
-  modalBackground: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  modalCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', maxHeight: '80%' },
-  modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
-  modalCategory: { fontSize: 30, marginBottom: 6, color: '#FE3F8D' },
-  closeButton: { marginTop: 20, backgroundColor: '#FE3F8D', padding: 12, borderRadius: 10, alignItems: 'center' },
-  categoryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginRight: 8,
-    backgroundColor: '#fff'
+  bottomSheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    maxHeight: "80%"
   },
   categoryImage: {
-    width: 20,   // 👈 pequeña
+    width: 20,
     height: 20,
     borderRadius: 5,
     marginRight: 6
-  },
-
+  }
 });

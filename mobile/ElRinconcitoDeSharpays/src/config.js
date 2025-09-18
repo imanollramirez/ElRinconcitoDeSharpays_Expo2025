@@ -1,2 +1,2 @@
 // Dirección IP del servidor backend
-export const API_URL = "http://192.168.0.3:4000/api";
+export const API_URL = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api";
