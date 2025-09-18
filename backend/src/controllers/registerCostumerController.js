@@ -79,57 +79,59 @@ registerCostumerController.verifyAccount = async (req, res) => {
   const token = req.cookies.verificationToken; 
 
   if (!token) {
-    return res.status(401).json({ 
-      message: "Token de verificación no encontrado. Por favor, solicite un nuevo código." 
+    return res.status(401).json({
+      message: "Token de verificación no encontrado. Por favor, solicite un nuevo código."
     });
   }
 
   try {
-    // Verify and decode JWT
+    // Verificar y decodificar el JWT
     const decoded = jwt.verify(token, config.JWT.secret);
     const { email, verificationCode: storedCode, customerId } = decoded;
 
-    // Compare verification codes (case-insensitive)
     if (verificationCode.toUpperCase() !== storedCode.toUpperCase()) {
-      return res.status(400).json({ 
-        message: "Código de verificación no válido." 
+      return res.status(400).json({
+        message: "Código de verificación no válido."
       });
     }
 
-    // Find customer and verify
+    // Buscamos al cliente
     const costumer = await Costumer.findById(customerId);
     if (!costumer) {
       return res.status(404).json({ message: "Cliente no encontrado" });
     }
 
+    // Verificamos si la cuenta ya está verificada
     if (costumer.isVerified) {
-      return res.status(400).json({ 
-        message: "La cuenta ya está verificada" 
+      return res.status(400).json({
+        message: "La cuenta ya está verificada"
       });
     }
 
-    // Mark as verified
+    // Marcamos al cliente como verificado
     costumer.isVerified = true;
     await costumer.save();
-    
-    // Clear verification cookie
+
+    // Limpiamos el token de verificación (ya no lo necesitamos)
     res.clearCookie("verificationToken");
 
-    // Generate auth token for logged-in session
+    // Generamos el token de autenticación para la sesión del cliente
     const authToken = jwt.sign(
       { id: costumer._id, email: costumer.email },
       config.JWT.secret,
-      { expiresIn: config.JWT.expiresIn }
+      { expiresIn: config.JWT.expiresIn }w
     );
 
+    // Guardamos el token en una cookie HTTP-only (sin acceso por JavaScript)
     res.cookie("authToken", authToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",  
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 1000 * 60 * 60 * 24  // Expira en 1 día
     });
 
-    res.status(200).json({ 
+    // Respuesta sin el token en el cuerpo (solo el mensaje)
+    res.status(200).json({
       message: "Email verificado exitosamente",
       customer: {
         id: costumer._id,
@@ -139,19 +141,14 @@ registerCostumerController.verifyAccount = async (req, res) => {
     });
 
   } catch (error) {
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ 
-        message: "El código de verificación ha expirado. Por favor, solicite uno nuevo." 
-      });
-    }
-    
-    console.error("Error verifying email:", error);
-    res.status(500).json({ 
-      message: "Error verificando email", 
-      error: error.message 
+    console.error("Error verificando el email:", error);
+    res.status(500).json({
+      message: "Error verificando el email",
+      error: error.message
     });
   }
 };
+
 
 registerCostumerController.resendVerificationCode = async (req, res) => {
   const { email, userId } = req.body;

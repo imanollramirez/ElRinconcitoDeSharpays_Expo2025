@@ -66,32 +66,42 @@ const useDataCustomer = () => {
   //Verificar la cuenta de un cliente, recién creada.
   const verifyCustomer = async (e) => {
     e.preventDefault();
-    if(!verificationCode) 
-    {
+  
+    if (!verificationCode) {
       ErrorAlert("Ingrese el código.");
+      return;
     }
-
+  
+    setLoading(true);
+  
     try {
-      const res = await fetch("https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/registerCostumer/verifyAccount", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ verificationCode }),
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      SuccessAlert("Se verificó la cuenta con éxito.");
-      navigate("/login");
-    } else {
-      ErrorAlert(data.message || "Hubo un error");
-    }
-
+      const res = await fetch(
+        "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/registerCostumer/verifyAccount",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // importante para enviar y recibir cookies
+          body: JSON.stringify({ verificationCode }),
+        }
+      );
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        SuccessAlert("Se verificó la cuenta con éxito.");
+        navigate("/login");
+      } else {
+        ErrorAlert(data.message || "Hubo un error al verificar la cuenta.");
+      }
     } catch (err) {
-    console.error(err);
-    ErrorAlert("Hubo un error");
-  }
-  }
+      console.error("Error al verificar la cuenta:", err);
+      ErrorAlert("Hubo un error al verificar la cuenta.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
 
   //Reenviar codigo de verificación
   const resendVerificationCode = async (email,userId) => {
