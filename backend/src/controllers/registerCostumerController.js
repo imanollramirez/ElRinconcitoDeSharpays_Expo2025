@@ -119,7 +119,7 @@ registerCostumerController.verifyAccount = async (req, res) => {
     const authToken = jwt.sign(
       { id: costumer._id, email: costumer.email },
       config.JWT.secret,
-      { expiresIn: config.JWT.expiresIn }w
+      { expiresIn: config.JWT.expiresIn }
     );
 
     // Guardamos el token en una cookie HTTP-only (sin acceso por JavaScript)
