@@ -57,14 +57,14 @@ loginController.loginPrivate = async (req, res) => {
     }
 
     if (!userFound) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     // Verificar si la cuenta está bloqueada (solo para empleados)
     if (userType !== "admin") {
       if (userFound.timeOut > Date.now()) {
         const remainingTime = Math.ceil((userFound.timeOut - Date.now()) / 60000);
-        return res.status(403).json({ message: "Block account. Remaining time: " + remainingTime + " minutes" });
+        return res.status(403).json({ message: "Cuenta bloqueada. Tiempo restante: " + remainingTime + " min" });
       }
     }
 
@@ -97,12 +97,12 @@ loginController.loginPrivate = async (req, res) => {
           }
           
           console.log("Enviando respuesta de cuenta bloqueada");
-          return res.status(403).json({ message: "Block Account" });
+          return res.status(403).json({ message: "Cuenta bloqueada" });
         }
 
         console.log("Guardando intentos fallidos...");
         await userFound.save();
-        return res.status(401).json({ message: "Invalid password" });
+        return res.status(401).json({ message: "Contraseña incorrecta" });
       }
 
       // Si la contraseña es correcta, reiniciamos los intentos
