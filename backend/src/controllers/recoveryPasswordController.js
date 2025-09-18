@@ -39,14 +39,6 @@ passwordRecoveryController.requestCode = async (req, res) => {
       { expiresIn: "20m" }
     );
 
-    // Guardamos token en cookie segura
-    res.cookie("tokenRecoveryCode", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 20 * 60 * 1000,
-    });
-
     await sendEmail(
       email,
       "Código de verificación", 
@@ -54,47 +46,57 @@ passwordRecoveryController.requestCode = async (req, res) => {
       HTMLRecoveryEmail(code) 
     );
 
-    res.status(201).json({ message: "Correo enviado. Revisa tu bandeja de entrada." });
+    res.status(201).json({ 
+      message: "Correo enviado. Revisa tu bandeja de entrada.",
+      recoveryToken: token
+    });
   } catch (error) {
     console.log("error" + error);
     res.status(500).json({ message: "Error interno" });
   }
 };
 
-// 2. Verificar código
 passwordRecoveryController.verifyCode = async (req, res) => {
-  const { code } = req.body;
+  const { code, recoveryToken } = req.body;
+  
   try {
-    const token = req.cookies.tokenRecoveryCode || req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided" });
+    const token = recoveryToken || 
+                  req.headers.authorization?.split(" ")[1] || 
+                  req.cookies.tokenRecoveryCode;
+                  
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
 
     const decoded = jsonwebtoken.verify(token, config.JWT.secret);
-    if (decoded.code !== code) return res.status(400).json({ message: "Código inválido" });
+    if (decoded.code !== code) {
+      return res.status(400).json({ message: "Código inválido" });
+    }
 
     const { exp, iat, ...rest } = decoded;
     const newToken = jsonwebtoken.sign({ ...rest, verified: true }, config.JWT.secret, { expiresIn: "20m" });
 
-    res.cookie("tokenRecoveryCode", newToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 20 * 60 * 1000,
+    res.json({ 
+      message: "Código verificado correctamente",
+      recoveryToken: newToken
     });
-
-    res.json({ message: "Código verificado correctamente" });
   } catch (error) {
     console.error(error, req.body);
     res.status(400).json({ message: "Token inválido o expirado" });
   }
 };
 
-// 3. Nueva contraseña
 passwordRecoveryController.newPassword = async (req, res) => {
-  const { newPassword } = req.body;
+  const { newPassword, recoveryToken } = req.body;
 
   try {
-    const token = req.cookies.tokenRecoveryCode || req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided" });
+    const token = recoveryToken || 
+                  req.headers.authorization?.split(" ")[1] || 
+                  req.cookies.tokenRecoveryCode;
+                  
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
 
     const decoded = jsonwebtoken.verify(token, config.JWT.secret);
 
@@ -121,15 +123,8 @@ passwordRecoveryController.newPassword = async (req, res) => {
     }
 
     if (!updatedUser) {
-      return res.status(404).json({ message: "Usuario no encontrado, no se pudo actualizar la contraseña" });
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
-
-    // Limpiar cookie de recuperación
-    res.clearCookie("tokenRecoveryCode", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    });
 
     res.status(200).json({ message: "Contraseña actualizada correctamente" });
   } catch (error) {

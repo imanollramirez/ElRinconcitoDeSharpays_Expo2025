@@ -100,7 +100,7 @@ const useRecoveryPassword = () => {
       const recoveryToken = localStorage.getItem('recoveryToken');
       
       if (!recoveryToken) {
-        ErrorAlert("Token de recuperación no encontrado. Complete el proceso desde el inicio.");
+        ErrorAlert("Hubo un error, intente de nuevo.");
         return;
       }
 
