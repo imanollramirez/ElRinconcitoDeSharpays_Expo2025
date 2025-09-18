@@ -65,15 +65,15 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", data.token);
         Cookies.set("authToken", data.token, { path: "/" });
       }
-
+      
       setUser({
-        id: data.userId,
-        name: data.name,
-        email: data.email,
-        userType: data.userType,
-        image: data.image,
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        userType: data.user.userType,
+        image: data.user.image,
       });
-      SuccessAlert("Sesión iniciada con éxito.")
+      SuccessAlert("Sesión iniciada con éxito.");
       setIsLoggedIn(true);
       setLoading(false);
 

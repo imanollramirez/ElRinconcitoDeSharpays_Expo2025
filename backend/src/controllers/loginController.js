@@ -281,19 +281,18 @@ loginController.loginPublic = async (req, res) => {
           console.error(err);
           return res.status(500).json({ message: "Error generando el token" });
         }
-
-        // Guardamos el token en una cookie httpOnly (para la sesión)
+    
+        // Guardamos el token en una cookie httpOnly (para seguridad)
         res.cookie("authToken", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
         });
-
-        // Información del usuario
+    
         res.status(200).json({
           message: `${userType} login exitoso`,
-          token,
+          token, 
           user: {
             id: userFound._id,
             name: userFound.name,
