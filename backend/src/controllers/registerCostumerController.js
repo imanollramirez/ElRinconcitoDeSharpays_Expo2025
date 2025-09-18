@@ -186,8 +186,8 @@ registerCostumerController.resendVerificationCode = async (req, res) => {
     // Save new token in cookie
     res.cookie("verificationToken", tokenCode, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: true, 
+      sameSite: "none", 
       maxAge: 2 * 60 * 60 * 1000,
     });
 
