@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
         navigate("/verifyAccount");
         return { success: false, message: "Verificación requerida" };
       } else if (!response.ok) {
+        ErrorAlert(data.message);
         return { success: false, message: data.message };
       }
 
