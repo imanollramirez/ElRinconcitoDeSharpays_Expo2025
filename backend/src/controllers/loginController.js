@@ -293,6 +293,7 @@ loginController.loginPublic = async (req, res) => {
         // Información del usuario
         res.status(200).json({
           message: `${userType} login exitoso`,
+          token,
           user: {
             id: userFound._id,
             name: userFound.name,
