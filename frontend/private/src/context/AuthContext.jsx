@@ -7,7 +7,8 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import ErrorAlert from "../../src/components/ErrorAlert";
+import ErrorAlert from "../components/ErrorAlert";
+import SuccessAlert from "../components/SuccessAlert"
 
 // Creamos el contexto
 const AuthContext = createContext(null);
@@ -70,9 +71,11 @@ export const AuthProvider = ({ children }) => {
         setauthCookie(data.token);
         setUser(data.user);
         setIsLoggedIn(true);
+        SuccessAlert("Sesión iniciada con éxito.")
 
         return true;
       } else {
+        ErrorAlert(data.message);
         return false;
       }
     } catch (error) {

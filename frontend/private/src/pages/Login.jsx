@@ -82,7 +82,6 @@ const Login = () => {
 
         return;
       }
-      ErrorAlert("Credenciales incorrectas.");
       setPassword("");
       return;
     }
