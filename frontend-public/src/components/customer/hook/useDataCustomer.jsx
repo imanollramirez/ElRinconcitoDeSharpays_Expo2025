@@ -80,7 +80,7 @@ const useDataCustomer = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          credentials: "include", // importante para enviar y recibir cookies
+          credentials: "include",
           body: JSON.stringify({ verificationCode }),
         }
       );
@@ -100,11 +100,9 @@ const useDataCustomer = () => {
       setLoading(false);
     }
   };
-  
-
 
   //Reenviar codigo de verificación
-  const resendVerificationCode = async (email,userId) => {
+  const resendVerificationCode = async (userId) => {
   if (!userId) return;
 
   try {
@@ -112,7 +110,7 @@ const useDataCustomer = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ email,userId }),
+      body: JSON.stringify({ userId }),
     });
 
     const data = await response.json();

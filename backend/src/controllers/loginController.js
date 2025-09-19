@@ -233,8 +233,10 @@ loginController.loginPublic = async (req, res) => {
       const verificationCode = crypto.randomBytes(3).toString("hex");
 
       const verificationToken = jsonwebtoken.sign(
-        { email: userFound.email, verificationCode },
-        config.JWT.secret,
+        { customerId: userFound._id,
+          email: userFound.email,
+          verificationCode },
+          config.JWT.secret,
         { expiresIn: "2h" }
       );
 

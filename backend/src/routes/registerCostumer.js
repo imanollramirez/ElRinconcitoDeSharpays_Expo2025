@@ -6,10 +6,7 @@ const router = express.Router();
 
 router.route("/").post(registerCostumerController.register);
 
-router.post("/verifyAccount", registerCostumerController.verifyAccount);
-
-router.post("/resendVerificationCode", registerCostumerController.resendVerificationCode);
-
+router.route("/verifyAccount").post(registerCostumerController.verifyAccount);
 
  //router.post("/register-verify", registerCostumerController.registerWithVerification);
  //router.post("/verify-email", registerCostumerController.verifyCostumerEmail);
