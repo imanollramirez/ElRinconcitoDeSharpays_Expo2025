@@ -88,8 +88,8 @@ registerCostumerController.verifyAccount = async (req, res) => {
     const { customerId, verificationCode: storedCode } = decoded;
 
     // Comparar el código recibido con el almacenado en el JWT
-    if (verificationCode !== storedCode) {
-      return res.status(400).json({ message: "El código no coincide." });
+    if (verificationCode.trim().toLowerCase() !== storedCode.toLowerCase()) {
+    return res.status(400).json({ message: "El código no coincide." });
     }
 
     // Marcar al cliente como verificado

@@ -243,8 +243,8 @@ loginController.loginPublic = async (req, res) => {
       // Creamos una cookie temporal SOLO para verificar la cuenta
       res.cookie("verificationToken", verificationToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 2 * 60 * 60 * 1000,
       });
 
