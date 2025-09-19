@@ -18,7 +18,7 @@ const ScrollTrigger = ({
     {
       title: "Sharpays Boutique",
       description:
-        "Este es el primer card con un diseño más minimalista y limpio. Imágenes, luces y contenido elegante.",
+        "Camisas y tazas personalizadas a tu gusto.",
       image: im1,
       logo: logo1,
       variant: "card-variant-1",
