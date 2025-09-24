@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* --- ORDERS PAGE --- */
+.orders-page {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f4 !important;
+}
+
+.orders-wrapper {
+  background-color: white;
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.orders-content {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1350px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* --- STORE TABS --- */
+.store-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.store-tab {
+  padding: 10px 18px;
+  border: 1.5px solid white;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.store-tab:hover {
+  background-color: #FE3F8D;
+  color: #ffffff;
+  text-shadow: 0 0 6px #ffffff, 0 0 10px #ffffff;
+  transform: scale(1.01);
+}
+
+.store-tab.active {
+  background-color: #FE3F8D;
+  color: white;
+  font-weight: 300;
+  border-color: #FE3F8D;
+  text-shadow: 0 0 6px #ffffff, 0 0 10px #ffffff;
+}
+
+/* --- HISTORY FILTER --- */
+.history-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.history-filter label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+}
+
+.history-filter input[type="month"] {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.history-filter button {
+  background-color: #FE3F8D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.history-filter button:hover {
+  background-color: #e0327a;
+}
+
+/* --- HISTORY CARD --- */
+.history-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: "Inter", sans-serif;
+}
+
+/* Tabla historial */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.history-table thead th {
+  text-align: left;
+  border-bottom: 2px solid #FE3F8D;
+  padding-bottom: 12px;
+  color: #FE3F8D;
+  font-weight: 700;
+}
+
+.history-table tbody td {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.history-table tbody tr:nth-child(even) {
+  background-color: #fef1f8; /* filas alternadas */
+}
+
+.history-table tbody tr:hover {
+  background-color: #fde0f4; /* resaltar fila al pasar mouse */
+}
+
+/* Total al final de la tabla */
+.history-table tfoot td {
+  font-weight: 700;
+  font-size: 16px;
+  color: #FE3F8D;
+  text-align: right;
+  border-top: 2px solid #FE3F8D;
+  padding-top: 12px;
+}
+
+/* --- ORDERS GRID --- */
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* --- ORDER CARD --- */
+.order-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 500px;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.order-header .avatar {
+  background: #fe3f8d;
+  color: white;
+  font-weight: 600;
+  border-radius: 10%;
+  max-width: 80px !important;     
+  height: 60px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;  
+}
+
+.order-header > div {
+  flex-grow: 1;
+}
+
+.customer-name {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+}
+
+.order-id {
+  font-size: 13px;
+  color: #777777;
+  margin-top: 2px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  background: #d4f7d4;
+  color: #2e7d32;
+  text-transform: capitalize;
+}
+
+/* Tabla interna de pedidos */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.order-table thead th {
+  text-align: left;
+  color: #999999;
+  font-weight: 500;
+  padding-bottom: 8px;
+}
+
+.order-table tbody td {
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Total en order card */
+.order-total {
+  text-align: right;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+  padding-top: 4px;
+  border-top: 1px solid #e0e0e0;
+  margin-bottom: 8px; 
+}
+
+/* Botones en order card */
+.order-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.order-actions button,
+.order-actions .custom-button {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.order-actions button:first-child:hover,
+.order-actions .custom-button:first-child:hover {
+  background-color: #f5f5f5;
+}
+
+.order-actions button:last-child,
+.order-actions .custom-button:last-child {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.order-actions button:last-child:hover,
+.order-actions .custom-button:last-child:hover {
+  background-color: #333333;
+}

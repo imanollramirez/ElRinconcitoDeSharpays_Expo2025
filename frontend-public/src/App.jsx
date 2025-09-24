@@ -25,6 +25,7 @@ import HomePublic from "./pages/HomePublic.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import TshirtDesign from "./pages/TshirtDesign.jsx";
 import VerifyAccount from "./pages/VerifyAccount.jsx";
+import Orders from "./pages/Orders.jsx";
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
@@ -78,6 +79,7 @@ function AppRoutes() {
           <Route path="/carrito" element={<ShoppingCart />} />
           <Route path="/checkOut" element={<CheckOut />} />
           <Route path="/inicio" element={<Home />} />
+          <Route path="/orders" element={<Orders />} />
         </Route>
         <Route path="*" element={<LoadingAnimation navTo="/notFound" replace />} />
       </Routes>
