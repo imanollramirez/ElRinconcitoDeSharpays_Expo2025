@@ -69,6 +69,9 @@ return (
 <NavLink to="/paradise" className="nav-item" onClick={toggleSidebar}>
 <FaLeaf /> <span>El paraíso de Dios</span>
 </NavLink>
+<NavLink to="/duas" className="nav-item" onClick={toggleSidebar}>
+<FaLeaf /> <span>DUAS</span>
+</NavLink>
 
 <div className="section-title"></div>
 <NavLink to="/events" className="nav-item" onClick={toggleSidebar}>
