@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import orderslogo from "../assets/orderslogoprofile.png";
 import useOrdersWithCategories from "../components/order/hook/useOrders";
@@ -189,22 +188,22 @@ const CardOrders = () => {
     debugInfo
   });
 
-  // Filtrar las órdenes por customerId
+  // Filtrar las órdenes por customerId Y solo mostrar las pendientes
   const customerOrders = orders.filter(order => {
     if (order.customerId && order.customerId._id) {
-      return order.customerId._id === customerId;
+      return order.customerId._id === customerId && order.status === 'pendiente';
     }
     return false;
   });
 
-  console.log("Filtered customer orders:", customerOrders);
+  console.log("Filtered customer orders (pendientes):", customerOrders);
 
   // Si no hay customerId, mostrar mensaje con info de debug
   if (!customerId) {
     return (
       <div className="card-orders">
         <div className="card-orders__header">
-          <h2 className="header-title">Pedidos</h2>
+          <h2 className="header-title">Pedidos Pendientes</h2>
         </div>
         <div className="card-orders__body">
           <p className="card-orders__text">
@@ -237,7 +236,7 @@ const CardOrders = () => {
     return (
       <div className="card-orders">
         <div className="card-orders__header">
-          <h2 className="header-title">Pedidos</h2>
+          <h2 className="header-title">Pedidos Pendientes</h2>
         </div>
         <div className="card-orders__body">
           <p className="card-orders__text">Cargando pedidos...</p>
@@ -250,7 +249,7 @@ const CardOrders = () => {
     return (
       <div className="card-orders">
         <div className="card-orders__header">
-          <h2 className="header-title">Pedidos</h2>
+          <h2 className="header-title">Pedidos Pendientes</h2>
         </div>
         <div className="card-orders__body">
           <p className="card-orders__text">Error al cargar pedidos: {error}</p>
@@ -262,13 +261,13 @@ const CardOrders = () => {
   return (
     <div className="card-orders">
       <div className="card-orders__header">
-        <h2 className="header-title">Pedidos</h2>
+        <h2 className="header-title">Pedidos Pendientes</h2>
       </div>
       <div className="card-orders__body">
         {customerOrders.length === 0 ? (
           <>
-            <img src={orderslogo} alt="No tienes pedidos" className="card-orders__image" />
-            <p className="card-orders__text">No tienes pedidos</p>
+            <img src={orderslogo} alt="No tienes pedidos pendientes" className="card-orders__image" />
+            <p className="card-orders__text">No tienes pedidos pendientes</p>
           </>
         ) : (
           <div className="orders-list">
