@@ -122,7 +122,7 @@ const Orders = () => {
 
     const pageHeight = doc.internal.pageSize.height;
     doc.setFontSize(10);
-    doc.text("Reporte generado por Mi App", 14, pageHeight - 10);
+    doc.text("El Rinconcito de Sharpays©", 14, pageHeight - 10);
 
     doc.save(`Historial_Ventas_${selectedDate || "Todos"}.pdf`);
   };
