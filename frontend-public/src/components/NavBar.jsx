@@ -43,9 +43,6 @@ const Menu = () => {
         </nav>
 
         <div className="menu-right">
-          <div className="theme-toggle-custom">
-            <ThemeSwitch />
-          </div>
           <Link to="/carrito" className="menu-btn">
             <FaShoppingCart /> Carrito
           </Link>
@@ -75,15 +72,13 @@ const Menu = () => {
               <Link to="/frostyBites" className="mobile-nav-subitem" onClick={closeMenu}>Frostibites</Link>
               <Link to="/bougies" className="mobile-nav-subitem" onClick={closeMenu}>Bougies</Link>
               <Link to="/paraiso" className="mobile-nav-subitem" onClick={closeMenu}>El Paraíso de Dios</Link>
+              <Link to="/duas" className="mobile-nav-subitem" onClick={closeMenu}>DUAS</Link>
             </div>
           </div>
 
           <Link to="/elRinconcitoDeSharpays" className="mobile-nav-item" onClick={closeMenu}>Sobre Nosotros</Link>
 
           <div className="mobile-actions">
-            <div className="mobile-theme-toggle">
-              <ThemeSwitch />
-            </div>
             <Link to="/carrito" className="mobile-action-btn" onClick={closeMenu}>
               <FaShoppingCart /> Carrito
             </Link>
