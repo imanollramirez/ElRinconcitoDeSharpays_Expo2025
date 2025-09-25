@@ -10,6 +10,9 @@ import useDataAdvertisement from "../components/events/hook/useDataAdvertisement
 // Importa CardSwap y Card
 import CardSwap, { Card } from "../components/reactBits/CardSwap.jsx"; 
 
+// Importa el ícono de WhatsApp
+import { FaWhatsapp } from "react-icons/fa";
+
 const Home = () => {
   const { products, categories, loading, error } = useProductsWithCategories();
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -60,8 +63,11 @@ const Home = () => {
   };
 
   // Filtrar sólo los eventos activos
-  // Supondré que en cada anuncio hay un campo `status` o similar que indica si está activo (ejemplo: status === "active")
   const activeEvents = advertisements.filter(ad => ad.status === "Activo");
+
+  // Datos para WhatsApp
+  const whatsappNumber = "69739953"; // Reemplaza con tu número
+  const whatsappMessage = "Hola! Quiero más información.";
 
   return (
     <div className="main-container-Inicio">
@@ -114,59 +120,80 @@ const Home = () => {
       </div>
 
       {/* Después de la sección de productos y antes de la de eventos */}
+      <div className="events-header">
+        <h2>Nuestros próximos eventos</h2>
+      </div>
 
-<div className="events-header">
-  <h2>Nuestros próximos eventos</h2>
-</div>
+      <hr className="events-divider" />
 
-<hr className="events-divider" />
+      {/* Sección de eventos */}
+      <div className="bottom-home-container">
+        <div className="events-text">
+          <h2>
+            Aquí en El Rinconcito de Sharpay nos apasiona crear momentos especiales.
+          </h2>
+          <p>
+            Estos eventos están diseñados para recaudar fondos y apoyar iniciativas que hacen la diferencia en nuestra comunidad. Te invitamos a ser parte y compartir la magia con nosotros.
+          </p>
+        </div>
 
-{/* Sección de eventos*/}
-<div className="bottom-home-container">
-  <div className="events-text">
-    <h2>
-      Aquí en El Rinconcito de Sharpay nos apasiona crear momentos especiales.
-    </h2>
-    <p>
-      Estos eventos están diseñados para recaudar fondos y apoyar iniciativas que hacen la diferencia en nuestra comunidad. Te invitamos a ser parte y compartir la magia con nosotros.
-    </p>
-  </div>
+        {/* Carrusel de eventos */}
+        <div className="events-carousel">
+          {loadingAds && <p>Cargando eventos...</p>}
+          {errorAds && <p>Error cargando eventos: {errorAds}</p>}
+          {!loadingAds && activeEvents.length > 0 && (
+            <CardSwap
+              cardDistance={60}
+              verticalDistance={70}
+              delay={5000}
+              pauseOnHover={false}
+            >
+              {activeEvents.map((event) => (
+                <Card key={event._id} className="event-card">
+                  <h3>{event.tittle || "Evento sin título"}</h3>
+                  <p>{event.description || "Sin descripción"}</p>
+                  {event.image && (
+                    <img
+                      src={event.image}
+                      alt={event.tittle}
+                    />
+                  )}
+                </Card>
+              ))}
+            </CardSwap>
+          )}
+          {!loadingAds && activeEvents.length === 0 && (
+            <p>No hay eventos activos actualmente.</p>
+          )}
+        </div>
+      </div>
 
-  {/* Carrusel de eventos */}
-  
-  <div className="events-carousel">
-    {loadingAds && <p>Cargando eventos...</p>}
-    {errorAds && <p>Error cargando eventos: {errorAds}</p>}
-    {!loadingAds && activeEvents.length > 0 && (
-      <CardSwap
-        cardDistance={60}
-        verticalDistance={70}
-        delay={5000}
-        pauseOnHover={false}
+      {/* Botón flotante de WhatsApp */}
+      <a
+        href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          backgroundColor: "#25D366",
+          color: "white",
+          borderRadius: "50%",
+          width: "60px",
+          height: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "30px",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          zIndex: 1000,
+          textDecoration: "none",
+        }}
       >
-        {activeEvents.map((event) => (
-          <Card key={event._id} className="event-card">
-            <h3>{event.tittle || "Evento sin título"}</h3>
-            <p>{event.description || "Sin descripción"}</p>
-            {event.image && (
-              <img
-                src={event.image}
-                alt={event.tittle}
-              />
-            )}
-          </Card>
-        ))}
-      </CardSwap>
-    )}
-    {!loadingAds && activeEvents.length === 0 && (
-      <p>No hay eventos activos actualmente.</p>
-    )}
-  </div>
-</div>
-
-
-</div>
-
+        <FaWhatsapp />
+      </a>
+    </div>
   );
 };
 
