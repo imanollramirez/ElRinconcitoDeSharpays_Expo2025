@@ -18,6 +18,7 @@ import StoreCard from "../components/StoreCard.jsx";
 import useDataCategory from "../components/categories/hook/useDataCategory.jsx";
 
 import useDataEmployee from "../components/employee/hook/useDataEmployee.jsx";
+import Aurora from '../components/Aurora.jsx';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -38,21 +39,46 @@ const Dashboard = () => {
             {/*Espacio para que el navbar se muestre*/}
           </div>
           <div className="col-10 main-dashboard">
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="mt-3 user-name-section">
-                <h1 className="fw-bold fs-2">Bienvenido/a</h1>
-                <span className="fs-4">{dataEmployees?.name}</span>
-              </div>
+  <div className="card shadow-sm border-0 rounded-3 position-relative overflow-hidden">
+    {/* Fondo Aurora */}
+    <div className="position-absolute top-0 start-0 w-100 h-100">
+      <Aurora
+        colorStops={["#DD92DB", "#F0A3C4", "#E864CB"]}
+        blend={0.98}
+        amplitude={1.9}
+        speed={0.9}
+        shadowMode={false} 
+      />
+    </div>
 
-              <div className="pf-cover">
-                <NavLink to={"/profile"}>
-                  <img
-                    src={dataEmployees?.imageUrl}
-                    className="rounded-circle me-5"
-                  />
-                </NavLink>
-              </div>
-            </div>
+    {/* Contenido encima del fondo */}
+    <div className="card-body position-relative text-black">
+      <div className="d-flex justify-content-between align-items-center">
+        {/* Sección de bienvenida */}
+        <div className="mt-3 user-name-section">
+          <h4 className="fw-bold fs-2">Bienvenid@ {dataEmployees?.name}</h4>
+        </div>
+
+        {/* Imagen de perfil */}
+        <div className="pf-cover">
+          <NavLink to={"/profile"}>
+            <img
+              src={dataEmployees?.imageUrl}
+              className="rounded-circle me-1 border border-1 border-light"
+              alt=""
+              width="30"
+              height="30"
+              style={{ objectFit: "cover" }}
+            />
+          </NavLink>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+            
 
             <hr style={{ width: '100%' }} />
 
@@ -85,17 +111,7 @@ const Dashboard = () => {
               </div>
             </div>
               */}
-            <h4>Negocios</h4>
-            <div className="d-flex justify-content-around store-card-section">
-              {dataCategories.categories.map((cat) => (
-                <StoreCard
-                  key={cat?._id}
-                  image={cat?.image}
-                  name={cat?.category}
-                  status={cat?.isActive}
-                />
-              ))}
-            </div>
+            
 
             <div className="d-flex justify-content-between align-items-center mt-3">
               <div className="product-list-dashboard w-100">
