@@ -7,6 +7,7 @@ const CardOrders = () => {
   const { orders, loading, error, updateOrder, refresh } = useOrdersWithCategories();
   const [customerId, setCustomerId] = useState(null);
   const [debugInfo, setDebugInfo] = useState({});
+  const [filterStatus, setFilterStatus] = useState('pendiente'); // Estado para filtrar
 
   // Función para obtener todas las cookies
   const getAllCookies = () => {
@@ -188,22 +189,47 @@ const CardOrders = () => {
     debugInfo
   });
 
-  // Filtrar las órdenes por customerId Y solo mostrar las pendientes
+  // Filtrar las órdenes por customerId Y por el estado seleccionado
   const customerOrders = orders.filter(order => {
     if (order.customerId && order.customerId._id) {
-      return order.customerId._id === customerId && order.status === 'pendiente';
+      return order.customerId._id === customerId && order.status === filterStatus;
     }
     return false;
   });
 
-  console.log("Filtered customer orders (pendientes):", customerOrders);
+  console.log(`Filtered customer orders (${filterStatus}):`, customerOrders);
+
+  // Función para obtener el título dinámico
+  const getTitle = () => {
+    return filterStatus === 'pendiente' ? 'Pedidos Pendientes' : 'Pedidos Completados';
+  };
+
+  // Función para obtener el mensaje cuando no hay pedidos
+  const getEmptyMessage = () => {
+    return filterStatus === 'pendiente' ? 'No tienes pedidos pendientes' : 'No tienes pedidos completados';
+  };
 
   // Si no hay customerId, mostrar mensaje con info de debug
   if (!customerId) {
     return (
       <div className="card-orders">
         <div className="card-orders__header">
-          <h2 className="header-title">Pedidos Pendientes</h2>
+          <h2 className="header-title">{getTitle()}</h2>
+          {/* Botones de filtro */}
+          <div className="filter-buttons">
+            <button 
+              className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('pendiente')}
+            >
+              Pendientes
+            </button>
+            <button 
+              className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('completado')}
+            >
+              Completados
+            </button>
+          </div>
         </div>
         <div className="card-orders__body">
           <p className="card-orders__text">
@@ -236,7 +262,22 @@ const CardOrders = () => {
     return (
       <div className="card-orders">
         <div className="card-orders__header">
-          <h2 className="header-title">Pedidos Pendientes</h2>
+          <h2 className="header-title">{getTitle()}</h2>
+          {/* Botones de filtro */}
+          <div className="filter-buttons">
+            <button 
+              className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('pendiente')}
+            >
+              Pendientes
+            </button>
+            <button 
+              className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('completado')}
+            >
+              Completados
+            </button>
+          </div>
         </div>
         <div className="card-orders__body">
           <p className="card-orders__text">Cargando pedidos...</p>
@@ -249,7 +290,22 @@ const CardOrders = () => {
     return (
       <div className="card-orders">
         <div className="card-orders__header">
-          <h2 className="header-title">Pedidos Pendientes</h2>
+          <h2 className="header-title">{getTitle()}</h2>
+          {/* Botones de filtro */}
+          <div className="filter-buttons">
+            <button 
+              className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('pendiente')}
+            >
+              Pendientes
+            </button>
+            <button 
+              className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('completado')}
+            >
+              Completados
+            </button>
+          </div>
         </div>
         <div className="card-orders__body">
           <p className="card-orders__text">Error al cargar pedidos: {error}</p>
@@ -261,13 +317,28 @@ const CardOrders = () => {
   return (
     <div className="card-orders">
       <div className="card-orders__header">
-        <h2 className="header-title">Pedidos Pendientes</h2>
+        <h2 className="header-title">{getTitle()}</h2>
+        {/* Botones de filtro */}
+        <div className="filter-buttons">
+          <button 
+            className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+            onClick={() => setFilterStatus('pendiente')}
+          >
+            Pendientes
+          </button>
+          <button 
+            className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+            onClick={() => setFilterStatus('completado')}
+          >
+            Completados
+          </button>
+        </div>
       </div>
       <div className="card-orders__body">
         {customerOrders.length === 0 ? (
           <>
-            <img src={orderslogo} alt="No tienes pedidos pendientes" className="card-orders__image" />
-            <p className="card-orders__text">No tienes pedidos pendientes</p>
+            <img src={orderslogo} alt={getEmptyMessage()} className="card-orders__image" />
+            <p className="card-orders__text">{getEmptyMessage()}</p>
           </>
         ) : (
           <div className="orders-list">
