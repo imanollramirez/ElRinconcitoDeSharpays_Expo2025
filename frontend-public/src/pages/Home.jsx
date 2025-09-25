@@ -172,7 +172,7 @@ const link = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsapp
 
       {/* Botón flotante de WhatsApp */}
       <a
-  href={`https://wa.me/50371234567?text=${encodeURIComponent("Hola! Quiero más información.")}`}
+  href={`https://wa.me/50369739953?text=${encodeURIComponent("Hola! Quiero más información.")}`}
   target="_blank"
   rel="noopener noreferrer"
   style={{
