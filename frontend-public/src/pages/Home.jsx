@@ -66,8 +66,10 @@ const Home = () => {
   const activeEvents = advertisements.filter(ad => ad.status === "Activo");
 
   // Datos para WhatsApp
-  const whatsappNumber = "69739953"; // Reemplaza con tu número
-  const whatsappMessage = "Hola! Quiero más información.";
+  const whatsappNumber = "50369739953"; // número completo sin símbolos
+const whatsappMessage = "Hola! Quiero más información.";
+const link = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
 
   return (
     <div className="main-container-Inicio">
@@ -170,7 +172,7 @@ const Home = () => {
 
       {/* Botón flotante de WhatsApp */}
       <a
-  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+  href={`https://wa.me/50371234567?text=${encodeURIComponent("Hola! Quiero más información.")}`}
   target="_blank"
   rel="noopener noreferrer"
   style={{
