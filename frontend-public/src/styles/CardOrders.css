@@ -18,7 +18,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Header rosado con título */
+/* Header rosado con título y botones */
 .card-orders__header {
   height: 50px;
   background-color: #ff3399;
@@ -26,16 +26,51 @@
   border-top-right-radius: 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: relative;
 }
 
 .header-title {
   color: white;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   margin: 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* Botones de filtro en el header */
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-btn {
+  padding: 4px 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  background: transparent;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+}
+
+.filter-btn.active {
+  background: white;
+  color: #ff3399;
+  border-color: white;
+}
+
+.filter-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
 }
 
 /* Cuerpo de la card */
@@ -218,16 +253,17 @@
   background-color: transparent;
 }
 
-/* Responsive Design Corregido */
-@media (max-width: 1600px) {
-  .card-orders {
-    left: auto;
-    right: 50px;
-  }
-}
-
-/* NUEVO: Breakpoint adicional para pantallas medianas */
+/* Responsive Design para botones */
 @media (max-width: 1400px) {
+  .header-title {
+    font-size: 1rem;
+  }
+  
+  .filter-btn {
+    padding: 3px 10px;
+    font-size: 11px;
+  }
+  
   .card-orders {
     left: auto;
     right: 30px;
@@ -235,7 +271,6 @@
   }
 }
 
-/* NUEVO: Otro breakpoint para asegurar que se apile en 1200px */
 @media (max-width: 1200px) {
   .card-orders {
     position: relative;
@@ -245,6 +280,31 @@
     width: 90%;
     height: auto;
     margin: 20px auto;
+  }
+  
+  .card-orders__header {
+    padding: 0 15px;
+  }
+  
+  .header-title {
+    font-size: 0.95rem;
+  }
+  
+  .filter-buttons {
+    gap: 6px;
+  }
+  
+  .filter-btn {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}
+
+/* Responsive Design Original */
+@media (max-width: 1600px) {
+  .card-orders {
+    left: auto;
+    right: 50px;
   }
 }
 
@@ -272,6 +332,36 @@
   }
 }
 
+@media (max-width: 768px) {
+  .card-orders__header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 15px;
+    gap: 8px;
+  }
+  
+  .header-title {
+    font-size: 1rem;
+  }
+  
+  .filter-buttons {
+    gap: 8px;
+  }
+  
+  .filter-btn {
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  .card-orders__header {
+    flex-direction: row;
+    justify-content: space-between;
+    height: 50px;
+  }
+}
+
 @media (max-width: 480px) {
   .card-orders {
     width: 100%;
@@ -288,7 +378,7 @@
   }
   
   .header-title {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   
   .order-card-mini {
@@ -310,5 +400,14 @@
   
   .order-total {
     font-size: 12px;
+  }
+  
+  .card-orders__header {
+    padding: 8px 10px;
+  }
+  
+  .filter-btn {
+    padding: 3px 10px;
+    font-size: 11px;
   }
 }
