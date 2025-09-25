@@ -10,8 +10,8 @@ import {
   StatusBar,
   Alert,
   Animated,
-  Easing,
-  Dimensions
+  Dimensions,
+  PanResponder
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -21,6 +21,13 @@ import useOrders from '../hooks/orders/useOrders';
 import { API_URL } from '../config';
 
 const { height } = Dimensions.get("window");
+
+// Puntos fijos del BottomSheet
+const SNAP_POINTS = {
+  FULL: height * 0.1,   // expandido (90% pantalla)
+  HALF: height * 0.5,   // mitad
+  CLOSED: height,       // cerrado (fuera de vista)
+};
 
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
@@ -32,7 +39,7 @@ export default function Home() {
 
   // BottomSheet state
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const sheetAnim = useRef(new Animated.Value(height)).current;
+  const sheetAnim = useRef(new Animated.Value(SNAP_POINTS.CLOSED)).current;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -87,22 +94,56 @@ export default function Home() {
 
   const openOrderDetail = (order) => {
     setSelectedOrder(order);
-    Animated.timing(sheetAnim, {
-      toValue: 0,
-      duration: 300,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true
+    Animated.spring(sheetAnim, {
+      toValue: SNAP_POINTS.HALF, // abre en mitad
+      useNativeDriver: true,
     }).start();
   };
 
   const closeOrderDetail = () => {
-    Animated.timing(sheetAnim, {
-      toValue: height,
-      duration: 250,
-      easing: Easing.in(Easing.cubic),
-      useNativeDriver: true
+    Animated.spring(sheetAnim, {
+      toValue: SNAP_POINTS.CLOSED,
+      useNativeDriver: true,
     }).start(() => setSelectedOrder(null));
   };
+
+  // PanResponder con 3 estados (FULL, HALF, CLOSED)
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, gestureState) =>
+        Math.abs(gestureState.dy) > 5,
+      onPanResponderMove: (_, gestureState) => {
+        const newPos = Math.max(
+          SNAP_POINTS.FULL,
+          Math.min(SNAP_POINTS.CLOSED, sheetAnim._value + gestureState.dy)
+        );
+        sheetAnim.setValue(newPos);
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        let newPos = SNAP_POINTS.HALF;
+
+        if (gestureState.dy > 100) {
+          newPos = SNAP_POINTS.CLOSED; // bajó suficiente → cerrar
+        } else if (gestureState.dy < -100) {
+          newPos = SNAP_POINTS.FULL; // subió suficiente → expandir
+        } else {
+          // el más cercano
+          const distances = [
+            { point: SNAP_POINTS.FULL, dist: Math.abs(sheetAnim._value - SNAP_POINTS.FULL) },
+            { point: SNAP_POINTS.HALF, dist: Math.abs(sheetAnim._value - SNAP_POINTS.HALF) },
+            { point: SNAP_POINTS.CLOSED, dist: Math.abs(sheetAnim._value - SNAP_POINTS.CLOSED) },
+          ];
+          distances.sort((a, b) => a.dist - b.dist);
+          newPos = distances[0].point;
+        }
+
+        Animated.spring(sheetAnim, {
+          toValue: newPos,
+          useNativeDriver: true,
+        }).start();
+      },
+    })
+  ).current;
 
   return (
     <View style={{ flex: 1 }}>
@@ -232,6 +273,7 @@ export default function Home() {
             styles.bottomSheet,
             { transform: [{ translateY: sheetAnim }] }
           ]}
+          {...panResponder.panHandlers}
         >
           <ScrollView>
             <View style={{ alignItems: "center", marginBottom: 20 }}>
@@ -344,17 +386,6 @@ export default function Home() {
                 </TouchableOpacity>
               </View>
             )}
-
-            <TouchableOpacity
-              style={{
-                marginTop: 15,
-                padding: 10,
-                alignItems: "center"
-              }}
-              onPress={closeOrderDetail}
-            >
-              <Text style={{ color: "#FE3F8D", fontWeight: "bold" }}>Cerrar</Text>
-            </TouchableOpacity>
           </ScrollView>
         </Animated.View>
       )}
@@ -404,12 +435,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: 0,
+    height: height, // ocupa toda la pantalla
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    maxHeight: "80%"
+    elevation: 10,
   },
   categoryImage: {
     width: 20,
