@@ -31,11 +31,12 @@
   position: relative;
 }
 
+/* Título del header */
 .header-title {
   color: white;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   margin: 0;
   letter-spacing: 0.5px;
   flex-shrink: 0;
@@ -46,8 +47,10 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: nowrap; /* Evitar que los botones se apilen en pantallas grandes */
 }
 
+/* Estilos de los botones */
 .filter-btn {
   padding: 4px 12px;
   border: 1.5px solid rgba(255, 255, 255, 0.8);
@@ -57,9 +60,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 10px;
   font-family: 'Poppins', sans-serif;
   white-space: nowrap;
+  width: 100px;
+  align-items: center;
+  text-align: center;
 }
 
 .filter-btn.active {
@@ -300,14 +306,7 @@
   }
 }
 
-/* Responsive Design Original */
-@media (max-width: 1600px) {
-  .card-orders {
-    left: auto;
-    right: 50px;
-  }
-}
-
+/* Responsivo para pantallas más pequeñas */
 @media (max-width: 992px) {
   .card-orders {
     position: relative;
@@ -331,26 +330,31 @@
     font-size: 11px;
   }
 }
-
 @media (max-width: 768px) {
   .card-orders__header {
     flex-direction: column;
+    align-items: flex-start;
     height: auto;
     padding: 10px 15px;
     gap: 8px;
   }
-  
+
   .header-title {
     font-size: 1rem;
+    margin-bottom: 4px;
   }
-  
+
   .filter-buttons {
+    flex-wrap: wrap;
     gap: 8px;
+    width: 100%;
   }
-  
+
   .filter-btn {
-    padding: 4px 12px;
+    padding: 6px 12px;
     font-size: 12px;
+    flex: 1 1 auto;
+    text-align: center;
   }
 }
 
@@ -358,56 +362,17 @@
   .card-orders__header {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     height: 50px;
+  }
+
+  .filter-buttons {
+    flex-wrap: nowrap; /* importante para evitar el apilamiento */
+    gap: 8px;
+  }
+
+  .filter-btn {
+    flex: 0 0 auto;
   }
 }
 
-@media (max-width: 480px) {
-  .card-orders {
-    width: 100%;
-    padding: 0;
-  }
-  
-  .card-orders__image {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .card-orders__text {
-    font-size: 18px;
-  }
-  
-  .header-title {
-    font-size: 0.9rem;
-  }
-  
-  .order-card-mini {
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .order-item {
-    padding: 6px 0;
-  }
-  
-  .order-item-name {
-    font-size: 12px;
-  }
-  
-  .order-item-info {
-    font-size: 10px;
-  }
-  
-  .order-total {
-    font-size: 12px;
-  }
-  
-  .card-orders__header {
-    padding: 8px 10px;
-  }
-  
-  .filter-btn {
-    padding: 3px 10px;
-    font-size: 11px;
-  }
-}
