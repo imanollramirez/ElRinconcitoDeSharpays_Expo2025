@@ -264,15 +264,15 @@ const CardOrders = () => {
         <div className="card-orders__header">
           <h2 className="header-title">{getTitle()}</h2>
           {/* Botones de filtro */}
-          <div className="filter-buttons">
+          <div className="filter-buttons-2">
             <button 
-              className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+              className={`filter-btn-2 ${filterStatus === 'pendiente' ? 'active' : ''}`}
               onClick={() => setFilterStatus('pendiente')}
             >
               Pendientes
             </button>
             <button 
-              className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+              className={`filter-btn-2 ${filterStatus === 'completado' ? 'active' : ''}`}
               onClick={() => setFilterStatus('completado')}
             >
               Completados
@@ -294,13 +294,13 @@ const CardOrders = () => {
           {/* Botones de filtro */}
           <div className="filter-buttons">
             <button 
-              className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+              className={`filter-btn-2 ${filterStatus === 'pendiente' ? 'active' : ''}`}
               onClick={() => setFilterStatus('pendiente')}
             >
               Pendientes
             </button>
             <button 
-              className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+              className={`filter-btn-2 ${filterStatus === 'completado' ? 'active' : ''}`}
               onClick={() => setFilterStatus('completado')}
             >
               Completados
@@ -319,15 +319,15 @@ const CardOrders = () => {
       <div className="card-orders__header">
         <h2 className="header-title">{getTitle()}</h2>
         {/* Botones de filtro */}
-        <div className="filter-buttons">
+        <div className="filter-buttons-2">
           <button 
-            className={`filter-btn ${filterStatus === 'pendiente' ? 'active' : ''}`}
+            className={`filter-btn-2 ${filterStatus === 'pendiente' ? 'active' : ''}`}
             onClick={() => setFilterStatus('pendiente')}
           >
             Pendientes
           </button>
           <button 
-            className={`filter-btn ${filterStatus === 'completado' ? 'active' : ''}`}
+            className={`filter-btn-2 ${filterStatus === 'completado' ? 'active' : ''}`}
             onClick={() => setFilterStatus('completado')}
           >
             Completados
