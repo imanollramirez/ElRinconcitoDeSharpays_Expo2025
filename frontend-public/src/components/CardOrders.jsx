@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import orderslogo from "../assets/orderslogoprofile.png";
 import useOrdersWithCategories from "../components/order/hook/useOrders";
-import "../styles/CardOrders.css";
+import "../styles/CardOrder s.css";
 
 const CardOrders = () => {
   const { orders, loading, error, updateOrder, refresh } = useOrdersWithCategories();
