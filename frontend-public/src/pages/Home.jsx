@@ -170,29 +170,29 @@ const Home = () => {
 
       {/* Botón flotante de WhatsApp */}
       <a
-        href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          backgroundColor: "#25D366",
-          color: "white",
-          borderRadius: "50%",
-          width: "60px",
-          height: "60px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "30px",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-          zIndex: 1000,
-          textDecoration: "none",
-        }}
-      >
-        <FaWhatsapp />
-      </a>
+  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    backgroundColor: "#25D366",
+    color: "white",
+    borderRadius: "50%",
+    width: "60px",
+    height: "60px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "30px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+    zIndex: 1000,
+    textDecoration: "none",
+  }}
+>
+  <FaWhatsapp />
+</a>
     </div>
   );
 };
