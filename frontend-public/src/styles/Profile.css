@@ -35,6 +35,7 @@ main {
     left: auto;
     order: 1; /* Primer elemento */
     margin-bottom: 20px;
+    margin-top: 60px;
     text-align: center;
     width: 100%;
   }
@@ -54,14 +55,19 @@ main {
     max-width: 600px;
     margin: 0;
     padding: 40px 20px;
+    text-align: center;
   }
 
   .personal-info-inputs {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
     padding: 20px 0;
     padding-right: 0;
+  }
+
+  .personal-info-card-btn {
+    justify-content: center !important;
   }
 
   /* CardUbication - Cambiar a relative */
@@ -140,10 +146,14 @@ main {
 
   .personal-info-inputs {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
     padding: 20px 0;
     padding-right: 0;
+  }
+
+  .personal-info-card-btn {
+    justify-content: center !important;
   }
 
   .card-ubication {
@@ -249,5 +259,13 @@ main {
   .card-ubication__button {
     padding: 6px 12px;
     font-size: 13px;
+  }
+}
+
+
+@media (max-width: 320px){
+  .personal-info-card-btn{
+    flex-wrap: wrap;
+    gap: 25px !important;
   }
 }
