@@ -4,13 +4,14 @@ import GradientText from "../components/reactBits/GradientText.jsx";
 import TextType from "../components/reactBits/TextType.jsx";
 import ScrollFloat from "../components/reactBits/ScrollFloat.jsx";
 import ScrollTrigger from "../components/ScrollTrigger.jsx";
+import "../styles/HomePublic.css";
 
 const HomePublic = () => {
   return (
     <>
       <div className="main-container">
         <BannerPrincipal />
-        <div className="d-flex justify-content-evenly align-items-center mt-5 mb-5">
+        <div className="animated-text d-flex justify-content-evenly align-items-center mt-5 mb-5">
           <div className="text-center">
             <p className="fw-bold m-0 fs-5">Pequeños detalles para grandes</p>
             <GradientText

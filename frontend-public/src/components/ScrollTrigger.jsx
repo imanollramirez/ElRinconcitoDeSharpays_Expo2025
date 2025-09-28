@@ -11,7 +11,7 @@ import im4 from "../assets/4.jpeg";
 import im5 from "../assets/5.jpeg";
 
 const ScrollTrigger = ({ 
-  height = "100vh"
+  height = "90vh"
 }) => {
   
   const cardsData = [
