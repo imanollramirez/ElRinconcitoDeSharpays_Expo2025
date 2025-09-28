@@ -6,6 +6,10 @@ import { Title } from "../components/Typography";
 import "../styles/SharpayPage.css";
 import useUserDataProducts from "../components/products/hook/userDataProducts";
 
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
+import QuestionAlert from "../components/QuestionAlert.jsx";
+
 const SharpaysPage = () => {
   const [activeTab, setActiveTab] = useState("agregar");
   const [isEditing, setIsEditing] = useState(false);
@@ -38,6 +42,19 @@ const SharpaysPage = () => {
     updateProduct(prod);
     setIsEditing(true);
     setActiveTab("agregar");
+  };
+
+  // ⚡ Nuevo: función de eliminar con confirmación
+  const handleDelete = async (id) => {
+    const result = await QuestionAlert("¿Estás seguro de eliminar este producto?");
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct(id);
+        SuccessAlert("Producto eliminado exitosamente");
+      } catch (err) {
+        ErrorAlert("Error al eliminar producto: " + (err.message || err));
+      }
+    }
   };
 
   return (
@@ -87,7 +104,7 @@ const SharpaysPage = () => {
       {activeTab === "vista" && (
         <ProductsTableP
           products={products}
-          deleteProduct={deleteProduct}
+          deleteProduct={handleDelete}   // <-- ahora con confirmación
           updateProduct={handleEdit}
           loading={loading}
         />

@@ -6,6 +6,10 @@ import { Title } from "../components/Typography"; // Componente de título
 import "../styles/SharpayPage.css"; // Estilos propios de la página
 import useUserDataProducts from "../components/products/hook/userDataProducts"; // Hook personalizado para manejar productos
 
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
+import QuestionAlert from "../components/QuestionAlert.jsx";
+
 const SharpaysPage = () => {
   // Estado para manejar la pestaña activa
   const [activeTab, setActiveTab] = useState("agregar");
@@ -42,6 +46,19 @@ const SharpaysPage = () => {
     updateProduct(prod);
     setIsEditing(true);
     setActiveTab("agregar");
+  };
+
+  // ⚡ Nuevo: función de eliminar con confirmación
+  const handleDelete = async (id) => {
+    const result = await QuestionAlert("¿Estás seguro de eliminar este producto?");
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct(id);
+        SuccessAlert("Producto eliminado exitosamente");
+      } catch (err) {
+        ErrorAlert("Error al eliminar producto: " + (err.message || err));
+      }
+    }
   };
 
   return (
@@ -94,7 +111,7 @@ const SharpaysPage = () => {
       {activeTab === "vista" && (
         <ProductsTable
           products={products}
-          deleteProduct={deleteProduct}
+          deleteProduct={handleDelete}   
           updateProduct={handleEdit}
           loading={loading}
         />

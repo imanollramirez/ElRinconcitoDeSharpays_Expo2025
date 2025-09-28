@@ -6,12 +6,14 @@ import { Title } from "../components/Typography";
 import "../styles/SharpayPage.css";
 import useUserDataProducts from "../components/products/hook/userDataProducts";
 
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
+import QuestionAlert from "../components/QuestionAlert.jsx";
+
 const FrostyBites = () => {
   const [activeTab, setActiveTab] = useState("agregar");
   const [isEditing, setIsEditing] = useState(false);
   
-  
-
   const {
     name, setName,
     description, setDescription,
@@ -36,12 +38,24 @@ const FrostyBites = () => {
     fetchData();
   }, []);
 
- const handleEdit = (prod) => {
-  updateProduct(prod); // ¡Aquí sí se setea el ID!
-  setIsEditing(true);
-  setActiveTab("agregar");
-};
+  const handleEdit = (prod) => {
+    updateProduct(prod); // ¡Aquí sí se setea el ID!
+    setIsEditing(true);
+    setActiveTab("agregar");
+  };
 
+  // ⚡ Nuevo: función de eliminar con confirmación
+  const handleDelete = async (id) => {
+    const result = await QuestionAlert("¿Estás seguro de eliminar este producto?");
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct(id);
+        SuccessAlert("Producto eliminado exitosamente");
+      } catch (err) {
+        ErrorAlert("Error al eliminar producto: " + (err.message || err));
+      }
+    }
+  };
 
   return (
     <>
@@ -91,7 +105,7 @@ const FrostyBites = () => {
               {activeTab === "vista" && (
                 <ProductsTable
                   products={products}
-                  deleteProduct={deleteProduct}
+                  deleteProduct={handleDelete}   // <-- aquí ahora con confirmación
                   updateProduct={handleEdit}
                   loading={loading}
                 />
