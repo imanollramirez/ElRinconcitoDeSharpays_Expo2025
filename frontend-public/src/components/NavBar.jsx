@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import "./NavBar.css";
 import img from "../assets/sharpaysLogo.png";
-import ThemeSwitch from "./ThemeSwitch";
+import { useAuth } from "../context/AuthContext";
+import CustomButton from "./CustomButton";
+
 
 const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
   const closeMenu = () => setIsMenuOpen(false);
@@ -86,6 +90,17 @@ const Menu = () => {
               <FaUserCircle /> Perfil
             </Link>
           </div>
+
+          <div className="position-absolute bottom-0 start-1 mb-2 ms-3">
+          <CustomButton 
+            text="Cerrar sesión"
+            background="#000000ff"
+            height={50}
+            width={200}
+            color="white"
+          onClick={logout}/>
+          </div>
+
         </div>
       </div>
     </>
