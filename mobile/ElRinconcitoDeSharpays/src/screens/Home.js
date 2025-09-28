@@ -173,11 +173,11 @@ export default function Home() {
           </TouchableOpacity>
         </View>
 
-        {/* Search */}
+        {/* Search 
         <View style={styles.searchContainer}>
           <FontAwesome name="search" size={18} color="#000" style={{ marginRight: 10 }} />
           <TextInput placeholder="Buscar" style={styles.searchInput} />
-        </View>
+        </View>*/}
 
         {/* Greeting Card */}
         <View style={styles.greetingCard}>
@@ -339,21 +339,6 @@ export default function Home() {
                   marginTop: 20
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    marginRight: 10,
-                    backgroundColor: "#FF6961",
-                    padding: 12,
-                    borderRadius: 10,
-                    alignItems: "center"
-                  }}
-                  onPress={() => Alert.alert("Cancelar pedido")}
-                >
-                  <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
-                    Cancelar Pedido
-                  </Text>
-                </TouchableOpacity>
 
                 <TouchableOpacity
                   style={{

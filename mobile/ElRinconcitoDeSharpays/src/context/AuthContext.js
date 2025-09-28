@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
           setUserId(data.userId);
         }
 
-        console.log("Datos recibidos del servidor:", data);
+        //console.log("Datos recibidos del servidor:", data);
         Alert.alert("Inicio de sesión exitoso");
         return true;
       } else {
