@@ -103,7 +103,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Panel de métricas */}
-                <div className="row mt-4 text-center">
+                <div className="metrics row mt-4 text-center">
                   <div className="col-md-3 mb-3">
                     <div className="p-3 bg-white rounded-3 shadow-sm">
                       <h6 className="fw-bold text-muted">Clientes</h6>
@@ -135,7 +135,7 @@ const Dashboard = () => {
 
             <hr style={{ width: "100%" }} />
 
-            <div className="d-flex justify-content-between align-items-center mt-3">
+            <div className="components-container d-flex justify-content-between align-items-center mt-3">
               <div className="product-list-dashboard w-100">
                 <h4>Lista de productos</h4>
                 <ProductsTable {...dataProducts} isEditable={false} />

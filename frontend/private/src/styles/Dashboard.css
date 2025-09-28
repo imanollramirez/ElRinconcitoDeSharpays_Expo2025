@@ -56,7 +56,7 @@
         padding-left: 60px;
     }
 
-    .product-list-dashboard , .sales-by-shop, .gif-animation{
+    .product-list-dashboard, .gif-animation{
         display: none !important;
     }
 
@@ -65,9 +65,20 @@
         align-items: center !important;
     }
 
-    .store-card-section {
-        margin-top: 250px;
-        flex-wrap: wrap !important;
+    .metrics {
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 20px;
+    }
+
+    .components-container {
+        display: inline !important;
+    }
+
+    .sales-by-shop {
+        display: flex !important;
+        align-items: center;
+        flex-direction: column;
     }
 }
 
@@ -93,10 +104,14 @@
 }
 
 @media (max-width: 375px) 
-{ 
+{
     .user-name-section
     {
         padding-left: 100px;
+    }
+
+    .sales-by-shop, hr {
+        display: none !important;
     }
 }
 
