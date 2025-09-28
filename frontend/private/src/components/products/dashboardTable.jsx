@@ -7,14 +7,7 @@ const dashboardTable = ({ products, loading}) => {
   return (
     <div className="products-table-container">
       <div className="card-table">
-        <div className="search-box">
-          <InputText
-            type="text"
-            name="buscar"
-            placeholder="Buscar productos"
-            className="search-input-field"
-          />
-        </div>
+        
 
         <div className={`table-header-row`}>
           <span>Nombre</span>
