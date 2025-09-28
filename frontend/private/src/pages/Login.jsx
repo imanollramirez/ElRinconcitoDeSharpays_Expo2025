@@ -24,7 +24,6 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 //Alertas
 import ErrorAlert from "../components/ErrorAlert.jsx";
-import SuccessAlert from "../components/SuccessAlert.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -85,7 +84,6 @@ const Login = () => {
       setPassword("");
       return;
     }
-    SuccessAlert("Sesión iniciada con éxito");
     setFailedAttempts(0); 
   };
 

@@ -8,34 +8,42 @@ import "../styles/Dashboard.css";
 import ProductsTable from "../components/products/dashboardTable.jsx";
 import useUserDataProducts from "../components/products/hook/userDataProducts";
 
-//Gráficas
-import BarChart from "../utils/barGraphic.jsx";
+//Gráfica
 import Doughnut from "../utils/doughnut.jsx";
 
-import TotalSales from "../components/TotalSales.jsx";
-import StoreCard from "../components/StoreCard.jsx";
-
-import useDataCategory from "../components/categories/hook/useDataCategory.jsx";
 
 import useDataEmployee from "../components/employee/hook/useDataEmployee.jsx";
 import useDataCustomer from "../components/customer/useDataCustomer.jsx";
 import useOrdersWithCategories from "../components/order/hook/useOrders.jsx";
-
 import Aurora from '../components/Aurora.jsx';
 
+import LoadingAnimation from "../components/LoadingAnimation.jsx";
+
+import defaultImg from "../assets/profile-img-default.png";
+
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const dataEmployees = useDataEmployee();
   const dataProducts = useUserDataProducts();
-  const dataCategories = useDataCategory(); //Stores
   const { customers } = useDataCustomer();
   const { orders } = useOrdersWithCategories();
 
+  
   useEffect(() => {
     dataProducts.fetchData();
-    dataEmployees.fetchEmployeesById(user?.id);
+  }, []);
+  
+  useEffect(() => {
+    if (user?.id) {
+      dataEmployees.fetchEmployeesById(user.id);
+    }
   }, [user?.id]);
-
+  
+  if(loading)
+  {
+    return <LoadingAnimation/>;
+  }
+  
   // --- MÉTRICAS ---
   const totalClientes = customers?.length || 0;
 
@@ -83,7 +91,7 @@ const Dashboard = () => {
                   <div className="pf-cover">
                     <NavLink to={"/profile"}>
                       <img
-                        src={dataEmployees?.imageUrl}
+                        src={dataEmployees?.imageUrl || defaultImg}
                         className="rounded-circle me-1 border border-1 border-light"
                         alt=""
                         width="30"

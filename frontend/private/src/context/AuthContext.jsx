@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authCookie, setauthCookie] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const API_URL = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api";
 
   const navigate = useNavigate();
@@ -68,11 +69,20 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        
+        // Establecer el usuario inmediatamente desde la respuesta del login
+        setUser({
+          id: data.userId,
+          userType: data.userType,
+          name: data.name,
+          image: data.image,
+          email: data.email,
+        });
         setauthCookie(data.token);
-        setUser(data.user);
         setIsLoggedIn(true);
-        SuccessAlert("Sesión iniciada con éxito.")
-
+        setLoading(false);
+        
+        SuccessAlert("Sesión iniciada con éxito.");
         return true;
       } else {
         ErrorAlert(data.message);
@@ -86,6 +96,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      // Si ya tenemos usuario establecido desde login, no hacer checkAuth
+      if (user && isLoggedIn) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         const cookieToken = Cookies.get("authToken");
@@ -128,6 +145,8 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error("Error checking authentication:", error);
         clearSession();
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -142,6 +161,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         isLoggedIn,
+        loading,
         API: API_URL,
       }}
     >

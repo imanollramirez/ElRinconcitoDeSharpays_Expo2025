@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
+import defaultImg from "../assets/profile-img-default.png";
+
 
 const UploadImage = ({ onUpload, defaultImage, fromProfile = false}) => {
-  const [preview, setPreview] = useState(defaultImage || null);
+  const [preview, setPreview] = useState(defaultImage);
   const fileInputRef = useRef(null);
 
   // Limpia el preview y el input file cuando defaultImage cambia a vacío
   useEffect(() => {
-    setPreview(defaultImage || null);
+    setPreview(defaultImage);
     if (!defaultImage && fileInputRef.current) {
       fileInputRef.current.value = ""; // Limpia el input file
     }
@@ -36,9 +38,9 @@ const UploadImage = ({ onUpload, defaultImage, fromProfile = false}) => {
           overflow: "hidden",
         }}
       >
-        {preview && (
+        {preview || defaultImg && (
           <img
-            src={preview}
+            src={preview || defaultImg}
             alt="Preview"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
