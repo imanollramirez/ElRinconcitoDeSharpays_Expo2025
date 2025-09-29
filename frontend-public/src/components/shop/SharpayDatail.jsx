@@ -50,6 +50,12 @@ const CamisaDetail = ({ product }) => {
   };
 
   const handleCustomizeShirt = () => {
+    // Solo validar talla si es camisa antes de personalizar
+    if (isCamisa && !selectedSize) {
+      alert("Por favor selecciona una talla antes de personalizar");
+      return;
+    }
+
     const productData = {
       name: product.name,
       price: product.price,
@@ -60,8 +66,18 @@ const CamisaDetail = ({ product }) => {
       subCategoryId: product.subCategoryId?._id || String(product.subCategoryId),
     };
 
-    console.log("Enviando datos al navigate:", productData);
-    navigate("/TshirtDesign", { state: productData });
+    console.log("Enviando datos:", productData);
+    console.log("Es camisa:", isCamisa);
+
+    if (isCamisa) {
+      // Si es camisa, ir al preview
+      console.log("Navegando a preview para camisa");
+      navigate("/preview-customization", { state: productData });
+    } else {
+      // Si NO es camisa (ej: taza), ir directamente al editor
+      console.log("Navegando directamente al editor para producto que no es camisa");
+      navigate("/TshirtDesign", { state: productData });
+    }
   };
 
   const handleMouseMove = (e) => {

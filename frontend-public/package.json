@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.3.0",
     "fabric": "^6.7.1",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.23.22",
     "gsap": "^3.13.0",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
@@ -28,6 +30,7 @@
     "sweetalert2": "^11.22.2",
     "swiper": "^11.2.10",
     "three": "^0.179.1",
+    "valtio": "^2.1.8",
     "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
