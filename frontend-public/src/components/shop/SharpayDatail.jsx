@@ -72,7 +72,7 @@ const CamisaDetail = ({ product }) => {
     if (isCamisa) {
       // Si es camisa, ir al preview
       console.log("Navegando a preview para camisa");
-      navigate("/preview-customization", { state: productData });
+      navigate("/TshirtDesign", { state: productData });
     } else {
       // Si NO es camisa (ej: taza), ir directamente al editor
       console.log("Navegando directamente al editor para producto que no es camisa");

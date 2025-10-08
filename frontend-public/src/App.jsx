@@ -25,7 +25,7 @@ import HomePublic from "./pages/HomePublic.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import TshirtDesign from "./pages/TshirtDesign.jsx";
 import VerifyAccount from "./pages/VerifyAccount.jsx";
-import PreviewCustomization from "./components/TshirtDesigner/PreviewCustomization.jsx";
+
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
@@ -60,7 +60,7 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/recoveryPassword" element={<RecoveryPassword />} />
         <Route path="/TshirtDesign" element={<TshirtDesign />} />
-        <Route path="//preview-customization" element={<PreviewCustomization />} />
+        
         <Route path="/register" element={<Register />} />
         <Route path="/elRinconcitoDeSharpays" element={<HomePublic />} />
         <Route path="/VerifyAccount" element={<VerifyAccount />} />
