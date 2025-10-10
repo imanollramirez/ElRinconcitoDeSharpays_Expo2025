@@ -1,5 +1,7 @@
-import React, { createContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useState, useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+import * as LocalAuthentication from "expo-local-authentication";
 import { Alert } from "react-native";
 import { API_URL } from "../config";
 
@@ -10,22 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const loadStoredData = async () => {
-      try {
-        const token = await AsyncStorage.getItem("token");
-        
-        const storedUserId = await AsyncStorage.getItem("userId");
-
-        if (token && token !== "undefined") setAuthToken(token);
-        if (storedUserId && storedUserId !== "undefined") setUserId(storedUserId);
-      } catch (error) {
-        console.error("Error loading stored data:", error);
-      }
-    };
-    loadStoredData();
-  }, []);
 
   const clearSession = async () => {
     await AsyncStorage.multiRemove(["token", "userId"]);
@@ -69,7 +55,27 @@ export const AuthProvider = ({ children }) => {
           setUserId(data.userId);
         }
 
-        //console.log("Datos recibidos del servidor:", data);
+        // 🔐 Preguntar si desea activar login con biometría
+        const compatible = await LocalAuthentication.hasHardwareAsync();
+        const enrolled = await LocalAuthentication.isEnrolledAsync();
+        if (compatible && enrolled) {
+          Alert.alert(
+            "Activar inicio con biometría",
+            "¿Deseas activar el inicio con Face ID o huella para futuros ingresos?",
+            [
+              { text: "No", style: "cancel" },
+              {
+                text: "Sí",
+                onPress: async () => {
+                  await SecureStore.setItemAsync("biometricEnabled", "true");
+                  await SecureStore.setItemAsync("bioToken", data.token);
+                  await SecureStore.setItemAsync("bioUserId", String(data.userId));
+                },
+              },
+            ]
+          );
+        }
+
         Alert.alert("Inicio de sesión exitoso");
         return true;
       } else {
@@ -83,6 +89,39 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // 🔹 Nueva función para login biométrico con botón
+  const biometricLogin = async () => {
+    const storedToken = await SecureStore.getItemAsync("bioToken");
+    const storedId = await SecureStore.getItemAsync("bioUserId");
+    const biometricEnabled = await SecureStore.getItemAsync("biometricEnabled");
+
+    if (!storedToken || !storedId || biometricEnabled !== "true") {
+      Alert.alert("Primero inicia sesión con tu correo y contraseña para activar el acceso biométrico.");
+      return false;
+    }
+
+    const compatible = await LocalAuthentication.hasHardwareAsync();
+    const enrolled = await LocalAuthentication.isEnrolledAsync();
+
+    if (!compatible || !enrolled) {
+      Alert.alert("Tu dispositivo no tiene Face ID o huella configurada.");
+      return false;
+    }
+
+    const result = await LocalAuthentication.authenticateAsync({
+      promptMessage: "Inicia sesión con Face ID o huella",
+    });
+
+    if (result.success) {
+      await AsyncStorage.setItem("token", storedToken);
+      await AsyncStorage.setItem("userId", storedId);
+      setAuthToken(storedToken);
+      setUserId(storedId);
+      return true;
+    }
+    return false;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -91,6 +130,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         logout,
+        biometricLogin,
         API: API_URL,
       }}
     >
