@@ -1,16 +1,22 @@
+.camisa-detail-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .camisa-detail-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
+  gap: 20px;
   padding: 48px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.08); /* rosa muy suave */
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.08);
   max-width: 1200px;
-  margin: 40px auto;
   align-items: flex-start;
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
+
 
 .camisa-image-container {
   flex: 1;
@@ -153,4 +159,24 @@
 .zoom-container.active .camisa-image {
   transform: scale(2); /* Zoom 2x */
   cursor: zoom-out;
+}
+.customize-btn {
+
+  margin-top: 24px;
+  padding: 12px 28px;
+  background-color: #d81b60;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  align-self: flex-start;
+ 
+
+}
+.customize-btn:hover {
+
+  background-color: #b6184f;
 }

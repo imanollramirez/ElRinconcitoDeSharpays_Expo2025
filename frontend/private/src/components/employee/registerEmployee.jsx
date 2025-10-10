@@ -109,10 +109,10 @@ const EmployeeForm = ({
               placeholder="Nombre"
               value={name}
               onChange={(e) => {
-      const onlyLetters = e.target.value.replace(/[0-9]/g, ""); // Elimina números
-      setName(onlyLetters);
-    }}
-    disable={enableInput}
+                const onlyLetters = e.target.value.replace(/[0-9]/g, ""); // Elimina números
+                setName(onlyLetters);
+              }}
+              disable={enableInput}
             />
             {errors.name && <p style={{ color: "pink" }}>{errors.name}</p>}
           </div>
@@ -130,59 +130,59 @@ const EmployeeForm = ({
           </div>
 
           <div className="form-group" style={{ gridColumn: "span 2" }}>
-  <InputText
-    label={"Contraseña"}
-    type="password"
-    placeholder="Contraseña"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    disable={enableInput}
-  />
-  {!id && errors.password && (
-    <p style={{ color: "pink" }}>{errors.password}</p>
-  )}
+            <InputText
+              label={"Contraseña"}
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disable={enableInput}
+            />
+            {!id && errors.password && (
+              <p style={{ color: "pink" }}>{errors.password}</p>
+            )}
 
-  {!id && !enableInput && password.length > 0 && (
-    <div
-      style={{
-        backgroundColor:
-          /[A-Z]/.test(password) &&
-          /[a-z]/.test(password) &&
-          /\d/.test(password) &&
-          password.length >= 8
-            ? "#d4edda" // verde
-            : password.length >= 6
-            ? "#fff3cd" // amarillo
-            : "#f8d7da", // rojo
-        color:
-          /[A-Z]/.test(password) &&
-          /[a-z]/.test(password) &&
-          /\d/.test(password) &&
-          password.length >= 8
-            ? "#155724"
-            : password.length >= 6
-            ? "#856404"
-            : "#721c24",
-        padding: "8px",
-        borderRadius: "6px",
-        marginTop: "8px",
-        fontWeight: "500",
-        fontSize: "14px",
-      }}
-    >
-      <p>
-        {/[A-Z]/.test(password) ? "✔️" : "❌"} Al menos una mayúscula
-      </p>
-      <p>
-        {/[a-z]/.test(password) ? "✔️" : "❌"} Al menos una minúscula
-      </p>
-      <p>{/\d/.test(password) ? "✔️" : "❌"} Al menos un número</p>
-      <p>
-        {password.length >= 8 ? "✔️" : "❌"} Mínimo 8 caracteres
-      </p>
-    </div>
-  )}
-</div>
+            {!id && !enableInput && password.length > 0 && (
+              <div
+                style={{
+                  backgroundColor:
+                    /[A-Z]/.test(password) &&
+                      /[a-z]/.test(password) &&
+                      /\d/.test(password) &&
+                      password.length >= 8
+                      ? "#d4edda" // verde
+                      : password.length >= 6
+                        ? "#fff3cd" // amarillo
+                        : "#f8d7da", // rojo
+                  color:
+                    /[A-Z]/.test(password) &&
+                      /[a-z]/.test(password) &&
+                      /\d/.test(password) &&
+                      password.length >= 8
+                      ? "#155724"
+                      : password.length >= 6
+                        ? "#856404"
+                        : "#721c24",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  marginTop: "8px",
+                  fontWeight: "500",
+                  fontSize: "14px",
+                }}
+              >
+                <p>
+                  {/[A-Z]/.test(password) ? "✔️" : "❌"} Al menos una mayúscula
+                </p>
+                <p>
+                  {/[a-z]/.test(password) ? "✔️" : "❌"} Al menos una minúscula
+                </p>
+                <p>{/\d/.test(password) ? "✔️" : "❌"} Al menos un número</p>
+                <p>
+                  {password.length >= 8 ? "✔️" : "❌"} Mínimo 8 caracteres
+                </p>
+              </div>
+            )}
+          </div>
 
 
           <div

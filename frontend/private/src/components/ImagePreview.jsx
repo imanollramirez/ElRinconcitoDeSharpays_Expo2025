@@ -16,7 +16,7 @@ const ImagePreview = ({ imageUrl }) => {
           <img src={imageUrl} alt="Vista previa" className="preview-image" />
         ) : (
           <div className="icon-wrapper">
-            <FaImage size={60} color="#999" />
+            <FaImage size={60} color="#999" /> {/* Icono de imagen por defecto */}
           </div>
         )}
   

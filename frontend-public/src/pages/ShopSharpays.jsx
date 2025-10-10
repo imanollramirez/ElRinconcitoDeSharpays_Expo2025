@@ -3,7 +3,7 @@ import "../styles/Sharpays.css";
 import ShopMenu from "../components/SubMenu";
 import bgImage from "../assets/sharpays.jpeg";
 import CardProduct from "../components/shop/CardProduct";
-import useUserDataProducts from "../../../frontend/private/src/components/products/hook/userDataProducts";
+import useUserDataProducts from "../components/products/hook/useUserDataProducts";
 
 const ShopPage = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);

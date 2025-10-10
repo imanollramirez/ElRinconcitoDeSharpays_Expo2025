@@ -1,16 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "../config";
 
-// Reemplaza con tu IP local para pruebas en dispositivo físico
-const LOCAL_IP = "192.168.1.1"; // ⚠️ CAMBIAR por la IP de tu PC
-
-// Detecta el host según plataforma
-const API_HOST =
-  Platform.OS === "android"
-    ? "http://10.0.2.2:4000" // Android Emulator
-    : `http://${LOCAL_IP}:4000`; // iOS o físico
-
-const API = `${API_HOST}/api/recoveryPassword`;
+const API = `${API_URL}/recoveryPassword`;
 
 const useRecoveryPassword = () => {
   const [email, setEmail] = useState("");
@@ -18,11 +11,15 @@ const useRecoveryPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  useEffect(() => {
+    (async () => {
+      const savedEmail = await AsyncStorage.getItem("recovery_email");
+      if (savedEmail) setEmail(savedEmail);
+    })();
+  }, []);
+
   const sendCode = async () => {
-    if (!email) {
-      alert("Ingrese el correo electrónico");
-      return false;
-    }
+    if (!email) return alert("Ingrese el correo electrónico");
 
     try {
       const res = await fetch(`${API}/requestCode`, {
@@ -33,12 +30,13 @@ const useRecoveryPassword = () => {
 
       const data = await res.json();
       if (res.ok) {
+        await AsyncStorage.setItem("recovery_email", email);
+        if (data.token) await AsyncStorage.setItem("recovery_token", data.token);
         alert("Se envió el código");
         return true;
-      } else {
-        alert(data.message || "Hubo un error");
-        return false;
       }
+      alert(data.message || "Hubo un error");
+      return false;
     } catch (err) {
       console.error(err);
       alert("Error al enviar el código");
@@ -47,26 +45,27 @@ const useRecoveryPassword = () => {
   };
 
   const verifyCode = async () => {
-    if (!code) {
-      alert("Ingrese el código");
-      return false;
-    }
+    if (!code) return alert("Ingrese el código");
 
     try {
+      const token = await AsyncStorage.getItem("recovery_token");
       const res = await fetch(`${API}/verifyCode`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ code }),
       });
 
       const data = await res.json();
       if (res.ok) {
+        if (data.token) await AsyncStorage.setItem("recovery_token", data.token);
         alert("Se verificó el código");
         return true;
-      } else {
-        alert(data.message || "El código no es válido");
-        return false;
       }
+      alert(data.message || "El código no es válido");
+      return false;
     } catch (err) {
       console.error(err);
       alert("Error al verificar el código");
@@ -75,31 +74,37 @@ const useRecoveryPassword = () => {
   };
 
   const resetPassword = async () => {
-    if (!newPassword || !confirmPassword) {
-      alert("Complete los campos");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
+    if (!newPassword || !confirmPassword) return alert("Complete los campos");
+    if (newPassword !== confirmPassword) return alert("Las contraseñas no coinciden");
 
     try {
+      const token = await AsyncStorage.getItem("recovery_token");
       const res = await fetch(`${API}/newPassword`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ newPassword }),
       });
 
       const data = await res.json();
       if (res.ok) {
         alert("Se restableció la contraseña");
+        await AsyncStorage.multiRemove(["recovery_email", "recovery_token"]);
+        setEmail("");
+        setCode("");
+        setNewPassword("");
+        setConfirmPassword("");
+        return true;
       } else {
         alert(data.message || "Error");
+        return false;
       }
     } catch (err) {
       console.error(err);
       alert("Error al establecer la nueva contraseña");
+      return false;
     }
   };
 

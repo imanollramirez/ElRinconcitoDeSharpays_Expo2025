@@ -45,3 +45,19 @@
   font-size: 12px;
   color: inherit;
 }
+
+
+.upload-image-card {
+  text-align: center;
+  padding: 20px;
+}
+
+.upload-image-preview {
+  margin-bottom: 20px;
+}
+
+.upload-image-text {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #444;
+}

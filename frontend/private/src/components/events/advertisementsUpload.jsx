@@ -4,7 +4,7 @@ import ImagePreview from "../ImagePreview";
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
 import { Subtitle } from "../Typography";
-import "../../styles/AdvertisementsUpload.css";
+import "../../styles/AdvertisementsUploads.css";
 
 const AdvertisementsUpload = ({
   tittle, setTittle,

@@ -23,7 +23,7 @@ const MyLandingPage = () => {
             <span className="highlighted-rotating-text">
               <RotatingText
                 texts={['única', 'divertida', 'adorable', 'oficial', 'cool']}
-                mainClassName="inline-block text-black overflow-hidden"
+                mainClassName="inline-block text-white overflow-hidden"
                 staggerFrom="last"
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}

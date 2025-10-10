@@ -335,4 +335,23 @@ div:where(.swal2-icon).swal2-question{
   }
 }
 
+/* CREDIT CARD STYLES */
 
+.rccs__card--front {
+  background: #ff6daa !important;
+}
+
+.rccs__name {
+  font-family: 'Poppins' !important;
+  font-size: 14px !important;
+}
+
+/* OTHER ANIMATIONS*/
+.scroll-trigger-animation {
+  overflow-y: auto;   /* mantiene scroll vertical */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scroll-trigger-animation::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

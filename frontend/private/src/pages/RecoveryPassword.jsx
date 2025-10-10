@@ -2,7 +2,7 @@ import "../styles/RecoveryPassword.css";
 import { useState } from "react";
 
 // Animaciones
-import LightsAnimation from "../components/LightsAnimation.jsx";
+import LightsAnimation from "../components/LightsAnimations.jsx";
 import ShapesAnimation from "../components/ShapesAnimation.jsx";
 
 // Componentes
@@ -44,13 +44,13 @@ const RecoveryPassword = () => {
           <div className="recovery-password-content d-flex justify-content-center align-items-center flex-column mt-5 pt-3 w-100">
             <CustomTitle
               style="text-white fw-bold fs-3 mb-5"
-              text="Recuperación de contraseña"
+              text="Recuperación de Contraseña"
             />
 
             {step === 1 && (
               <>
                 <CustomInput
-                  label="Correo electrónico"
+                  label="Correo Electrónico"
                   placeholder="Ejemplo@gmail.com"
                   type="email"
                   name="email"
@@ -59,7 +59,7 @@ const RecoveryPassword = () => {
                 />
 
                 <CustomButton
-                  text="Enviar código"
+                  text="Enviar Código"
                   onClick={async (e) => {
                     const success = await sendCode(e);
                     if (success) {
@@ -74,7 +74,7 @@ const RecoveryPassword = () => {
                 />
 
                 <div className="go-to-register text-center mt-5 pt-5 d-flex">
-                  <LinkText text="Iniciar Sesión" action="/Login" />
+                  <LinkText text="Iniciar Sesión" action="/login" />
                 </div>
               </>
             )}
@@ -87,7 +87,7 @@ const RecoveryPassword = () => {
                 </p>
 
                 <CustomInput
-                  label="Código de verificación"
+                  label="Código de Verificación"
                   placeholder="000000"
                   type="number"
                   name="code"
@@ -97,7 +97,7 @@ const RecoveryPassword = () => {
                 />
 
                 <CustomButton
-                  text="Verificar código"
+                  text="Verificar Código"
                   onClick={async (e) => {
                     const success = await verifyCode(e);
                     if (success) {
@@ -116,7 +116,7 @@ const RecoveryPassword = () => {
             {step === 3 && (
               <>
                 <CustomInput
-                  label="Nueva contraseña"
+                  label="Nueva Contraseña"
                   placeholder="********"
                   type="password"
                   name="newPassword"
@@ -125,7 +125,7 @@ const RecoveryPassword = () => {
                 />
 
                 <CustomInput
-                  label="Confirmar contraseña"
+                  label="Confirmar Contraseña"
                   placeholder="********"
                   type="password"
                   name="confirmPassword"
@@ -134,7 +134,7 @@ const RecoveryPassword = () => {
                 />
 
                 <CustomButton
-                  text="Restablecer contraseña"
+                  text="Restablecer Contraseña"
                   onClick={resetPassword}
                   background="black"
                   color="white"

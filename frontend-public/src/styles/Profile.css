@@ -1,92 +1,189 @@
-/* Perfil general */
+/* Contenedor principal */
 .profile-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: inherit;
 }
 
+/* Main - Layout principal */
 main {
   display: flex;
-  flex-wrap: wrap; /* Permite que los cards bajen a la siguiente fila */
+  flex-direction: row; /* Horizontal en desktop */
+  flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 20px; /* Espaciado entre cards */
+  align-items: flex-start;
+  gap: 20px;
   padding: 20px;
+  position: relative; /* Importante para los absolute children */
 }
 
-/* Clase base para cada card (asegúrate de agregar esta clase a cada Card) */
-.card {
-  flex: 1 1 250px; /* Base 250px, puede crecer */
-  max-width: 100%;
-  box-sizing: border-box;
-  min-width: 250px; /* Para que no se reduzcan demasiado */
-}
-
-/* Tablets - max-width: 992px */
-@media (max-width: 992px) {
-  .personal-info-card {
-    margin: 40px 10px 200px 10px;
-    padding: 80px 12px;
-  }
-
-  .personal-info-inputs {
+/* =================== TABLETS Y PANTALLAS MEDIANAS (max-width: 1200px) =================== */
+@media (max-width: 1200px) {
+  /* Cambiar main a columna para apilado vertical */
+  main {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 10px;
   }
 
-  .card-ubication {
-    position: static;
-    width: 100%;
-    height: auto;
-    margin: 20px 0;
-  }
-
+  /* CardImage - Cambiar a relative */
   .upload-image-card {
-    position: static;
-    margin-bottom: 40px;
-    text-align: center;
-  }
-
-  .card-orders {
-    position: static;
-    width: 100%;
-    height: auto;
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 1; /* Primer elemento */
     margin-bottom: 20px;
+    margin-top: 60px;
+    text-align: center;
+    width: 100%;
   }
 
-  .card-orders__image {
+  .upload-image-preview {
     width: 180px;
     height: 180px;
   }
 
-  .card-orders__text {
-    font-size: 22px;
+  /* CardPersonalInformation - Cambiar a relative */
+  .personal-info-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 2; /* Segundo elemento */
+    width: 100%;
+    max-width: 600px;
+    margin: 0;
+    padding: 40px 20px;
+    text-align: center;
   }
 
-  main {
-    justify-content: center;
+  .personal-info-inputs {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    padding-right: 0;
   }
 
-  .card {
-    flex: 1 1 45%;
-    max-width: 45%;
+  .personal-info-card-btn {
+    justify-content: center !important;
+  }
+
+  /* CardUbication - Cambiar a relative */
+  .card-ubication {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 3; /* Tercer elemento */
+    width: 100%;
+    max-width: 600px;
+    margin: 0;
+  }
+
+  /* CardOrders - Cambiar a relative y apilar abajo */
+  .card-orders {
+    order: 4; /* Cuarto elemento */
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
   }
 }
 
-/* Móviles - max-width: 768px */
-@media (max-width: 768px) {
-  .personal-info-card {
-    margin: 20px 10px;
-    padding: 60px 12px;
+@media (max-width: 1600px) {
+  .card-orders {
+    order: 4;
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
   }
+}
 
-  .card-ubication {
-    padding: 12px 16px;
-    border-radius: 20px;
+/* =================== TABLETS MENORES (max-width: 992px) =================== */
+@media (max-width: 992px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 10px;
   }
 
   .upload-image-card {
-    margin-bottom: 32px;
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 1;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .upload-image-preview {
+    width: 180px;
+    height: 180px;
+  }
+
+  .personal-info-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 2;
+    width: 100%;
+    max-width: 600px;
+    margin: 0;
+    padding: 40px 20px;
+  }
+
+  .personal-info-inputs {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    padding-right: 0;
+  }
+
+  .personal-info-card-btn {
+    justify-content: center !important;
+  }
+
+  .card-ubication {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 3;
+    width: 100%;
+    max-width: 600px;
+    margin: 0;
+  }
+
+  .card-orders {
+    order: 4;
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+/* =================== MÓVILES (max-width: 768px) =================== */
+@media (max-width: 768px) {
+  main {
+    padding: 15px 10px;
+    gap: 25px;
   }
 
   .upload-image-preview {
@@ -94,40 +191,42 @@ main {
     height: 160px;
   }
 
-  .card-orders__image {
-    width: 150px;
-    height: 150px;
+  .upload-image-button {
+    font-size: 14px;
+    padding: 10px 20px;
   }
 
-  .card-orders__text {
-    font-size: 18px;
-  }
-
-  main {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 400px;
-  }
-}
-
-/* Extra pequeños - max-width: 400px */
-@media (max-width: 400px) {
   .personal-info-card {
-    margin: 10px;
-    padding: 40px 10px;
+    padding: 30px 15px;
+    margin: 0;
+  }
+
+  .personal-info-inputs {
+    gap: 15px;
+    padding: 15px 0;
   }
 
   .card-ubication {
-    padding: 10px 14px;
-    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 20px;
   }
 
   .card-ubication__input {
-    padding: 0 12px;
+    padding: 0 15px;
+    font-size: 13px;
+  }
+
+  .card-ubication__button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+/* =================== MÓVILES PEQUEÑOS (max-width: 400px) =================== */
+@media (max-width: 400px) {
+  main {
+    padding: 10px 5px;
+    gap: 20px;
   }
 
   .upload-image-preview {
@@ -136,16 +235,37 @@ main {
   }
 
   .upload-image-button {
-    font-size: 14px;
-    padding: 10px 20px;
+    font-size: 13px;
+    padding: 8px 16px;
   }
 
-  .card-orders__text {
-    font-size: 16px;
+  .personal-info-card {
+    padding: 20px 10px;
+    margin: 0;
   }
 
-  .card {
-    max-width: 100%;
-    padding: 0 10px;
+  .card-ubication {
+    padding: 10px 14px;
+    gap: 8px;
+    border-radius: 15px;
+  }
+
+  .card-ubication__input {
+    padding: 0 12px;
+    font-size: 12px;
+    height: 36px;
+  }
+
+  .card-ubication__button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+
+@media (max-width: 320px){
+  .personal-info-card-btn{
+    flex-wrap: wrap;
+    gap: 25px !important;
   }
 }

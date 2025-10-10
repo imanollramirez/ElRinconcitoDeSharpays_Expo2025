@@ -5,7 +5,7 @@ const itemSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
     ref: "product", 
-    required: true,
+    required: false,
   },
   productName: {
     type: String,
@@ -26,10 +26,6 @@ const itemSchema = new Schema({
   totalPrice: {
     type: Number,
     required: true,
-  },
-  discount: {
-    type: Number,
-    default: 0,
   },
   customDesign: {
     type: String,

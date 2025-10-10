@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+// Componente para enlaces estilizados
 const LinkText = ({text, action}) => {
     return (
         <>

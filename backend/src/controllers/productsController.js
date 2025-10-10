@@ -1,5 +1,6 @@
 import { config } from "../config.js";
 import Product from "../models/products.js";
+import Category from "../models/category.js";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs"; // Para eliminar el archivo temporal después de subir
 
@@ -123,6 +124,36 @@ productController.deleteProduct = async (req, res) => {
     res.json({ message: "Producto eliminado correctamente" });
   } catch (error) {
     res.status(400).json({ message: "Error al eliminar el producto", error });
+  }
+};
+
+  productController.getProductsByCategory=  async (req, res) => {
+  try {
+    // Aggregate products by categoryId
+    const aggregation = await Product.aggregate([
+      {
+        $group: {
+          _id: "$categoryId",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Fetch category names
+    const results = await Promise.all(
+      aggregation.map(async (item) => {
+        const category = await Category.findById(item._id);
+        return {
+          category: category?.category || "Others",
+          count: item.count
+        };
+      })
+    );
+
+    res.json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching data" });
   }
 };
 

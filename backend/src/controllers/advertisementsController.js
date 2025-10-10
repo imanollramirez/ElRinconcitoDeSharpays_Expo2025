@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import Advertisement from "../models/advertisements.js";
+import Advertisement from "../models/advertisement.js";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs"; // Para eliminar el archivo temporal después de subir
 

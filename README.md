@@ -1,4 +1,3 @@
-
 # ✨ El Rinconcito de Sharpay – Plataforma MERN para comercio electrónico personalizado
 
 Bienvenido al repositorio oficial de **El Rinconcito de Sharpay**, una solución tecnológica desarrollada por estudiantes apasionados por el desarrollo web con el objetivo de digitalizar y automatizar las ventas de un emprendimiento salvadoreño.
@@ -9,13 +8,13 @@ Bienvenido al repositorio oficial de **El Rinconcito de Sharpay**, una solución
 
 - **Nombre del Proyecto:** El Rinconcito de Sharpay
 - **Integrantes del equipo:**
-  - Gabriela Michelle Pérez Portillo – Frontend Developer
-  - Daniel Rolando Soriano Solis – Backend Developer
-  - German Antonio González Mejía - Full Stack Developer
-  - Alessandro Antonio Muñoz Quijada – Diseñador UX/UI
-  - Alessandro Imanol Ramírez Morán– Líder de Proyecto 
-- **Institución:** Instituto Técnico Ricaldone
-- **Especialidad:** Desarrollo de Software 
+  - Gabriela Michelle Pérez Portillo – Frontend Developer  
+  - Daniel Rolando Soriano Solis – Backend Developer  
+  - German Antonio González Mejía - Full Stack Developer  
+  - Alessandro Antonio Muñoz Quijada – Diseñador UX/UI  
+  - Alessandro Imanol Ramírez Morán – Líder de Proyecto  
+- **Institución:** Instituto Técnico Ricaldone  
+- **Especialidad:** Desarrollo de Software  
 
 ---
 
@@ -35,50 +34,143 @@ Actualmente, el negocio enfrenta una sobrecarga operativa, ya que solo una perso
 
 Hemos desarrollado una **plataforma web con frontend y backend propio**, que permite a los clientes:
 
-- Navegar el catálogo completo.
-- Personalizar productos sublimables en tiempo real.
-- Agregarlos al carrito.
-- Pagar con una pasarela de pago segura.
+- Navegar el catálogo completo.  
+- Personalizar productos sublimables en tiempo real.  
+- Agregarlos al carrito.  
+- Pagar con una pasarela de pago segura.  
 
-Por otro lado, el equipo administrativo podrá:
+Por otro lado, el equipo administrativo podrá:  
 
-- Gestionar productos, pedidos y usuarios.
-- Publicar anuncios de eventos de caridad.
-- Ver estadísticas de ventas.
+- Gestionar productos, pedidos y usuarios.  
+- Publicar anuncios de eventos de caridad.  
+- Ver estadísticas de ventas.  
 
 ---
 
 ## ⚙️ Tecnologías utilizadas
 
-### Frontend
-- **React.js** – Librería para construir interfaces de usuario.
-- **React Router DOM** – Navegación entre páginas.
-- **Fabric.js** – Personalizador visual para productos.
+### **Frontend**
+- **React.js** – Librería para construir interfaces de usuario.  
+- **React Router DOM** – Navegación entre páginas.  
+- **Fabric.js** – Personalizador visual para productos.  
+- **Axios** – Consumo de API REST.  
+- **Bootstrap / Tailwind CSS** – Estilos y diseño responsive.  
 
-### Backend
-- **Node.js + Express.js** – Servidor y API RESTful.
-- **MongoDB Atlas** – Base de datos NoSQL en la nube.
-- **Mongoose** – ODM para interactuar con MongoDB.
-- **JWT & Bcrypt** – Autenticación y seguridad.
-- **Wompi** – Pasarela de pago para ventas en línea.
+### **Backend**
+- **Node.js + Express.js** – Servidor y API RESTful.  
+- **MongoDB Atlas** – Base de datos NoSQL en la nube.  
+- **Mongoose** – ODM para interactuar con MongoDB.  
+- **JWT & Bcrypt** – Autenticación y seguridad.  
+- **Cors & Morgan** – Middleware de seguridad y logging.  
+- **Dotenv** – Manejo de variables de entorno.  
+- **Wompi** – Pasarela de pago para ventas en línea.  
 
 ---
+🚀 Ejecución del proyecto
+1. Clonar el repositorio
+git clone https://github.com/Gabss16/el-rinconcito-de-sharpay.git
+cd el-rinconcito-de-sharpay
 
-## Nomenclatura utilizadas
+2. Configurar el Backend
+
+Entrar a la carpeta del backend:
+
+cd backend
+
+
+Instalar dependencias:
+
+npm install
+
+
+Crear un archivo .env con las siguientes variables:
+
+PORT=4000
+MONGO_URI=tu_url_de_mongodb
+JWT_SECRET=tu_secreto
+WOMPI_API_KEY=tu_api_key
+
+
+Ejecutar el servidor:
+
+npm run dev
+
+3. Configurar el Frontend
+
+Entrar a la carpeta del frontend:
+
+cd frontend
+
+
+Instalar dependencias:
+
+npm install
+
+
+Ejecutar la aplicación:
+
+npm run dev
+
+4. Acceder al sistema
+
+Frontend: http://localhost:5173
+
+Backend API: http://localhost:4000/api
+---
+
+📝 Nomenclatura utilizada
+
 Para mantener la consistencia y evitar errores durante el desarrollo del proyecto, especialmente al integrar frontend y backend, se definieron las siguientes convenciones de nombres:
 
 Backend (Node.js + Express.js)
-Se utilizó lowerCamelCase en la definición de nombres de variables, funciones, controladores y modelos.
-Esta convención es estándar en entornos JavaScript y facilita la lectura del código al seguir el estilo común de la comunidad Node.js.
+
+lowerCamelCase en la definición de variables, funciones, controladores y modelos.
 
 Frontend (React.js)
-Se usó una combinación de lowerCamelCase y UpperCamelCase:
 
-Para nombres de variables, hooks y funciones se empleó lowerCamelCase.
+lowerCamelCase → variables, hooks y funciones.
+
+UpperCamelCase (PascalCase) → nombres de componentes, páginas y archivos CSS.
+
+Esto asegura legibilidad, mantenibilidad y compatibilidad con JSX.
+---
+
+📊 Datos de importancia
+
+Base de datos: MongoDB Atlas – Cloud Database.
+
+Gestión de dependencias: npm.
+
+Control de versiones: Git + GitHub.
+
+Entorno de pruebas: Postman para probar la API.
+---
+
+## 📦 Dependencias instaladas
 
 
-Para nombres de componentes, páginas y archivos CSS se utilizó UpperCamelCase (PascalCase).
+
+```bash
+### **Frontend**
+npm install react react-dom
+npm install react-router-dom
+npm install axios
+npm install fabric
+npm install bootstrap
+npm install tailwindcss
 
 
-Esta decisión se tomó para evitar conflictos con JSX, ya que React interpreta los nombres que comienzan en minúscula como elementos HTML nativos. Además, separar visualmente los componentes de funciones comunes mejora la mantenibilidad del proyecto.
+### 📦 **Backend**
+
+```bash
+npm install express
+npm install mongoose
+npm install bcrypt
+npm install jsonwebtoken
+npm install cors
+npm install morgan
+npm install dotenv
+npm install nodemon --save-dev
+
+
 

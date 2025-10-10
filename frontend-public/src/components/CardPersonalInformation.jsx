@@ -14,6 +14,8 @@ const CardPersonalInformation = () => {
   const { user } = useAuth();
   const data = useDataCustomer();
 
+  console.log(data, "valor de data")
+
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
@@ -61,7 +63,7 @@ const CardPersonalInformation = () => {
           />
         </div>
 
-        <div className="d-flex justify-content-start" style={{ gap: 50 }}>
+        <div className="d-flex justify-content-start personal-info-card-btn" style={{ gap: 20 }}>
           <Button
             text={isEditable ? "Guardar" : "Editar"}
             className="edit-btn"

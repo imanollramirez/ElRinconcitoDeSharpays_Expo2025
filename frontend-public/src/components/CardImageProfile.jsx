@@ -1,74 +1,68 @@
-import React, { useState, useEffect, useRef } from "react";
-import defaulImg from "../assets/profile-img-default.png"
-
+import React from "react";
 import '../styles/CardImage.css';
 import CustomButton from "./CustomButton";
 import { useAuth } from "../context/AuthContext";
 
-const CardImage = ({ onUpload, defaultImage }) => {
+// Función para obtener las iniciales del nombre
+const getInitials = (name) => {
+  if (!name) return "";
+  const names = name.trim().split(" ");
+  if (names.length === 1) return names[0][0].toUpperCase();
+  return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+};
 
-  const { logout } = useAuth();
+// Función para generar un color aleatorio consistente por usuario
+const getColorFromString = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const color = "#" + ((hash >> 24) & 0xff).toString(16).padStart(2, "0") +
+                      ((hash >> 16) & 0xff).toString(16).padStart(2, "0") +
+                      ((hash >> 8) & 0xff).toString(16).padStart(2, "0");
+  return color;
+};
 
-  defaultImage = defaulImg;
-  const [preview, setPreview] = useState(defaultImage || null);
-  const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    setPreview(defaultImage || null);
-    if (!defaultImage && fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  }, [defaultImage]);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setPreview(URL.createObjectURL(file));
-    onUpload(file);
-  };
-
-  const handleButtonClick = (e) => {
-    e.preventDefault();
-    fileInputRef.current.click();
-  };
+const AvatarCard = () => {
+  const { user, logout } = useAuth();
+  const name = user?.name || "Usuario";
+  const initials = getInitials(name);
+  const bgColor = getColorFromString(name);
 
   return (
     <div className="upload-image-card">
       <div className="upload-image-preview">
-        {preview && (
-          <img src={preview} alt="Preview" />
-        )}
+        <div
+          className="avatar-circle"
+          style={{
+            backgroundColor: bgColor,
+            color: "white",
+            fontSize: "2.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "50%",
+            width: "150px",
+            height: "150px",
+            margin: "auto"
+          }}
+        >
+          {initials}
+        </div>
       </div>
 
-      <button
-        type="button"
-        onClick={handleButtonClick}
-        className="upload-image-button"
-      >
-        Cargar nueva foto
-      </button>
-
-      <p className="upload-image-text">
-        800 x 800 px recomendado - PNG o JPEG
-      </p>
+      
 
       <CustomButton 
-            text="Cerrar sesión"
-            background="#000000ff"
-            height={50}
-            width={200}
-            color="white"
-          onClick={logout}/>
-
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={handleFileChange}
+        text="Cerrar sesión"
+        background="#000000ff"
+        height={50}
+        width={200}
+        color="white"
+        onClick={logout}
       />
     </div>
   );
 };
 
-export default CardImage;
+export default AvatarCard;

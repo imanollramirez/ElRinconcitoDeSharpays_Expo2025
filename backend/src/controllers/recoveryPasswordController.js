@@ -1,7 +1,6 @@
 import jsonwebtoken from "jsonwebtoken";
 import bcryptjs from "bcryptjs"; 
 
-//import customersModel from "../models/customers.js";
 import employeesModel from "../models/employee.js";
 import customersModel from "../models/costumer.js";
 
@@ -10,6 +9,7 @@ import { config } from "../config.js";
 
 const passwordRecoveryController = {};
 
+// 1. Solicitar código de recuperación
 passwordRecoveryController.requestCode = async (req, res) => {
   const { email } = req.body;
 
@@ -28,21 +28,16 @@ passwordRecoveryController.requestCode = async (req, res) => {
     }
 
     if (!userFound) {
-      res.status(400).json({ message: "Usuario no encontrado" });
+      return res.status(400).json({ message: "Usuario no encontrado" });
     }
 
     const code = Math.floor(10000 + Math.random() * 90000).toString();
 
     const token = jsonwebtoken.sign(
-      //1-¿Que voy a guardar?
       { email, code, userType, verified: false },
-      //2-secret key
       config.JWT.secret,
-      //3-¿Cuando expira?
       { expiresIn: "20m" }
     );
-
-    res.cookie("tokenRecoveryCode", token, { maxAge: 20 * 60 * 1000 });
 
     await sendEmail(
       email,
@@ -51,58 +46,68 @@ passwordRecoveryController.requestCode = async (req, res) => {
       HTMLRecoveryEmail(code) 
     );
 
-    res.json({ message: "Correo enviado" });
+    res.status(201).json({ 
+      message: "Correo enviado. Revisa tu bandeja de entrada.",
+      recoveryToken: token
+    });
   } catch (error) {
     console.log("error" + error);
+    res.status(500).json({ message: "Error interno" });
   }
 };
 
-// FUNCION PARA VERIFICAR CÓDIGO
 passwordRecoveryController.verifyCode = async (req, res) => {
-  const { code } = req.body;
+  const { code, recoveryToken } = req.body;
+  
   try {
-    const token = req.cookies.tokenRecoveryCode;
-    if (!token) return res.status(401).json({ message: "No token provided" });
+    const token = recoveryToken || 
+                  req.headers.authorization?.split(" ")[1] || 
+                  req.cookies.tokenRecoveryCode;
+                  
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
 
     const decoded = jsonwebtoken.verify(token, config.JWT.secret);
-    if (decoded.code !== code) return res.status(400).json({ message: "Invalid code" });
+    if (decoded.code !== code) {
+      return res.status(400).json({ message: "Código inválido" });
+    }
 
     const { exp, iat, ...rest } = decoded;
     const newToken = jsonwebtoken.sign({ ...rest, verified: true }, config.JWT.secret, { expiresIn: "20m" });
 
-    res.cookie("tokenRecoveryCode", newToken, { maxAge: 20 * 60 * 1000});
-    res.json({ message: "Code verified successfully" });
+    res.json({ 
+      message: "Código verificado correctamente",
+      recoveryToken: newToken
+    });
   } catch (error) {
     console.error(error, req.body);
-    res.status(400).json({ message: "Invalid or expired token" });
+    res.status(400).json({ message: "Token inválido o expirado" });
   }
 };
 
-// FUNCIÓN PARA ASIGNAR LA NUEVA CONTRASEÑA
 passwordRecoveryController.newPassword = async (req, res) => {
-  const { newPassword } = req.body;
+  const { newPassword, recoveryToken } = req.body;
 
   try {
-    //Extraer el token de las cookies
-    const token = req.cookies.tokenRecoveryCode;
-
-    //Extraer la información del token
-    const decoded = jsonwebtoken.verify(token, config.JWT.secret);
-
-    //Comprobar si el codigo fue verificado
-    if (!decoded.verified) {
-      return res.json({ message: "Código no verificado" });
+    const token = recoveryToken || 
+                  req.headers.authorization?.split(" ")[1] || 
+                  req.cookies.tokenRecoveryCode;
+                  
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
     }
 
-    //Extraer el email y el userType del token
-    const { email, userType } = decoded;
+    const decoded = jsonwebtoken.verify(token, config.JWT.secret);
 
-    // Encriptar la contraseña
+    if (!decoded.verified) {
+      return res.status(400).json({ message: "Código no verificado" });
+    }
+
+    const { email, userType } = decoded;
     const hashedPassword = await bcryptjs.hash(newPassword, 10);
 
-    //Actualizar la contraseña del usuario en la base de datos
-    let updatedUser;
-
+    let updatedUser = null;
     if (userType === "customer") {
       updatedUser = await customersModel.findOneAndUpdate(
         { email },
@@ -117,15 +122,15 @@ passwordRecoveryController.newPassword = async (req, res) => {
       );
     }
 
-    //Quitamos el token
-    res.clearCookie("tokenRecoveryCode");
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
 
-    res.status(200).json({ message: "Contraseña actualizada" });
-    
+    res.status(200).json({ message: "Contraseña actualizada correctamente" });
   } catch (error) {
-    console.log("error" + error);
+    console.log("Error en newPassword:", error);
+    res.status(500).json({ message: "Error interno" });
   }
 };
-
 
 export default passwordRecoveryController;

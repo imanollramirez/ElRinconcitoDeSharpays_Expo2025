@@ -1,8 +1,16 @@
+
 import express from "express";
+import multer from "multer";
 import createOrderFromCart from "../controllers/createOrderFromCart.js";
+
 const router = express.Router();
 
 
-router.post('/create-from-cart', createOrderFromCart);
+const upload = multer({ dest: "uploads/" });
 
-export default router
+
+router.post('/create-from-cart', upload.single("image"), createOrderFromCart);
+
+
+
+export default router;

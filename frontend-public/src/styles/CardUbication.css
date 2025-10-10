@@ -46,3 +46,16 @@
   background-color: #f8f6f6;
   color: #999;
 }
+.card-ubication__button {
+background-color: #fe3f8d;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 24px;
+  transition: background-color 0.3s ease;
+
+
+}

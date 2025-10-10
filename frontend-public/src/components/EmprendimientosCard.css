@@ -1,0 +1,158 @@
+.Emprendimientos-card-container{
+  position: relative;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card{
+  position: relative;
+  width: 320px;
+  height: 450px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 10px 0px 5px rgba(0,0,0,0.2);
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FE3F8D;
+  clip-path: circle(150px at 80% 20%);
+  transition: 0.5s ease-in-out;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:hover:before{
+  clip-path: circle(300px at 80% -20%);
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-imgBx{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10000;
+  width: 100%;
+  height: 220px;
+  transition: 0.5s;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:hover .Emprendimientos-imgBx{
+  top: 0%;
+  transform: translateY(0%);
+    
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-imgBx img{
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  width: 250px;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  transition: 1s;
+  z-index: 10;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:hover .Emprendimientos-contentBx{
+  height: 210px;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx h2{
+  position: relative;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #000000;
+  margin: 0;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .Emprendimientos-description, .Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .color {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 20px;
+  transition: 0.5s;opacity: 0;
+  visibility: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:hover .Emprendimientos-contentBx .Emprendimientos-description{
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.5s;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:hover .Emprendimientos-contentBx .color{
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.6s;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .Emprendimientos-description p, .Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .color h3{
+  color: #000000;
+  font-weight: 300;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-right: 10px;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .Emprendimientos-description p{
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  line-height: 26px;
+  font-size: 14px;
+  display: inline-block;
+  color: #000000;
+  background: #fff;
+  margin: 0 5px;
+  transition: 0.5s;
+  color: #111;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .Emprendimientos-description p:hover{
+  background: #9bdc28;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .color p{
+  width: 20px;
+  height: 20px;
+  background: #ff0;
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx a{
+  display: inline-block;
+  padding: 10px 20px;
+  background: #fff;
+  border-radius: 4px;
+  margin-top: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #000000;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: 0.5s;
+  margin-top: 0;
+}
+
+.Emprendimientos-card-container .Emprendimientos-card:hover .Emprendimientos-contentBx a{
+  opacity: 1;
+  transform: translateY(0px);
+  transition-delay: 0.75s;
+  
+}

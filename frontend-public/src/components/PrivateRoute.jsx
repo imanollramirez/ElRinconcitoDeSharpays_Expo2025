@@ -4,8 +4,13 @@ import { useAuth } from "../context/AuthContext.jsx";
 import LoadingAnimation from "../components/LoadingAnimation.jsx";
 
 const PrivateRoute = () => {
-  const { authCookie } = useAuth();
-  return authCookie ? <Outlet /> : <LoadingAnimation navTo={"/elRinconcitoDeSharpays"} />;
+  const { isLoggedIn, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingAnimation />;
+  }
+
+  return isLoggedIn ? <Outlet /> : <Navigate to="/elRinconcitoDeSharpays" />;
 };
 
 export default PrivateRoute;

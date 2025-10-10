@@ -33,7 +33,7 @@ const CardProduct = ({ producto }) => {
   const categoryId = producto.categoryId?._id || producto.categoryId;
   const path = getCategoryPath(categoryId);
 
-  console.log("🧭 Ruta final:", `/${path}/${id}`);
+  console.log(" Ruta final:", `/${path}/${id}`);
   navigate(`/${path}/${id}`);
 };
 

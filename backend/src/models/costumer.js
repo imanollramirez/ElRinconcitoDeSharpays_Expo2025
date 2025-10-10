@@ -9,13 +9,7 @@ const CostumerSchema = new Schema(
       trim: true,
       minlength: [2, 'El nombre debe tener al menos 2 caracteres'],
       maxlength: [50, 'El nombre no puede exceder 50 caracteres'],
-      match: [/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'El nombre solo puede contener letras y espacios'],
-      validate: {
-        validator: function(value) {
-          return value.split(' ').length >= 2;
-        },
-        message: 'Debe proporcionar nombre y apellido'
-      }
+      match: [/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'El nombre solo puede contener letras y espacios']
     },
 
     email: {
@@ -73,9 +67,17 @@ const CostumerSchema = new Schema(
       type: String,
       required: true,
     },
-    address: {
-      type: String,
-      required: true,
+     loginAttemps: {
+      type: Number,
+      default: 0
+    },
+    timeOut: {
+      type: Date,
+      default: null
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
     }
   },
   {

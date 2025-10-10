@@ -81,6 +81,14 @@ const EmployeeSchema = new Schema(
     image: {
       type: String,
       
+    },
+     loginAttemps: {
+      type: Number,
+      default: 0
+    },
+    timeOut: {
+      type: Date,
+      default: null
     }
   },
   {

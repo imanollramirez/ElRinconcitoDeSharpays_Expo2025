@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-const API_PRODUCTS = "http://localhost:4000/api/products";
-const API_CATEGORIES = "http://localhost:4000/api/categories";
+const API_PRODUCTS = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/products";
+const API_CATEGORIES = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/categories";
 
 const useProductsWithCategories = () => {
   const [products, setProducts] = useState([]);

@@ -161,6 +161,14 @@
     --swal2-confirm-button-background-color: #ffffff !important;
 }
 
+@media (max-width: 1440px) {
+  .sidebar {
+    width: 245px !important;
+  }
+}
+
+
+
 div:where(.swal2-icon).swal2-warning {
     color: #4d2636 !important;
     border-color: #4d2636 !important;

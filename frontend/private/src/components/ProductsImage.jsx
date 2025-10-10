@@ -11,7 +11,7 @@ const UploadImageBox = ({ onUpload }) => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "ml_default"); // 👈 Asegúrate de que este preset exista en tu Cloudinary
+    formData.append("upload_preset", "ml_default"); //  Asegúrate de que este preset exista en tu Cloudinary
 
     try {
       const res = await fetch("https://api.cloudinary.com/v1_1/devkosnau/image/upload", {

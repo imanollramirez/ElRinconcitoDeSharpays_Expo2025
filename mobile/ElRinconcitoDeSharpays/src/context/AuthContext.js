@@ -1,31 +1,36 @@
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
+import { API_URL } from "../config";
 
 const AuthContext = createContext(null);
 export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [authToken, setAuthToken] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const API_URL = "http://ip-pc:4000/api";
 
   useEffect(() => {
-  const loadToken = async () => {
-    const token = await AsyncStorage.getItem("token");
-    if (token) {
-      setAuthToken(token);
-    }
-  };
-  loadToken();
-}, []);
+    const loadStoredData = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        
+        const storedUserId = await AsyncStorage.getItem("userId");
 
+        if (token && token !== "undefined") setAuthToken(token);
+        if (storedUserId && storedUserId !== "undefined") setUserId(storedUserId);
+      } catch (error) {
+        console.error("Error loading stored data:", error);
+      }
+    };
+    loadStoredData();
+  }, []);
 
   const clearSession = async () => {
-    await AsyncStorage.removeItem("token");
-    setUser(null);
+    await AsyncStorage.multiRemove(["token", "userId"]);
     setAuthToken(null);
+    setUserId(null);
   };
 
   const logout = useCallback(async () => {
@@ -40,11 +45,11 @@ export const AuthProvider = ({ children }) => {
       await clearSession();
       Alert.alert("Sesión cerrada correctamente");
     }
-  }, [API_URL]);
+  }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/login/private`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -54,12 +59,19 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        await AsyncStorage.setItem("token", data.token);
-        setAuthToken(data.token);
-        console.log(data)
-        setUser(data.userName);
+        if (data.token) {
+          await AsyncStorage.setItem("token", data.token);
+          setAuthToken(data.token);
+        }
+
+        if (data.userId && data.userId !== undefined) {
+          await AsyncStorage.setItem("userId", String(data.userId));
+          setUserId(data.userId);
+        }
+
+        //console.log("Datos recibidos del servidor:", data);
         Alert.alert("Inicio de sesión exitoso");
-        return true; // El componente que llama decide redirigir
+        return true;
       } else {
         Alert.alert(data.message || "Error al iniciar sesión");
         return false;
@@ -71,39 +83,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  /*
-  const register = async (userData) => {
-    try {
-      const response = await fetch(`${API_URL}/registerClients`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      if (response.ok) {
-        Alert.show("Cuenta registrada correctamente.");
-        return true;
-      } else {
-        const data = await response.json();
-        Alert.show(data.message || "Error al registrar");
-        return false;
-      }
-    } catch (error) {
-      console.error("Error durante el registro:", error);
-      Alert.show("Error de conexión al registrar.");
-      return false;
-    }
-  };*/
-
   return (
     <AuthContext.Provider
       value={{
-        user,
         authToken,
+        userId,
         loading,
         login,
         logout,
-        //register,
         API: API_URL,
       }}
     >

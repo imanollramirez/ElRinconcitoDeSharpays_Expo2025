@@ -47,7 +47,8 @@ const CamisaDetail = ({ product }) => {
     zoomContainer.querySelector("img").style.transformOrigin = `center center`;
   };
 
-  return (
+  return (<>
+    <div className="camisa-detail-container">
     <div className="camisa-detail-wrapper">
       <div className="camisa-image-container">
         <div
@@ -89,6 +90,8 @@ const CamisaDetail = ({ product }) => {
         </button>
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

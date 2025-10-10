@@ -17,6 +17,9 @@ FaBell,
 FaUser
 } from 'react-icons/fa';
 
+    // Componente Sidebar que muestra un menú de navegación lateral
+// Incluye enlaces a diferentes secciones de la aplicación y un botón para cerrar sesión
+
 import { useAuth } from '../context/AuthContext';
 import SuccessAlert from './SuccessAlert';
 

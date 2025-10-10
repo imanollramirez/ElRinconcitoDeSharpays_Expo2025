@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import "./NavBar.css";
 import img from "../assets/sharpaysLogo.png";
-import ThemeSwitch from "./ThemeSwitch";
+import { useAuth } from "../context/AuthContext";
+import CustomButton from "./CustomButton";
+
 
 const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
   const closeMenu = () => setIsMenuOpen(false);
@@ -38,14 +42,11 @@ const Menu = () => {
             </div>
           </div>
           <Link to="/duas">DUAS</Link>
-          <Link to="/TshirtDesign">Personalización de camisetas </Link>
+          
           <Link to="/elRinconcitoDeSharpays">Sobre Nosotros</Link>
         </nav>
 
         <div className="menu-right">
-          <div className="theme-toggle-custom">
-            <ThemeSwitch />
-          </div>
           <Link to="/carrito" className="menu-btn">
             <FaShoppingCart /> Carrito
           </Link>
@@ -75,15 +76,13 @@ const Menu = () => {
               <Link to="/frostyBites" className="mobile-nav-subitem" onClick={closeMenu}>Frostibites</Link>
               <Link to="/bougies" className="mobile-nav-subitem" onClick={closeMenu}>Bougies</Link>
               <Link to="/paraiso" className="mobile-nav-subitem" onClick={closeMenu}>El Paraíso de Dios</Link>
+              <Link to="/duas" className="mobile-nav-subitem" onClick={closeMenu}>DUAS</Link>
             </div>
           </div>
 
           <Link to="/elRinconcitoDeSharpays" className="mobile-nav-item" onClick={closeMenu}>Sobre Nosotros</Link>
 
           <div className="mobile-actions">
-            <div className="mobile-theme-toggle">
-              <ThemeSwitch />
-            </div>
             <Link to="/carrito" className="mobile-action-btn" onClick={closeMenu}>
               <FaShoppingCart /> Carrito
             </Link>
@@ -91,6 +90,17 @@ const Menu = () => {
               <FaUserCircle /> Perfil
             </Link>
           </div>
+
+          <div className="position-absolute bottom-0 start-1 mb-2 ms-3">
+          <CustomButton 
+            text="Cerrar sesión"
+            background="#000000ff"
+            height={50}
+            width={200}
+            color="white"
+          onClick={logout}/>
+          </div>
+
         </div>
       </div>
     </>

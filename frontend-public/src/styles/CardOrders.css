@@ -18,7 +18,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Header rosado con título */
+/* Header rosado con título y botones */
 .card-orders__header {
   height: 50px;
   background-color: #ff3399;
@@ -26,16 +26,59 @@
   border-top-right-radius: 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: relative;
 }
 
+/* Título del header */
 .header-title {
   color: white;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: 0.8rem;
   margin: 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.filter-buttons-2 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap; /* Evitar que los botones se apilen en pantallas grandes */
+}
+
+/* Estilos de los botones */
+.filter-btn-2 {
+  padding: 4px 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  background: transparent;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 10px;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+  width: 100px;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+
+.filter-btn-2.active {
+  background: white;
+  color: #ff3399;
+  border-color: white;
+}
+
+.filter-btn-2:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
 }
 
 /* Cuerpo de la card */
@@ -218,11 +261,42 @@
   background-color: transparent;
 }
 
-/* Responsive Design */
-@media (max-width: 1600px) {
+//* Responsive Design para botones */
+@media (max-width: 1400px) {
   .card-orders {
     left: auto;
-    right: 50px;
+    right: 30px;
+    width: 420px; /* Aumento un poco el tamaño */
+  }
+}
+
+@media (max-width: 1200px) {
+  .card-orders {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 90%;  /* Sigue siendo 90%, pero asegúrate de tener suficiente espacio */
+    height: auto;
+    margin: 20px auto;
+  }
+
+  .card-orders__header {
+    padding: 0 15px;
+  }
+  
+  .header-title {
+    font-size: 0.95rem;
+  }
+  
+  .filter-buttons-2 {
+    gap: 6px;
+    flex-wrap: nowrap;  /* Importante para evitar el apilamiento */
+  }
+  
+  .filter-btn-2{
+    padding: 4px 10px;  /* Hago los botones más grandes */
+    font-size: 12px;  /* Para que no se vean demasiado pequeños */
   }
 }
 
@@ -231,61 +305,71 @@
     position: relative;
     top: auto;
     left: auto;
+    right: auto;
     width: 90%;
     height: auto;
     margin: 20px auto;
   }
-  
+
   .order-card-mini {
     padding: 12px;
   }
-  
+
   .order-item-name {
     font-size: 13px;
   }
-  
+
   .order-item-info {
     font-size: 11px;
   }
 }
 
-@media (max-width: 480px) {
-  .card-orders {
-    width: 100%;
-    padding: 0;
+@media (min-width: 992px) {
+  .card-orders__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
   }
-  
-  .card-orders__image {
-    width: 150px;
-    height: 150px;
+
+  .filter-buttons-2 {
+    display: flex;  /* Aseguramos que los botones estén en una fila */
+    flex-wrap: nowrap;  /* Esto evitará que los botones se apilen */
+    gap: 10px;
+    width: auto;
   }
-  
-  .card-orders__text {
-    font-size: 18px;
+
+  .filter-btn {
+    flex: 0 0 auto;  /* Hace que los botones no crezcan ni se encojan */
+    padding: 8px 16px;
+    font-size: 14px;
   }
-  
+}
+
+@media (max-width: 768px) {
+  .card-orders__header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 10px 15px;
+    gap: 8px;
+  }
+
   .header-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 4px;
   }
-  
-  .order-card-mini {
-    padding: 10px;
-    margin-bottom: 10px;
+
+  .filter-buttons-2 {
+    flex-wrap: nowrap;  /* Esto evita que se apilen */
+    gap: 8px;
+    width: 100%;
   }
-  
-  .order-item {
-    padding: 6px 0;
-  }
-  
-  .order-item-name {
+
+  .filter-btn-2 {
+    padding: 6px 12px;
     font-size: 12px;
-  }
-  
-  .order-item-info {
-    font-size: 10px;
-  }
-  
-  .order-total {
-    font-size: 12px;
+    flex: 1 1 auto;
+    text-align: center;
   }
 }

@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+//input personalizado para el formulario de login y registro
 
 const CustomInput = ({
   label,
@@ -14,7 +15,7 @@ const CustomInput = ({
 
   const location = useLocation();
 
-  const whiteLabel = ["/Login","/Register","/RecoveryPassword"];
+  const whiteLabel = ["/login","/Register","/RecoveryPassword"];
 
   return (
     <div className="m-2">

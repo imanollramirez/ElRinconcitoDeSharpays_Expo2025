@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 
+// Componente para animación de formas en el fondo
+// Genera formas aleatorias (círculos y triángulos) con animaciones
 const ShapesAnimation = ({NUM_SHAPES}) => {
 
     const randomPosition = () => Math.random() * 100 + "%";

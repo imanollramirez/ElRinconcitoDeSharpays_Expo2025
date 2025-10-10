@@ -1,7 +1,11 @@
 import Order from "../models/orders.js";
 import mongoose from "mongoose";
 
+
 const orderController = {};
+
+// Crear una orden
+import Product from "../models/products.js"; // Asegúrate de importar el modelo de Product
 
 // Crear una orden
 orderController.createOrder = async (req, res) => {
@@ -24,6 +28,7 @@ orderController.createOrder = async (req, res) => {
       return res.status(400).json({ message: "Dirección de envío incompleta" });
     }
 
+    // Crear la orden
     const order = new Order({
       customerId,
       categoryId,
@@ -33,7 +38,37 @@ orderController.createOrder = async (req, res) => {
       shippingAddress,
     });
 
+    // Guardar la orden
     await order.save();
+
+    // Actualizar el stock de los productos comprados
+    for (let i = 0; i < orderDetails.length; i++) {
+      const orderItem = orderDetails[i];
+      const product = await Product.findById(orderItem.productId);
+
+      console.log(`Producto encontrado: ${product?.name}, Stock actual: ${product?.stock}`); // Log del producto encontrado
+
+      if (product) {
+        // Verificar que haya suficiente stock
+        if (product.stock >= orderItem.quantity) {
+          // Reducir el stock
+          product.stock -= orderItem.quantity;
+
+          console.log(`Nuevo stock para ${product.name}: ${product.stock}`); // Log del nuevo stock
+
+          // Guardar el producto actualizado
+          await product.save();
+
+          console.log(`Producto ${product.name} actualizado correctamente.`); // Log de éxito
+        } else {
+          // Si no hay suficiente stock, lanzar error
+          return res.status(400).json({ message: `No hay suficiente stock para el producto ${product.name}` });
+        }
+      } else {
+        return res.status(404).json({ message: `Producto con ID ${orderItem.productId} no encontrado` });
+      }
+    }
+
     res.status(201).json(order);
   } catch (error) {
     console.error(error);
@@ -41,13 +76,23 @@ orderController.createOrder = async (req, res) => {
   }
 };
 
+
+
 // Obtener todas las órdenes con info del cliente y tienda
 orderController.getOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
+    let orders = await Order.find()
       .populate("customerId", "name email")
-      .populate("categoryId", "category") // <- Mostrar el nombre de la tienda
+      .populate("categoryId", "category image")
       .populate("orderDetails.productId", "name price");
+
+    // Agregar URL absoluta para las imágenes
+    orders = orders.map(order => {
+      if (order.categoryId?.image && !order.categoryId.image.startsWith('http')) {
+        order.categoryId.image = `${process.env.API_URL}/${order.categoryId.image}`;
+      }
+      return order;
+    });
 
     res.json(orders);
   } catch (error) {
@@ -55,17 +100,18 @@ orderController.getOrders = async (req, res) => {
   }
 };
 
+
 // Obtener orden por ID
 orderController.getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {  
       return res.status(400).json({ message: "ID de orden no válido" });
     }
 
     const order = await Order.findById(id)
       .populate("customerId", "name email")
-      .populate("categoryId", "category")
+      .populate("categoryId", "category image")
       .populate("orderDetails.productId", "name price");
 
     if (!order) return res.status(404).json({ message: "Orden no encontrada" });

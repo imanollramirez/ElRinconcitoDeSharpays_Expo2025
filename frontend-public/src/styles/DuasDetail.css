@@ -1,47 +1,47 @@
-.camisa-detail-wrapper {
+.camisa-detail-wrapperg {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
 /* Info arriba */
-.camisa-detail-wrapper {
+.camisa-detail-wrapperg {
   width: 100%;
   max-width: 1200px; /* o el máximo que quieras */
   margin: 0 auto; /* para centrar la página */
   padding: 0 20px; /* algo de padding horizontal */
 }
 
-.camisa-info-container {
+.camisa-info-containerg {
   width: 100%;
   border-bottom: 2px solid #ddd;
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
 
-.camisa-header {
+.camisa-headerg {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
 
-.camisa-name {
+.camisa-nameg {
   font-size: 1.8rem;
   font-weight: bold;
   margin: 0;
 }
 
-.camisa-price {
+.camisa-priceg {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #2c7;
+  color: #d81b60;
   white-space: nowrap;
   margin-left: auto; /* para empujar al extremo derecho */
 }
 
 /* La descripción debajo ocupa toda la línea */
-.camisa-description {
+.camisa-description1 {
   font-size: 1rem;
   color: #555;
   margin: 8px 0 0 0;

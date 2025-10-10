@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
 
+// Componente para mostrar alertas de confirmación con SweetAlert2
+// Utilizado para preguntas que requieren confirmación del usuario
 const QuestionAlert = (title) => {
   return Swal.fire({
         title: title,

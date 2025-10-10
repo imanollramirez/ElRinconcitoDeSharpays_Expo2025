@@ -3,7 +3,7 @@ import SuccessAlert from "../../SuccessAlert.jsx";
 import ErrorAlert from "../../ErrorAlert.jsx";
 
 const useUserDataProducts = () => {
-  const ApiProducts = "http://localhost:4000/api/Products";
+  const ApiProducts = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/Products";
 
   // Campos comunes
   const [id, setId] = useState("");
@@ -89,7 +89,7 @@ const useUserDataProducts = () => {
         subCategoryId,
         image,
         ...otherFields,
-        sabor: flavor,  // Agregar sabor explícitamente si lo quieres en la API
+        flavor: flavor,  // Agregar sabor explícitamente si lo quieres en la API
       };
     
       const response = await fetch(ApiProducts, {
@@ -178,7 +178,7 @@ const useUserDataProducts = () => {
         subCategoryId,
         image,
         ...otherFields,
-        sabor: flavor,  // Asegurarte de incluir sabor también aquí
+        flavor: flavor,  // Asegurarte de incluir sabor también aquí
       };
   
       const response = await fetch(`${ApiProducts}/${id}`, {

@@ -7,6 +7,7 @@ import Home from '../screens/Home'
 import RecoveryPassword from '../screens/RecoveryPassword';
 import VerifyCode from '../screens/VerifyCode'
 import ChangePassword from '../screens/ChangePassword'
+import Profile from '../screens/Profile'
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,7 @@ export default function Navigation() {
         <Stack.Screen name="RecoveryPassword" component={RecoveryPassword} />
         <Stack.Screen name="VerifyCode" component={VerifyCode} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
+        <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
-import "../../styles/advertisementsUpload.css";
+import "../../styles/AdvertisementsUploads.css";
 
 const AdvertisementsTable = ({
   advertisements,

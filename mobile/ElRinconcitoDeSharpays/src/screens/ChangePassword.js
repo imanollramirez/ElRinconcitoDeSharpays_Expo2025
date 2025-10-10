@@ -57,24 +57,25 @@ const ChangePasswordScreen = ({ navigation }) => {
     setIsLoading(true);
     
     try {
-      await resetPassword();
-      // Si llegamos aquí, el cambio fue exitoso
-      Alert.alert(
-        'Éxito', 
-        'Tu contraseña ha sido cambiada exitosamente',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              // Navegar de vuelta al login o pantalla principal
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Login' }], // Ajusta según tu navegación
-              });
+      const success = await resetPassword();
+      if (success) {
+        Alert.alert(
+          'Éxito', 
+          'Tu contraseña ha sido cambiada exitosamente',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Login' }],
+                });
+              }
             }
-          }
-        ]
-      );
+          ]
+        );
+      }
+      // Si no fue exitoso, el hook ya mostró el error
     } catch (error) {
       console.error('Error cambiando contraseña:', error);
       Alert.alert('Error', 'Hubo un problema al cambiar la contraseña');

@@ -1,0 +1,133 @@
+.preview-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f0f0f0 0%, #dcdcdc 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.preview-overlay {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.preview-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.intro-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.main-title {
+  font-size: 4rem;
+  font-weight: 900;
+  margin: 0 0 1rem 0;
+}
+
+.product-name {
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  color: #EFBD48;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.customize-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+/* Canvas */
+.tshirt-canvas-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  height: 500px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .preview-content {
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
+  .tshirt-canvas-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2.5rem;
+  }
+  .product-name {
+    font-size: 1.4rem;
+  }
+  .product-price {
+    font-size: 1.2rem;
+  }
+  .description {
+    font-size: 1rem;
+  }
+  .tshirt-canvas-container {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 2rem;
+  }
+  .tshirt-canvas-container {
+    height: 300px;
+  }
+  .customize-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}

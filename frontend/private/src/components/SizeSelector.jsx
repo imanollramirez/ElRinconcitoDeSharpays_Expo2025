@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Componente para seleccionar tallas de productos
+// Permite seleccionar múltiples tallas y resaltar las seleccionadas
 const sizesList = ["-","XS", "S", "M", "L", "XL", "XXL"];
 
 const SizeSelector = ({ selectedSizes, setSelectedSizes }) => {

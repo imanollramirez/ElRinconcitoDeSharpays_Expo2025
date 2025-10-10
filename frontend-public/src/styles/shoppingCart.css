@@ -388,8 +388,15 @@
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
+  transition: all .6;
 }
 
+.security-badge:hover {
+  cursor: pointer;
+  color: #222;
+  
+  transition-duration: .6s;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .payment-method-container {

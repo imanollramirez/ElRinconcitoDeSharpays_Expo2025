@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
-
+// Componente para mostrar alertas de éxito con SweetAlert2
+// Utilizado para notificar al usuario sobre acciones exitosas
 const SuccessAlert = (title) => {
   return Swal.fire({
     icon: "success",

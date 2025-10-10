@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import GlassBox from "../components/GlassBox.jsx";
 
 //Animaciones
-import LightsAnimation from "../components/LightsAnimation.jsx"
+import LightsAnimation from "../components/LightsAnimations.jsx"
 
 //Componentes utilizados en el login-container
 import LogoLogin from "../components/LogoLogin.jsx";
@@ -36,32 +36,24 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
   const [department, setDepartment] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!name || !email || !password) {
       ErrorAlert("Todos los campos son obligatorios");
-    }
-    else if(name.length <= 2)
-    {
-      ErrorAlert("El nombre es muy corto")
-    }
-    else if(password.length <= 8)
-    {
-      ErrorAlert("La contraseña debe ser mínimo de 8 carácteres")
-    }
-    else {
-      const success = await registerCustomer({ name, email, password, department, address });
-      console.log(department)
-
+    } else if (name.length <= 2) {
+      ErrorAlert("El nombre es muy corto");
+    } else if (password.length <= 8) {
+      ErrorAlert("La contraseña debe ser mínimo de 8 carácteres");
+    } else {
+      const success = await registerCustomer({ name, email, password, department });
       if (success) {
-        navigate("/login");
+        SuccessAlert("Registro exitoso, verifique su correo.");
+        navigate("/verifyAccount");
       }
     }
-
   };
 
   return (
@@ -82,7 +74,7 @@ const Register = () => {
               <>
                 <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
-                <form className="register-content d-flex justify-content-center align-items-center flex-column mt-4 w-100" onSubmit={handleSubmit}>
+                <form className="register-content d-flex justify-content-center align-items-center flex-column mt-5 pt-4 w-100" onSubmit={handleSubmit}>
 
                   <CustomInput
                     label={"Nombre"}
@@ -106,13 +98,6 @@ const Register = () => {
                       const selected = depa.find((d) => d.value === e.target.value);
                       setDepartment(selected?.label);
                     }}
-                  />
-                  <CustomInput
-                    label={"Dirección"}
-                    placeholder={"Dirección del lugar de entrega"}
-                    name={"direccion"}
-                    type={"textarea"}
-                    onChange={(e) => setAddress(e.target.value)}
                   />
 
                   <CustomInput

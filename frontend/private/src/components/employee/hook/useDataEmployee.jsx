@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const useDataEmployee = () => {
-  const API = "http://localhost:4000/api/employees";
+  const API = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/employees";
 
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,21 +26,22 @@ const useDataEmployee = () => {
     }
   };
 
-  const fetchEmployeesById = async (id) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API}/${id}`);
-      const data = await response.json();
-      setName(data.name);
-      setEmail(data.email);
-      setImageUrl(data.image)
-      return;
-    } catch (error) {
-      console.error("Error al obtener los empleados", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchEmployeesById = async (id) => {  
+  setLoading(true);
+  try {
+    const response = await fetch(`${API}/${id}`);
+    const data = await response.json();
+    
+    // Actualizar los estados
+    setName(data.name);
+    setEmail(data.email);
+    setImageUrl(data.image);
+  } catch (error) {
+    console.error("Error al obtener los empleados", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchEmployees();

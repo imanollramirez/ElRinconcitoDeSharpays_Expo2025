@@ -6,7 +6,7 @@ const useUserDataSubcategories = () => {
 
   const fetchSubcategories = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/subCategory"); 
+      const res = await fetch("https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/subCategory"); 
       if (!res.ok) throw new Error("Error al obtener subcategorías");
       const data = await res.json();
       setSubcategories(data);

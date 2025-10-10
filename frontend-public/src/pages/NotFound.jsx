@@ -9,7 +9,7 @@ import "../styles/NotFound.css";
 import CustomButton from "../components/CustomButton.jsx";
 import { Link } from "react-router-dom";
 
-import LightsAnimation from "../components/lightsAnimation.jsx";
+import LightsAnimation from "../components/LightsAnimations.jsx";
 
 const NotFound = () => {
   return (

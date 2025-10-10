@@ -45,16 +45,17 @@ export default function Login() {
   if (!fonts) return null;
 
   const handleLogin = async () => {
-    if(!email || !password)
+    const cleanedEmail = email.trim().toLowerCase();
+    if(!cleanedEmail || !password)
     {
       Alert.alert("Complete los campos");
       return;
     }
     else
     {
-      const success = await login(email, password);
+      const success = await login(cleanedEmail, password);
       if (success) {
-        navigation.replace("TabNavigator");
+        navigation.replace("Home");
       }
     }
   };
@@ -175,9 +176,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 8,
     width: 280,
-    height: 50,
+    height: 60,
     borderRadius: 15,
-    padding: 10,
+    padding: 5,
     backgroundColor: '#eeeeeee5',
     color: "#7A7A73",
   },

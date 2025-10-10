@@ -1,15 +1,22 @@
 // src/pages/SharpaysPage.jsx
 import React, { useState, useEffect } from "react";
-import ImageUploadPage from "../components/products/bougies/registerBougies";
-import ProductsTable from "../components/products/bougies/bougiesTable";
-import { Title } from "../components/Typography";
-import "../styles/SharpayPage.css";
-import useUserDataProducts from "../components/products/hook/userDataProducts";
+import ImageUploadPage from "../components/products/bougies/registerBougies"; // Componente para registrar productos
+import ProductsTable from "../components/products/bougies/bougiesTable"; // Tabla para mostrar productos
+import { Title } from "../components/Typography"; // Componente de título
+import "../styles/SharpayPage.css"; // Estilos propios de la página
+import useUserDataProducts from "../components/products/hook/userDataProducts"; // Hook personalizado para manejar productos
+
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
+import QuestionAlert from "../components/QuestionAlert.jsx";
 
 const SharpaysPage = () => {
+  // Estado para manejar la pestaña activa
   const [activeTab, setActiveTab] = useState("agregar");
+  // Estado para verificar si se está en modo edición
   const [isEditing, setIsEditing] = useState(false);
 
+  // Hook personalizado que provee datos y funciones para manejar productos
   const {
     name, setName,
     description, setDescription,
@@ -29,31 +36,47 @@ const SharpaysPage = () => {
     fetchData
   } = useUserDataProducts();
 
+  // Se ejecuta al montar el componente para obtener los productos
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Función para preparar el producto en modo edición
   const handleEdit = (prod) => {
     updateProduct(prod);
     setIsEditing(true);
     setActiveTab("agregar");
   };
 
+  // ⚡ Nuevo: función de eliminar con confirmación
+  const handleDelete = async (id) => {
+    const result = await QuestionAlert("¿Estás seguro de eliminar este producto?");
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct(id);
+        SuccessAlert("Producto eliminado exitosamente");
+      } catch (err) {
+        ErrorAlert("Error al eliminar producto: " + (err.message || err));
+      }
+    }
+  };
+
   return (
     <>
     <div className="container-fluid">
       <div className="row">
-        <div className="col-2"></div>
+        <div className="col-2"></div> {/* Columna vacía para margen */}
         <div className="col-10">
     <div className="sharpay-page">
-      <Title>Bougies</Title>
+      <Title>Bougies</Title> {/* Título principal */}
 
+      {/* Sección de pestañas */}
       <div className="custom-tabs">
         <div
           className={`tab ${activeTab === "agregar" ? "active" : ""}`}
           onClick={() => {
             setActiveTab("agregar");
-            setIsEditing(false); // ← si cambia de tab, se reinicia el modo edición
+            setIsEditing(false); // Si cambia a esta pestaña se reinicia el modo edición
           }}
         >
           Agregar
@@ -66,6 +89,7 @@ const SharpaysPage = () => {
         </div>
       </div>
 
+      {/* Si la pestaña activa es "agregar", se muestra el formulario */}
       {activeTab === "agregar" && (
         <ImageUploadPage
           name={name} setName={setName}
@@ -79,13 +103,15 @@ const SharpaysPage = () => {
           handleUpdate={handleUpdate}
           selectedSizes={selectedSizes} setSelectedSizes={setSelectedSizes}
           tipoObjeto={tipoObjeto} setTipoObjeto={setTipoObjeto}
-          isEditing={isEditing}
+          isEditing={isEditing} // Se pasa el estado de edición
         />
       )}
+
+      {/* Si la pestaña activa es "vista", se muestra la tabla de productos */}
       {activeTab === "vista" && (
         <ProductsTable
           products={products}
-          deleteProduct={deleteProduct}
+          deleteProduct={handleDelete}   
           updateProduct={handleEdit}
           loading={loading}
         />
@@ -98,4 +124,4 @@ const SharpaysPage = () => {
   );
 };
 
-export default SharpaysPage;
+export default SharpaysPage; // Exporta el componente principal
