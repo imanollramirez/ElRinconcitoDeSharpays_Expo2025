@@ -118,49 +118,55 @@ const CamisaDetail = ({ product }) => {
   return (
     <>
     <div className="camisa-detail-container">
-    <div className="camisa-detail-wrapper">
-      <div className="camisa-image-container">
-        <div
-          className="camisa-image-wrapper zoom-container"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          ref={zoomRef}
-        >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="camisa-image"
-            loading="lazy"
+      <div className="camisa-detail-wrapper">
+        <div className="camisa-image-container">
+          <div
+            className="camisa-image-wrapper zoom-container"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            ref={zoomRef}
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="camisa-image"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div className="camisa-info-container">
+          <h1 className="camisa-name">{product.name}</h1>
+          <p className="camisa-description">{product.description}</p>
+          <p className="camisa-price">${product.price.toFixed(2)}</p>
+
+          {isCamisa && (
+            <SizeSelector
+              sizes={product.size}
+              selectedSize={selectedSize}
+              onChange={handleSizeChange}
+            />
+          )}
+
+          <QuantitySelector
+            max={product.stock}
+            quantity={quantity}
+            onChange={handleQuantityChange}
           />
+
+          <div className="buttons-container">
+            {product.stock > 0 ? (
+              <button className="customize-btn" onClick={handleCustomizeShirt}>
+                Personaliza tu producto
+              </button>
+            ) : (
+              <button className="customize-btn" disabled>
+                No disponibles
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
-      <div className="camisa-info-container">
-        <h1 className="camisa-name">{product.name}</h1>
-        <p className="camisa-description">{product.description}</p>
-        <p className="camisa-price">${product.price.toFixed(2)}</p>
-
-        {isCamisa && (
-          <SizeSelector
-            sizes={product.size}
-            selectedSize={selectedSize}
-            onChange={handleSizeChange}
-          />
-        )}
-
-        <QuantitySelector
-          max={product.stock}
-          quantity={quantity}
-          onChange={handleQuantityChange}
-        />
-
-        <div className="buttons-container">
-          <button className="customize-btn" onClick={handleCustomizeShirt}>
-            Personaliza tu producto
-          </button>
-        </div>
-      </div>
-    </div>
     </div>
     </>
   );
