@@ -25,6 +25,8 @@ import HomePublic from "./pages/HomePublic.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import TshirtDesign from "./pages/TshirtDesign.jsx";
 import VerifyAccount from "./pages/VerifyAccount.jsx";
+import PolicyPrivacy from "./pages/PolicyPrivacy.jsx";
+import TermsConditions from "./pages/TermsConditions.jsx";
 
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
@@ -65,6 +67,8 @@ function AppRoutes() {
         <Route path="/elRinconcitoDeSharpays" element={<HomePublic />} />
         <Route path="/VerifyAccount" element={<VerifyAccount />} />
         <Route path="/notFound" element={<NotFound />} />
+        <Route path="/policy&privacy" element={<PolicyPrivacy />} />
+        <Route path="/terms&conditions" element={<TermsConditions />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/sharpays" element={<Sharpays />} />
