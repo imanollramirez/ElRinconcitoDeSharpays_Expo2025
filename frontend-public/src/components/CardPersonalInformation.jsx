@@ -73,7 +73,7 @@ const CardPersonalInformation = () => {
             width={100}
             color="white"
           />
-          <Link to={"/recoveryPassword"}>
+          <Link to={"/updatePassword"}>
           <Button
             text="Cambiar Contraseña"
             className="password-btn"

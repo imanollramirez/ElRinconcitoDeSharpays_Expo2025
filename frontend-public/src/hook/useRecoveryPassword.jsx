@@ -128,6 +128,35 @@ const useRecoveryPassword = () => {
     }
   };
 
+  const updatePassword = async (e) => {
+    e.preventDefault();
+    if (!newPassword || !confirmPassword) return ErrorAlert("Complete los campos");
+    if (newPassword !== confirmPassword) return ErrorAlert("Las contraseñas no coinciden");
+
+    try {
+      const res = await fetch(`${API}/updatePassword`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          newPassword,
+          email
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        SuccessAlert("Se actualizó la contraseña");
+        navigate("/profile");
+      } else {
+        ErrorAlert(data.message || "Error");
+      }
+    } catch (err) {
+      console.error(err);
+      ErrorAlert("Error al establecer la nueva contraseña");
+    }
+  };
+
   const clearRecoveryProcess = () => {
     localStorage.removeItem('recoveryToken');
     setEmail("");
@@ -149,6 +178,7 @@ const useRecoveryPassword = () => {
     verifyCode,
     resetPassword,
     clearRecoveryProcess,
+    updatePassword
   };
 };
 

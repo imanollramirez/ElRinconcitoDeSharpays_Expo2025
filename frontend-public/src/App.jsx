@@ -27,6 +27,7 @@ import TshirtDesign from "./pages/TshirtDesign.jsx";
 import VerifyAccount from "./pages/VerifyAccount.jsx";
 import PolicyPrivacy from "./pages/PolicyPrivacy.jsx";
 import TermsConditions from "./pages/TermsConditions.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
@@ -43,7 +44,7 @@ function AppRoutes() {
   function NavBarSelector() {
     const { pathname } = useLocation();
 
-    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound"];
+    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound", "/updatePassword"];
 
     if (noNavbarPaths.includes(pathname)) return null;
 
@@ -70,6 +71,7 @@ function AppRoutes() {
         <Route path="/policy&privacy" element={<PolicyPrivacy />} />
         <Route path="/terms&conditions" element={<TermsConditions />} />
         <Route element={<PrivateRoute />}>
+          <Route path="/updatePassword" element={<ResetPassword />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/sharpays" element={<Sharpays />} />
           <Route path="/bougies" element={<Bougies />} />

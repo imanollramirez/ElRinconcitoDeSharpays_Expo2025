@@ -133,4 +133,27 @@ passwordRecoveryController.newPassword = async (req, res) => {
   }
 };
 
+passwordRecoveryController.updatePassword = async (req, res) => {
+  const { newPassword, email} = req.body;
+
+  try {
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+
+    User = await customersModel.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    if (!User) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    res.status(200).json({ message: "Contraseña actualizada correctamente" });
+  } catch (error) {
+    console.log("Error en newPassword:", error);
+    res.status(500).json({ message: "Error interno" });
+  }
+};
+
 export default passwordRecoveryController;
