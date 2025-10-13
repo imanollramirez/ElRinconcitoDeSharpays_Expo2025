@@ -130,6 +130,7 @@ const useRecoveryPassword = () => {
 
   const updatePassword = async (e) => {
     e.preventDefault();
+    if (!email) return ErrorAlert("No se pudo obtener el correo del usuario");
     if (!newPassword || !confirmPassword) return ErrorAlert("Complete los campos");
     if (newPassword !== confirmPassword) return ErrorAlert("Las contraseñas no coinciden");
 

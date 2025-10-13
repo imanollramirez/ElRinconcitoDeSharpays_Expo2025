@@ -139,13 +139,17 @@ passwordRecoveryController.updatePassword = async (req, res) => {
   try {
     const hashedPassword = await bcryptjs.hash(newPassword, 10);
 
-    User = await customersModel.findOneAndUpdate(
+    if (!newPassword || !email) {
+      return res.status(400).json({ message: "Faltan datos requeridos." });
+    }
+
+    const user = await customersModel.findOneAndUpdate(
       { email },
       { password: hashedPassword },
       { new: true }
     );
 
-    if (!User) {
+    if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
