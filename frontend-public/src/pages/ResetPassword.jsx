@@ -72,7 +72,7 @@ const ResetPassword = () => {
                   <CustomInput
                     label={"Nueva Contraseña"}
                     placeholder={"********"}
-                    type={"text"}
+                    type={"password"}
                     name={"newPassword"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -81,7 +81,7 @@ const ResetPassword = () => {
                   <CustomInput
                     label={"Confirmar Contraseña"}
                     placeholder={"********"}
-                    type={"text"}
+                    type={"password"}
                     name={"confirmPassword"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
