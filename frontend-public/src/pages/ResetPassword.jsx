@@ -93,7 +93,7 @@ const ResetPassword = () => {
                       color={"white"}
                       width={"100%"}
                       height={"50px"}
-                      onClick={() => updatePassword}
+                      onClick={updatePassword}
                     />
                   </div>
                    <div style={{ marginTop: "30px" }}>
