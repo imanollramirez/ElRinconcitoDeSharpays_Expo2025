@@ -88,9 +88,17 @@ export default function Home() {
     }
   };
 
-  const filteredOrders = selectedCategory
+  // Ordenar: pendientes primero, luego por fecha descendente
+  const filteredOrders = (selectedCategory
     ? orders.filter(o => o.categoryId?.category === selectedCategory)
-    : orders;
+    : orders
+  ).slice().sort((a, b) => {
+    // Pendientes primero
+    if (a.status === "pendiente" && b.status !== "pendiente") return -1;
+    if (a.status !== "pendiente" && b.status === "pendiente") return 1;
+    // Si ambos son del mismo grupo, ordenar por fecha descendente
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
 
   const openOrderDetail = (order) => {
     setSelectedOrder(order);
@@ -251,10 +259,13 @@ export default function Home() {
                   <Text style={styles.orderTitle}>
                     {order.categoryId?.category || "Producto Personalizado"}
                   </Text>
+                  {/* Estado en texto */}
+                  <Text style={styles.orderStatusText}>
+                    {order.status?.charAt(0).toUpperCase() + order.status?.slice(1) || "Pendiente"}
+                  </Text>
                   <Text style={styles.orderInfo}>
                     {new Date(order.createdAt).toLocaleDateString()} · ${(order.total || 0).toFixed(2)} · {order.orderDetails.length} items
                   </Text>
-
                   <Text style={styles.orderSub}>
                     {order.orderDetails.map(p => p.productName).join(", ")}
                   </Text>
@@ -432,5 +443,11 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 5,
     marginRight: 6
-  }
+  },
+  orderStatusText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#FE3F8D',
+    marginTop: 2,
+  },
 });
