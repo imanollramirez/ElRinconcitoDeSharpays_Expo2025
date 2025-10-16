@@ -24,9 +24,9 @@ const { height } = Dimensions.get("window");
 
 // Puntos fijos del BottomSheet
 const SNAP_POINTS = {
-  FULL: height * 0.1,   // expandido (90% pantalla)
-  HALF: height * 0.5,   // mitad
-  CLOSED: height,       // cerrado (fuera de vista)
+  FULL: height * 0.1,
+  HALF: height * 0.5,
+  CLOSED: height + 30,
 };
 
 export default function Home() {
@@ -40,6 +40,9 @@ export default function Home() {
   // BottomSheet state
   const [selectedOrder, setSelectedOrder] = useState(null);
   const sheetAnim = useRef(new Animated.Value(SNAP_POINTS.CLOSED)).current;
+
+  // 🔍 Estado para zoom de imagen
+  const [zoomImage, setZoomImage] = useState(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -103,7 +106,7 @@ export default function Home() {
   const openOrderDetail = (order) => {
     setSelectedOrder(order);
     Animated.spring(sheetAnim, {
-      toValue: SNAP_POINTS.HALF, // abre en mitad
+      toValue: SNAP_POINTS.HALF,
       useNativeDriver: true,
     }).start();
   };
@@ -115,7 +118,6 @@ export default function Home() {
     }).start(() => setSelectedOrder(null));
   };
 
-  // PanResponder con 3 estados (FULL, HALF, CLOSED)
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) =>
@@ -129,13 +131,11 @@ export default function Home() {
       },
       onPanResponderRelease: (_, gestureState) => {
         let newPos = SNAP_POINTS.HALF;
-
         if (gestureState.dy > 100) {
-          newPos = SNAP_POINTS.CLOSED; // bajó suficiente → cerrar
+          newPos = SNAP_POINTS.CLOSED;
         } else if (gestureState.dy < -100) {
-          newPos = SNAP_POINTS.FULL; // subió suficiente → expandir
+          newPos = SNAP_POINTS.FULL;
         } else {
-          // el más cercano
           const distances = [
             { point: SNAP_POINTS.FULL, dist: Math.abs(sheetAnim._value - SNAP_POINTS.FULL) },
             { point: SNAP_POINTS.HALF, dist: Math.abs(sheetAnim._value - SNAP_POINTS.HALF) },
@@ -148,7 +148,9 @@ export default function Home() {
         Animated.spring(sheetAnim, {
           toValue: newPos,
           useNativeDriver: true,
-        }).start();
+        }).start(() => {
+          if (newPos === SNAP_POINTS.CLOSED) setSelectedOrder(null);
+        });
       },
     })
   ).current;
@@ -181,12 +183,6 @@ export default function Home() {
           </TouchableOpacity>
         </View>
 
-        {/* Search 
-        <View style={styles.searchContainer}>
-          <FontAwesome name="search" size={18} color="#000" style={{ marginRight: 10 }} />
-          <TextInput placeholder="Buscar" style={styles.searchInput} />
-        </View>*/}
-
         {/* Greeting Card */}
         <View style={styles.greetingCard}>
           <View style={{ flex: 1 }}>
@@ -205,7 +201,7 @@ export default function Home() {
           />
         </View>
 
-        {/* Categories */}
+        {/* Categorías */}
         <ScrollView horizontal style={styles.categoryContainer} showsHorizontalScrollIndicator={false}>
           <TouchableOpacity
             style={[styles.categoryButton, selectedCategory === null && styles.selectedCategory]}
@@ -237,7 +233,7 @@ export default function Home() {
 
         <View style={styles.divider} />
 
-        {/* Recent Orders */}
+        {/* Pedidos recientes */}
         <Text style={styles.sectionTitle}>Pedidos recientes</Text>
         <View style={styles.orderList}>
           {loading ? (
@@ -288,6 +284,7 @@ export default function Home() {
         >
           <ScrollView>
             <View style={{ alignItems: "center", marginBottom: 20 }}>
+              <View style={styles.handleBar} />
               <Image
                 source={
                   selectedOrder?.categoryId?.image
@@ -296,7 +293,7 @@ export default function Home() {
                 }
                 style={{ width: 100, height: 100, borderRadius: 50 }}
               />
-              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10, textAlign: "center"}}>
+              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 1, textAlign: "center"}}>
                 {selectedOrder?.categoryId?.category || "Camisa personalizada o Dua"}
               </Text>
               <Text style={{ color: "#555" }}>
@@ -315,72 +312,133 @@ export default function Home() {
                 <View
                   key={idx}
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginVertical: 5
+                    backgroundColor: "#f9f9f9",
+                    padding: 10,
+                    borderRadius: 8,
+                    marginBottom: 8,
                   }}
                 >
                   <Text style={{ flex: 1 }}>
                     {item.quantity} x {item.productName}
                   </Text>
+
+                  {/* Imagen con zoom modal */}
+                  {item.customDesign && (
+                    <View style={{ marginTop: 10, alignItems: "center" }}>
+                      <TouchableOpacity onPress={() => setZoomImage(item.customDesign)}>
+                        <Image
+                          source={{ uri: item.customDesign }}
+                          style={{
+                            width: 150,
+                            height: 150,
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderColor: "#ddd",
+                          }}
+                        />
+                      </TouchableOpacity>
+
+                      {zoomImage === item.customDesign && (
+                        <TouchableOpacity
+                          activeOpacity={1}
+                          onPress={() => setZoomImage(null)}
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: "rgba(0,0,0,0.9)",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            zIndex: 999,
+                          }}
+                        >
+                          <TouchableOpacity
+                            style={{
+                              position: "absolute",
+                              top: 40,
+                              right: 20,
+                              padding: 10,
+                              zIndex: 1000,
+                            }}
+                            onPress={() => setZoomImage(null)}
+                          >
+                            <Text style={{ color: "#fff", fontSize: 18 }}>✕</Text>
+                          </TouchableOpacity>
+
+                          <Image
+                            source={{ uri: item.customDesign }}
+                            style={{
+                              width: "90%",
+                              height: "70%",
+                              borderRadius: 10,
+                              resizeMode: "contain",
+                            }}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )}
                 </View>
               ))}
             </View>
 
-            <View
-              style={{
-                borderTopWidth: 1,
-                borderTopColor: "#ddd",
-                paddingTop: 10,
-                flexDirection: "row",
-                justifyContent: "space-between"
-              }}
-            >
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>Total:</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                ${(selectedOrder?.total ?? 0).toFixed(2)}
-              </Text>
-            </View>
+            <View style={{ height: 100 }} />
 
-            {selectedOrder?.status !== "completado" && (
-              <View
+            {selectedOrder?.shippingAddress && (
+              <TouchableOpacity
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  backgroundColor: "#636361",
+                  padding: 12,
+                  borderRadius: 10,
                   marginTop: 20
                 }}
+                onPress={() => {
+                  const { address, city } = selectedOrder.shippingAddress;
+                  Alert.alert(
+                    "Datos de envío",
+                    ` Dirección: ${address || "No especificada"}\n Ciudad: ${city || "No especificada"}`,
+                    [{ text: "Cerrar", style: "cancel" }]
+                  );
+                }}
               >
+                <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
+                  Ver datos de envío
+                </Text>
+              </TouchableOpacity>
+            )}
 
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    marginLeft: 10,
-                    backgroundColor: "#4CAF50",
-                    padding: 12,
-                    borderRadius: 10,
-                  }}
-                  onPress={() =>
-                    Alert.alert(
-                      "Confirmación",
-                      "¿Deseas marcar la orden como entregada?",
-                      [
-                        { text: "Cancelar", style: "cancel" },
-                        {
-                          text: "Sí",
-                          onPress: () => {
-                            updateOrder(selectedOrder._id, { status: "completado" });
-                            closeOrderDetail();
-                          }
+            {selectedOrder?.status !== "completado" && (
+              <TouchableOpacity
+                style={{
+                  marginTop: 20,
+                  backgroundColor: "#4CAF50",
+                  padding: 12,
+                  borderRadius: 10,
+                  marginBottom: 40,
+                }}
+                onPress={() =>
+                  Alert.alert(
+                    "Confirmación",
+                    "¿Deseas marcar la orden como entregada?",
+                    [
+                      { text: "Cancelar", style: "cancel" },
+                      {
+                        text: "Sí",
+                        onPress: () => {
+                          updateOrder(selectedOrder._id, { status: "completado" });
+                          closeOrderDetail();
                         }
-                      ]
-                    )
-                  }
-                >
-                  <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
-                    Marcar como completado
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                      }
+                    ]
+                  )
+                }
+              >
+                <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
+                  Marcar como completado
+                </Text>
+              </TouchableOpacity>
             )}
           </ScrollView>
         </Animated.View>
@@ -394,8 +452,6 @@ const styles = StyleSheet.create({
   appLogo: { width: 100, height: 50, marginHorizontal: 10 },
   topBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 15, paddingHorizontal: 5 },
   topProfileImage: { width: 50, height: 50, borderRadius: 25 },
-  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, padding: 10, marginBottom: 20, elevation: 2 },
-  searchInput: { flex: 1, fontSize: 14 },
   greetingCard: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 20, elevation: 3, alignItems: 'center' },
   greetingText: { fontSize: 16 },
   bold: { fontWeight: 'bold' },
@@ -431,12 +487,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    height: height, // ocupa toda la pantalla
+    height,
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     elevation: 10,
+  },
+  handleBar: {
+    width: 50,
+    height: 5,
+    borderRadius: 5,
+    backgroundColor: "#ccc",
+    alignSelf: "center",
+    marginBottom: 10,
   },
   categoryImage: {
     width: 20,
