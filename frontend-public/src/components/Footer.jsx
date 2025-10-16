@@ -1,4 +1,5 @@
 import LogoLogin from "./LogoLogin";
+import LinkText from "./LinkText";
 
 const Footer = () => {
     return (
@@ -11,7 +12,7 @@ const Footer = () => {
                         <button><a href="#"><i className="fa-brands fa-facebook"></i></a></button>
                         <button><a href="#"><i className="fa-brands fa-tiktok"></i></a></button>
                     </div>
-                    <div><a href="#">Política de Privacidad</a><span> | </span><a href="#">Términos y Condiciones</a></div>
+                    <div><LinkText action={"/policy&privacy"} text={"Política de Privacidad"}/><span> | </span><LinkText action={"/terms&conditions"} text={"Términos y condiciones"}/></div>
             </div>
         </>
     );
