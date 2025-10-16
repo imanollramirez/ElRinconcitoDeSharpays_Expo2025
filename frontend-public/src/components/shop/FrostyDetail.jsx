@@ -3,7 +3,7 @@ import QuantitySelector from "../QuantitySelector";
 import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css"; // reutilizamos estilos
 
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 import SuccessAlert from "../../components/SuccessAlert.jsx";
 
@@ -63,57 +63,64 @@ const PaletaDetail = ({ product }) => {
     return color;
   };
 
-  return (<>
-  <div className="camisa-detail-container">
-    <div className="camisa-detail-wrapper">
-      <div className="camisa-image-container">
-        <div
-          className="camisa-image-wrapper zoom-container"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          ref={zoomRef}
-        >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="camisa-image"
-            loading="lazy"
-          />
+  return (
+    <>
+      <div className="camisa-detail-container">
+        <div className="camisa-detail-wrapper">
+          <div className="camisa-image-container">
+            <div
+              className="camisa-image-wrapper zoom-container"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              ref={zoomRef}
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                className="camisa-image"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div className="camisa-info-container">
+            <h1 className="camisa-name">{product.name}</h1>
+            <p className="camisa-description">{product.description}</p>
+            <p className="camisa-price">${product.price.toFixed(2)}</p>
+
+            <p
+              style={{
+                fontSize: "14px",
+                fontWeight: "500",
+                color: getColorByFlavor(product.flavor),
+                backgroundColor: "#f3f3f3",
+                padding: "8px 16px",
+                borderRadius: "12px",
+                width: "fit-content",
+                marginTop: "8px",
+              }}
+            >
+              Sabor: {product.flavor}
+            </p>
+
+            <QuantitySelector
+              max={product.stock}
+              quantity={quantity}
+              onChange={handleQuantityChange}
+            />
+
+            {product.stock === 0 ? (
+              <button className="add-cart-btn" disabled>
+                No disponible
+              </button>
+            ) : (
+              <button className="add-cart-btn" onClick={handleAddToCart}>
+                Añadir al carrito
+              </button>
+            )}
+          </div>
         </div>
       </div>
-      <div className="camisa-info-container">
-        <h1 className="camisa-name">{product.name}</h1>
-        <p className="camisa-description">{product.description}</p>
-        <p className="camisa-price">${product.price.toFixed(2)}</p>
-
-        <p
-          style={{
-            fontSize: "14px",
-            fontWeight: "500",
-            color: getColorByFlavor(product.flavor),
-            backgroundColor: "#f3f3f3",
-            padding: "8px 16px",
-            borderRadius: "12px",
-            width: "fit-content",
-            marginTop: "8px",
-          }}
-        >
-          Sabor: {product.flavor}
-        </p>
-
-        <QuantitySelector
-          max={product.stock}
-          quantity={quantity}
-          onChange={handleQuantityChange}
-        />
-
-        <button className="add-cart-btn" onClick={handleAddToCart}>
-          Añadir al carrito
-        </button>
-      </div>
-    </div>
-  </div>
-  </>
+    </>
   );
 };
 

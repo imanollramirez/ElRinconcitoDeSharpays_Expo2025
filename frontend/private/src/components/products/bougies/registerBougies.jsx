@@ -158,11 +158,7 @@ const Bougies = ({
                       ...prev,
                       stock: "Solo se permiten números enteros positivos.",
                     }));
-                  } else if (parseInt(val, 10) <= 0) {
-                    setErrors((prev) => ({
-                      ...prev,
-                      stock: "El stock debe ser mayor que 0.",
-                    }));
+                  
                   } else {
                     setErrors((prev) => ({ ...prev, stock: "" }));
                   }

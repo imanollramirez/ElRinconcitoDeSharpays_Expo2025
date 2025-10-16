@@ -334,7 +334,6 @@ div:where(.swal2-icon).swal2-question{
     padding: 20px 10px 0 10px !important;
   }
 }
-
 /* CREDIT CARD STYLES */
 
 .rccs__card--front {
@@ -354,4 +353,57 @@ div:where(.swal2-icon).swal2-question{
 
 .scroll-trigger-animation::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
+}
+
+/* POLICY AND PRIVACY*/
+
+.legal-container {
+  padding: 30px 15%;
+  color: #4a4a4a;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.7;
+}
+
+.legal-hero {
+  margin-bottom: 60px;
+}
+
+.legal-section {
+  margin-bottom: 60px;
+}
+
+.legal-section h3 {
+  color: #ac3365;
+  margin-top: 25px;
+  font-size: 1.3em;
+}
+
+.legal-section ul {
+  list-style-type: disc;
+  padding-left: 25px;
+}
+
+.link-pink {
+  color: #fe3f8d;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link-pink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .legal-container {
+    padding: 20px 8%;
+  }
+}
+
+@media (max-width: 425px) {
+  .legal-container {
+    padding: 10px 4%;
+  }
+  .legal-hero .text-content {
+    font-size: 45px !important;
+  }
 }
