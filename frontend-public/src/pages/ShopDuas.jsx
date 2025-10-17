@@ -39,7 +39,7 @@ const MyLandingPage = () => {
           </h1>
 
           <p className="landing-paragraph">
-            Compra ya tu DUA, hazlo parte de tu familia con estilo y apoya una buena causa 💖
+            Compra ya tu DUA, hazlo parte de tu familia con estilo y apoya una buena causa.
           </p>
 
            <button onClick={handleIrProducto}  className="buy-button">
