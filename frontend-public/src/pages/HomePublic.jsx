@@ -143,8 +143,8 @@ const HomePublic = () => {
     {/* Imagen de ejemplo, se puede reemplazar */}
     <div
       style={{
-        width: "70%",
-        height: "70%",
+        width: "100%",
+        height: "100%",
         minHeight: "150px",
         backgroundColor: "#f0f0f0",
         borderRadius: "12px",
