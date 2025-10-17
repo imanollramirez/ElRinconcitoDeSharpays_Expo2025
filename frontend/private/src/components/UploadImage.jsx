@@ -38,9 +38,9 @@ const UploadImage = ({ onUpload, defaultImage, fromProfile = false}) => {
           overflow: "hidden",
         }}
       >
-        {preview || defaultImg && (
+        {preview && (
           <img
-            src={preview || defaultImg}
+            src={preview}
             alt="Preview"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
